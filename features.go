@@ -1,8 +1,7 @@
-package features
+package geojson
 
 import (
 	"encoding/json"
-	"geojson/structs"
 )
 
 // Features structure for geojson (feature collection)
@@ -16,7 +15,7 @@ type Feature struct {
 	Type       string                 `json:"type"`
 	Properties map[string]interface{} `json:"properties"`
 	ID         string                 `json:"id"`
-	Geom       structs.Geometry       `json:"geometry"`
+	Geom       Geometry               `json:"geometry"`
 }
 
 // NewFeatureCollection  creates feature collection
@@ -55,7 +54,7 @@ func (feature *Feature) SetID(id string) {
 }
 
 // SetGeometry sets coordinates to the feature
-func (feature *Feature) SetGeometry(geom *structs.Geometry) {
+func (feature *Feature) SetGeometry(geom *Geometry) {
 	feature.Geom = *geom
 }
 

@@ -1,4 +1,4 @@
-package structs
+package geojson
 
 // GeometryType тип для констант - типов геометрии
 type GeometryType string
