@@ -4,6 +4,8 @@
 
 
 ## Quick start
+
+```
 collection := features.NewFeatureCollection() // GeoJson
 
 point := coordinates.NewPoint([]float64{125.6, 10.1}) 
@@ -15,3 +17,4 @@ feature.SetID("0001")
 feature.SetGeometry(point)
 	
 collection.AddFeature(feature)
+```
