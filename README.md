@@ -6,12 +6,12 @@
 ## Quick start
 
 ```
-collection := features.NewFeatureCollection() // GeoJson
+collection := features.NewFeatureCollection() 
 
 point := coordinates.NewPoint([]float64{125.6, 10.1}) 
 
-feature := features.NewFeature()                      
-	
+feature := features.NewFeature()  
+                    
 feature.SetProperty("id_num", 1)
 feature.SetID("0001")
 feature.SetGeometry(point)
