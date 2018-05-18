@@ -4,7 +4,7 @@
 
 
 ## Go get
-> go get github.com/Mziia/geojson/...
+> go get github.com/Mziia/geojson
 
 
 ## Quick start
