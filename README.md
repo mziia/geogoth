@@ -3,8 +3,11 @@
 > Geojson is a package for creating geojson using golang language
 
 
-## Go get
+## go get
 > go get github.com/Mziia/geojson
+
+## import
+> import "github.com/Mziia/geojson"
 
 
 ## Quick start
