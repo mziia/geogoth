@@ -4,10 +4,10 @@
 
 
 ## go get
-> go get github.com/Mziia/geojson
+> go get github.com/mziia/geojson
 
 ## import
-> import "github.com/Mziia/geojson"
+> import "github.com/mziia/geojson"
 
 
 ## Quick start
