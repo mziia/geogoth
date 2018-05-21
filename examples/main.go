@@ -3,8 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"geogoth/coordinates"
-	"geogoth/features"
+
+	coordinates "github.com/mziia/geogoth"
+	features "github.com/mziia/geogoth"
 )
 
 func main() {
