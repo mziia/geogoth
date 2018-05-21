@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"geojson/coordinates"
-	"geojson/features"
+	"geogoth/coordinates"
+	"geogoth/features"
 )
 
 func main() {

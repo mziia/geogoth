@@ -1,4 +1,4 @@
-package geojson
+package geogoth
 
 // GeometryType тип для констант - типов геометрии
 type GeometryType string

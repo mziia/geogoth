@@ -1,4 +1,4 @@
-package geojson
+package geogoth
 
 import (
 	"encoding/json"
