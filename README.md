@@ -1,13 +1,13 @@
-# geojson
+# GeoGoth
 
-> Geojson is a package for creating geojson using golang language
+> GeoGoth is a package for creating geojson using golang language
 
 
 ## go get
-> go get github.com/mziia/geojson
+> go get github.com/mziia/GeoGoth
 
 ## import
-> import "github.com/mziia/geojson"
+> import "github.com/mziia/GeoGoth"
 
 
 ## Quick start
