@@ -4,10 +4,10 @@
 
 
 ## go get
-> go get github.com/mziia/GeoGoth
+> go get github.com/mziia/geogoth
 
 ## import
-> import "github.com/mziia/GeoGoth"
+> import "github.com/mziia/geogoth"
 
 
 ## Quick start
