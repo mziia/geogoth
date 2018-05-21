@@ -4,16 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 
-	coordinates "github.com/mziia/geogoth"
-	features "github.com/mziia/geogoth"
+	geogoth "github.com/mziia/geogoth"
 )
 
 func main() {
 
-	collection := features.NewFeatureCollection() // GeoJson
+	collection := geogoth.NewFeatureCollection() // GeoJson
 
-	point := coordinates.NewPoint([]float64{125.6, 10.1}) // Point
-	feature1 := features.NewFeature()                     // Feature
+	point := geogoth.NewPoint([]float64{125.6, 10.1}) // Point
+	feature1 := geogoth.NewFeature()                  // Feature
 
 	feature1.SetProperty("id_num", 1)
 
@@ -21,9 +20,9 @@ func main() {
 	feature1.SetGeometry(point)
 	collection.AddFeature(feature1)
 
-	newls := coordinates.NewLineString([][]float64{{52.370725881211314, 4.889259338378906}, {52.3711451105601, 4.895267486572266}})
+	newls := geogoth.NewLineString([][]float64{{52.370725881211314, 4.889259338378906}, {52.3711451105601, 4.895267486572266}})
 
-	feature2 := features.NewFeature()
+	feature2 := geogoth.NewFeature()
 	feature1.SetProperty("id_num", 1)
 
 	feature2.SetProperty("coordin", [][]float64{{52.370725881211314, 4.889259338378906}, {52.3711451105601, 4.895267486572266}})
