@@ -1,4 +1,4 @@
-# GeoGoth
+# geogoth
 
 > GeoGoth is a package for creating geojson using golang language
 
