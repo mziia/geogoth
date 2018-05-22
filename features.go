@@ -65,3 +65,9 @@ func GeoUnmarshal(byteJSON []byte) Features {
 
 	return features
 }
+
+// GetGeoType returns type of geo object
+func GetGeoType(feature *Feature) GeometryType {
+
+	return feature.Geom.Type
+}

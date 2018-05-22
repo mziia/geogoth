@@ -33,4 +33,7 @@ func main() {
 	m, _ := json.Marshal(collection)
 	fmt.Println(string(m))
 
+	fmt.Println(geogoth.GetGeoType(feature1))
+	fmt.Println(string(geogoth.GetGeoType(collection.Features[1])))
+
 }
