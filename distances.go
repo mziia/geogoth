@@ -47,14 +47,17 @@ func DistancePointMultipoint(feature1, feature2 *Feature) float64 {
 		y2, x2 := GetTwoDimArrayCoordinates(feature2, i)
 		distarr = append(distarr, DistancePointPointDeg(y1, x1, y2, x2)) // Adding distances to dastarr
 
-		if i > 0 { // Searching for the smallest distance
-			if distarr[i] < distarr[i-1] {
-				distance = distarr[i]
-			} else {
-				distance = distarr[i-1]
-			}
+	}
+
+	// Searching for the smallest distance
+	distance = distarr[0]
+	for i := range distarr {
+		if distarr[i] < distance {
+			distance = distarr[i]
+
 		}
 	}
+
 	return distance
 }
 
@@ -143,11 +146,13 @@ func DistancePointLinstring(feature1, feature2 *Feature) float64 {
 	if len(distarr) == 1 { // if distarr array has only 1 smallest distance (line cocnsists of 2 points)
 		distance = distarr[0] // the only distance is the distance between point and line
 	} else { // if distarr has more than 2 points
+
+		// Searching for the smallest distance
+		distance = distarr[0]
 		for i := range distarr {
-			if i > 0 { // Searching for the smallest distance
-				if distarr[i] < distarr[i-1] {
-					distance = distarr[i]
-				}
+			if distarr[i] < distance {
+				distance = distarr[i]
+
 			}
 		}
 	}
@@ -163,28 +168,47 @@ func DistancePointPolygon(feature1, feature2 *Feature) float64 {
 	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
 	distarr := make([]float64, 0)                   // Creating slice for distances between Point and edges of LineString
 
-	coords := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
+	switch feature2.Geom.Type {
 
-	for i := range coords {
-		for j := range coords[i] {
-			if j > 0 {
-				lineY0, lineX0 := GetThreeDimArrayCoordinates(feature2, i, j)   // Coordinates of LineString
-				lineY1, lineX1 := GetThreeDimArrayCoordinates(feature2, i, j-1) // Coordinates of LineString
+	case "Polygon":
+		coords := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
 
-				distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
-			}
-		}
-	}
+		for i := range coords {
+			for j := range coords[i] {
+				if j > 0 {
+					lineY0, lineX0 := GetThreeDimArrayCoordinates(feature2, i, j)   // Coordinates of LineString
+					lineY1, lineX1 := GetThreeDimArrayCoordinates(feature2, i, j-1) // Coordinates of LineString
 
-	if len(distarr) == 1 { // if distarr array has only 1 smallest distance (line cocnsists of 2 points)
-		distance = distarr[0] // the only distance is the distance between point and line
-	} else { // if distarr has more than 2 points
-		for i := range distarr {
-			if i > 0 { // Searching for the smallest distance
-				if distarr[i] < distarr[i-1] {
-					distance = distarr[i]
+					distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
 				}
 			}
+		}
+
+	case "MultiPolygon":
+
+		coords := (feature2.Geom.Coordinates).([][][][]float64) // Convert interface to [][][]float64
+
+		for p := range coords {
+			for i := range coords[p] {
+				for j := range coords[p][i] {
+					if j > 0 {
+						lineY0, lineX0 := GetFourDimArrayCoordinates(feature2, p, i, j)   // Coordinates of LineString
+						lineY1, lineX1 := GetFourDimArrayCoordinates(feature2, p, i, j-1) // Coordinates of LineString
+
+						distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
+					}
+				}
+			}
+		}
+
+	}
+
+	// Searching for the smallest distance
+	distance = distarr[0]
+	for i := range distarr {
+		if distarr[i] < distance {
+			distance = distarr[i]
+
 		}
 	}
 
