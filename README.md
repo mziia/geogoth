@@ -1,6 +1,6 @@
 # geogoth
 
-> GeoGoth is a package for creating geojson using golang language  <img src="https://user-images.githubusercontent.com/24193681/41080096-79aa12ac-6a2d-11e8-8cae-73f826b20d34.png" width="250" align="right"> 
+> GeoGoth is a package for creating geojson using golang language  <img src="https://user-images.githubusercontent.com/24193681/41141817-15040158-6afc-11e8-88ea-841498df3a30.png" width="250" align="right"> 
 
 
 ## go get
