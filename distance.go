@@ -9,11 +9,9 @@ func Distance(feature1, feature2 *Feature) float64 {
 	switch GetGeoType(feature1) {
 
 	case "Point":
-
 		switch GetGeoType(feature2) {
 
 		case "Point": // Point & Point
-
 			y1, x1 := GetPointCoordinates(feature1) // Coordinates of Point
 			y2, x2 := GetPointCoordinates(feature2)
 			distance = DistancePointPointDeg(y1, x1, y2, x2)
@@ -28,22 +26,26 @@ func Distance(feature1, feature2 *Feature) float64 {
 			distance = DistancePointPolygon(feature1, feature2)
 		case "MultiPolygon": // Point & MultiPolygon
 			distance = DistancePointPolygon(feature1, feature2)
+
 		}
 
 		// =============================================================================
 
 	case "MultiPoint": //
-
 		switch GetGeoType(feature2) {
 
 		case "Point": // MultiPoint & Point
 			distance = DistancePointMultipoint(feature2, feature1)
-
 		case "MultiPoint": // MultiPoint & MultiPoint
+			distance = DistanceMultipointMultipoint(feature1, feature2)
 		case "LineString": // MultiPoint & LineString
-		case "MultiLineString": // MultiLineString &
+			distance = DistanceMultipointLinestring(feature1, feature2)
+		case "MultiLineString": // MultiPoint & MultiLineString
+			distance = DistanceMultiPointMultiLinestring(feature1, feature2)
 		case "Polygon": // MultiPoint & Polygon
+			distance = DistanceMultiPointPolygon(feature1, feature2)
 		case "MultiPolygon": // MultiPoint & MultiPolygon
+
 		}
 
 		// =============================================================================
@@ -52,52 +54,62 @@ func Distance(feature1, feature2 *Feature) float64 {
 		switch GetGeoType(feature2) {
 		case "Point": // LineString & Point
 			distance = DistancePointLinstring(feature2, feature1)
+		case "MultiPoint": // LineString & MultiPoint
+			distance = DistanceMultipointLinestring(feature2, feature1)
+		case "LineString": // LineString & LineString
+			distance = DistanceLineStringLineString(feature2, feature1)
+		case "MultiLineString": // LineString & MultiLineString
+		case "Polygon": // LineString & Polygon
+		case "MultiPolygon": // LineString & MultiPolygon
 
-		case "MultiPoint": // LineString &
-		case "LineString": // LineString &
-		case "MultiLineString": // LineString &
-		case "Polygon": // LineString &
-		case "MultiPolygon": // LineString &
 		}
 
 		// =============================================================================
 
 	case "MultiLineString":
 		switch GetGeoType(feature2) {
-		case "Point": // MultiLineString &
-		case "MultiPoint": // MultiLineString &
+
+		case "Point": // MultiLineString & Point
+			distance = DistancePointLinstring(feature2, feature1)
+		case "MultiPoint": // MultiLineString & MultiPoint
+			distance = DistanceMultiPointMultiLinestring(feature2, feature1)
 		case "LineString": // MultiLineString &
+
 		case "MultiLineString": // MultiLineString &
 		case "Polygon": // MultiLineString &
 		case "MultiPolygon": // MultiLineString &
+
 		}
 
 		// =============================================================================
 
 	case "Polygon":
 		switch GetGeoType(feature2) {
+
 		case "Point": // Polygon & Point
 			distance = DistancePointPolygon(feature2, feature1)
-
-		case "MultiPoint": // Polygon &
+		case "MultiPoint": // Polygon & MultiPoint
+			distance = DistanceMultiPointPolygon(feature2, feature1)
 		case "LineString": // Polygon &
 		case "MultiLineString": // Polygon &
 		case "Polygon": // Polygon &
 		case "MultiPolygon": // Polygon &
+
 		}
 
 		// =============================================================================
 
 	case "MultiPolygon":
 		switch GetGeoType(feature2) {
+
 		case "Point": // MultiPolygon & Point
 			distance = DistancePointPolygon(feature2, feature1)
-
 		case "MultiPoint": // MultiPolygon &
 		case "LineString": // MultiPolygon &
 		case "MultiLineString": // MultiPolygon &
 		case "Polygon": // MultiPolygon &
 		case "MultiPolygon": // MultiPolygon &
+
 		}
 
 	}
