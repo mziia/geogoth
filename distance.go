@@ -14,8 +14,8 @@ func Distance(feature1, feature2 *Feature) float64 {
 		case "Point": // Point & Point
 			y1, x1 := GetPointCoordinates(feature1) // Coordinates of Point
 			y2, x2 := GetPointCoordinates(feature2)
-			distance = DistancePointPointDeg(y1, x1, y2, x2)
 
+			distance = DistancePointPointDeg(y1, x1, y2, x2)
 		case "MultiPoint": // Point & MultiPoint
 			distance = DistancePointMultipoint(feature1, feature2)
 		case "LineString": // Point & LineString
@@ -45,6 +45,7 @@ func Distance(feature1, feature2 *Feature) float64 {
 		case "Polygon": // MultiPoint & Polygon
 			distance = DistanceMultiPointPolygon(feature1, feature2)
 		case "MultiPolygon": // MultiPoint & MultiPolygon
+			distance = DistanceMultiPointMultiPolygon(feature1, feature2)
 
 		}
 
@@ -54,6 +55,7 @@ func Distance(feature1, feature2 *Feature) float64 {
 		switch GetGeoType(feature2) {
 		case "Point": // LineString & Point
 			distance = DistancePointLinstring(feature2, feature1)
+			// Доделай : в методе, ищущем расстояние от линии до линии случай с пересечением
 		case "MultiPoint": // LineString & MultiPoint
 			distance = DistanceMultipointLinestring(feature2, feature1)
 		case "LineString": // LineString & LineString
@@ -104,7 +106,9 @@ func Distance(feature1, feature2 *Feature) float64 {
 
 		case "Point": // MultiPolygon & Point
 			distance = DistancePointPolygon(feature2, feature1)
-		case "MultiPoint": // MultiPolygon &
+		case "MultiPoint": // MultiPolygon & MultiPoint
+			distance = DistanceMultiPointMultiPolygon(feature2, feature1)
+
 		case "LineString": // MultiPolygon &
 		case "MultiLineString": // MultiPolygon &
 		case "Polygon": // MultiPolygon &
