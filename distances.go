@@ -201,6 +201,10 @@ func DistancePointPolygon(feature1, feature2 *Feature) float64 {
 // func DistanceLineLine(feature1, feature2 *Feature) float64 {
 func DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2 float64) float64 {
 
+	// Если линии пересекаются?
+	//  Параллельны ли? ТО от вершины до вершины
+	//  Добавить метод, чтобы считать для любого количества линий (этот медот использовать в том)
+
 	var distance float64
 	distarr := make([]float64, 0) // Creates slice for distances between Point and edges of LineString
 
