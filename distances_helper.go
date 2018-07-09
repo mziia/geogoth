@@ -219,3 +219,36 @@ func PointInPolygon(feature1, feature2 *Feature) bool {
 	return PIPJordanCurveTheorem(py, px, pol)
 
 }
+
+// LineLineIntersection returns true if lines intersectd; false if lines do not intersect
+// Algorithm from https://ideone.com/PnPJgb
+func LineLineIntersection(yA, xA, yB, xB, yC, xC, yD, xD float64) bool {
+
+	yCmP, xCmP := yC-yA, xC-xA
+	yr, xr := yB-yA, xB-xA
+	ys, xs := yD-yC, xD-xC
+
+	cmpXr := xCmP*yr - yCmP*xr
+	cmpXs := xCmP*ys - yCmP*xs
+	rXs := xr*ys - yr*xs
+
+	if cmpXr == 0 {
+		// Lines are collinear, and so intersect if they have any overlap
+		return ((xC-xA < 0) != (xC-xB < 0)) || ((yC-yA < 0) != (yC-yB < 0))
+	}
+
+	if rXs == 0 {
+		return false // Lines are parallel
+	}
+
+	rXsr := 1 / rXs
+	t := cmpXs * rXsr
+	u := cmpXr * rXsr
+
+	return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)
+}
+
+// LinesAreParallel returns true if lines are parallel; returns false if lines aren't parallel
+func LinesAreParallel() {
+
+}

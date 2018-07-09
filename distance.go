@@ -55,7 +55,6 @@ func Distance(feature1, feature2 *Feature) float64 {
 		switch GetGeoType(feature2) {
 		case "Point": // LineString & Point
 			distance = DistancePointLinstring(feature2, feature1)
-			// Доделай : в методе, ищущем расстояние от линии до линии случай с пересечением
 		case "MultiPoint": // LineString & MultiPoint
 			distance = DistanceMultipointLinestring(feature2, feature1)
 		case "LineString": // LineString & LineString
