@@ -248,11 +248,6 @@ func LineLineIntersection(yA, xA, yB, xB, yC, xC, yD, xD float64) bool {
 	return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)
 }
 
-// LinesAreParallel returns true if lines are parallel; returns false if lines aren't parallel
-func LinesAreParallel() {
-
-}
-
 // DistanceLineLine finds distance between two lines
 // func DistanceLineLine(feature1, feature2 *Feature) float64 {
 func DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2 float64) float64 {
@@ -275,5 +270,10 @@ func DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line
 	}
 
 	return distance
+
+}
+
+// LinesAreParallel returns true if lines are parallel; returns false if lines aren't parallel
+func LinesAreParallel() {
 
 }

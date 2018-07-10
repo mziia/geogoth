@@ -95,7 +95,7 @@ func DistancePointLine(plon, plat, lon1, lat1, lon2, lat2 float64) float64 {
 	return dxa
 }
 
-// DistancePointLinstring finds the smallest distance between Point and LineString/ MultiLineString
+// DistancePointLinstring finds the smallest distance between Point and LineString || MultiLineString
 func DistancePointLinstring(feature1, feature2 *Feature) float64 {
 
 	var distance float64
@@ -430,7 +430,7 @@ func DistanceMultiPointMultiPolygon(feature1, feature2 *Feature) float64 {
 
 }
 
-// DistanceLineStringMultiLineString counts distance between LineString and MultiLineString
+// DistanceLineStringMultiLineString counts distance between LineString and MultiLineString || Polygon
 func DistanceLineStringMultiLineString(feature1, feature2 *Feature) float64 {
 	var distance float64
 
@@ -475,17 +475,17 @@ func DistanceLineStringMultiLineString(feature1, feature2 *Feature) float64 {
 	return distance
 }
 
-// DistanceLineStringPolygon counts distance between LineString and Polygon
-func DistanceLineStringPolygon(feature1, feature2 *Feature) float64 {
-	var distance float64
+// // DistanceLineStringPolygon counts distance between LineString and Polygon
+// func DistanceLineStringPolygon(feature1, feature2 *Feature) float64 {
+// 	var distance float64
 
-	linestr := (feature1.Geom.Coordinates).([][]float64)
-	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
+// 	linestr := (feature1.Geom.Coordinates).([][]float64)
+// 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
-	for i := range linestr { // Finds coords of LineString
-		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
-		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
-	}
+// 	for i := range linestr { // Finds coords of LineString
+// 		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
+// 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
+// 	}
 
-	return distance
-}
+// 	return distance
+// }
