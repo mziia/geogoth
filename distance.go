@@ -60,7 +60,9 @@ func Distance(feature1, feature2 *Feature) float64 {
 		case "LineString": // LineString & LineString
 			distance = DistanceLineStringLineString(feature2, feature1)
 		case "MultiLineString": // LineString & MultiLineString
+			distance = DistanceLineStringMultiLineString(feature1, feature2)
 		case "Polygon": // LineString & Polygon
+
 		case "MultiPolygon": // LineString & MultiPolygon
 
 		}
@@ -74,8 +76,8 @@ func Distance(feature1, feature2 *Feature) float64 {
 			distance = DistancePointLinstring(feature2, feature1)
 		case "MultiPoint": // MultiLineString & MultiPoint
 			distance = DistanceMultiPointMultiLinestring(feature2, feature1)
-		case "LineString": // MultiLineString &
-
+		case "LineString": // MultiLineString & LineString
+			distance = DistanceLineStringMultiLineString(feature2, feature1)
 		case "MultiLineString": // MultiLineString &
 		case "Polygon": // MultiLineString &
 		case "MultiPolygon": // MultiLineString &
