@@ -601,7 +601,7 @@ func DistanceMultiLineStringMultiLineString(feature1, feature2 *Feature) float64
 	return distance
 }
 
-// DistanceMultiLineStringPolygon counts distance between LineString and  Polygon
+// DistanceMultiLineStringPolygon counts distance between MultiLineString and  Polygon
 func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
@@ -623,7 +623,7 @@ func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 	}
 
 	var pip bool
-	// Test if any point of LineString is inside of the MultiPolygon
+	// Test if any point of MultiLineString is inside of the Polygon
 	for i := range mlineCoords {
 		for j := range mlineCoords[i] {
 			y, x := mlineCoords[i][j][0], mlineCoords[i][j][1]
@@ -650,6 +650,70 @@ func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 
 						distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
 
+					}
+				}
+			}
+		}
+		distance = MinDistance(distarr)
+	}
+
+	return distance
+}
+
+// DistanceMultiLineStringMultiPolygon counts distance between MultiLineString and  MultiPolygon
+func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
+	var distance float64
+
+	mlinestr := (feature1.Geom.Coordinates).([][][]float64)
+	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
+
+	distarr := make([]float64, 0)         // Creates slice for distances
+	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
+	lineCoords := make([][]float64, 0)    // Creates slice for coords of the line
+
+	for i := range mlinestr { // Finds coords of the MultiLineString
+		for j := range mlinestr[i] {
+			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
+			lineCoords = append(lineCoords, []float64{lineY, lineX})
+		}
+		mlineCoords = append(mlineCoords, lineCoords)
+
+	}
+
+	var pip bool
+	// Test if any point of MultiLineString is inside of the MultiPolygon
+	for i := range mlineCoords {
+		for j := range mlineCoords[i] {
+			y, x := mlineCoords[i][j][0], mlineCoords[i][j][1]
+
+			for m := range mpolyg {
+				pip = PIPJordanCurveTheorem(y, x, mpolyg[m])
+			}
+		}
+	}
+
+	if pip == true {
+		distance = 0
+	} else {
+
+		for m := range mlineCoords {
+			for i := 0; i < len(mlineCoords[m])-1; i++ {
+
+				yL1, xL1 := mlineCoords[m][i][0], mlineCoords[m][i][1]
+				yL2, xL2 := mlineCoords[m][i+1][0], mlineCoords[m][i+1][1]
+
+				for m := range mpolyg {
+
+					for p := range mpolyg[m] {
+
+						for j := 0; j < len(mpolyg[m][p])-1; j++ {
+
+							yP1, xP1 := mpolyg[m][p][j][0], mpolyg[m][p][j][1]
+							yP2, xP2 := mpolyg[m][p][j+1][0], mpolyg[m][p][j+1][1]
+
+							distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
+
+						}
 					}
 				}
 			}
