@@ -723,3 +723,83 @@ func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 
 	return distance
 }
+
+// DistancePolygonPolygon counts distance between Polygon and Polygon
+func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
+	var distance float64
+
+	polyg1 := (feature1.Geom.Coordinates).([][][]float64)
+	polyg2 := (feature2.Geom.Coordinates).([][][]float64)
+
+	distarr := make([]float64, 0) // Creates slice for distances
+
+	polyg1Coords := make([][]float64, 0) // Creates slice for coords of the first Polygon
+	polyg2Coords := make([][]float64, 0) // Creates slice for coords of the second Polygon
+
+	for i := range polyg1 { // Finds coords of the first Polygon
+		for j := range polyg1[i] {
+			y, x := GetThreeDimArrayCoordinates(feature1, i, j)
+			polyg1Coords = append(polyg1Coords, []float64{y, x})
+		}
+	}
+
+	for i := range polyg2 { // Finds coords of the second Polygon
+		for j := range polyg2[i] {
+			y, x := GetThreeDimArrayCoordinates(feature2, i, j)
+			polyg1Coords = append(polyg2Coords, []float64{y, x})
+		}
+	}
+
+	var pip bool
+	// Test if any point of Polygon 1 is inside of the Polygon 2
+	for i := range polyg1Coords {
+		y, x := polyg1Coords[i][0], polyg1Coords[i][1]
+		pip = PIPJordanCurveTheorem(y, x, polyg2)
+		if pip == true {
+			break
+		}
+	}
+
+	if pip == true {
+		distance = 0
+	} else {
+
+		// Test if any point of Polygon 1 is inside of the Polygon 2
+		for i := range polyg2Coords {
+			y, x := polyg2Coords[i][0], polyg2Coords[i][1]
+			pip = PIPJordanCurveTheorem(y, x, polyg2)
+
+			if pip == true {
+				break
+			}
+		}
+
+		if pip == true {
+			distance = 0
+		} else {
+
+			for p1 := range polyg1 {
+
+				for i := 0; i < len(polyg1[p1])-1; i++ {
+					y1P1, x1P1 := polyg1[p1][i][0], polyg1[p1][i][1]
+					y2P1, x2P1 := polyg1[p1][i+1][0], polyg1[p1][i+1][1]
+
+					for p2 := range polyg2 {
+
+						for j := 0; j < len(polyg2[p2])-1; j++ {
+
+							y1P2, x1P2 := polyg2[p2][j][0], polyg2[p2][j][1]
+							y2P2, x2P2 := polyg2[p2][j+1][0], polyg2[p2][j+1][1]
+
+							distarr = append(distarr, DistanceLineLine(y1P1, x1P1, y2P1, x2P1, y1P2, x1P2, y2P2, x2P2))
+
+						}
+					}
+				}
+			}
+		}
+		distance = MinDistance(distarr)
+	}
+
+	return distance
+}
