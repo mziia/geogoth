@@ -803,3 +803,104 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 
 	return distance
 }
+
+// DistancePolygonMultiPolygon  counts distance between Polygon and MultiPolygon
+func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
+	var distance float64
+
+	polyg := (feature1.Geom.Coordinates).([][][]float64)
+	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
+
+	distarr := make([]float64, 0)          // Creates slice for distances
+	polygCoords := make([][][]float64, 0)  // Creates slice for coords of the Polygon
+	mpolygCoords := make([][][]float64, 0) // Creates slice for coords of the Polygon
+	plineCoords := make([][]float64, 0)    // Creates slice for coords of the line
+	mlineCoords := make([][]float64, 0)    // Creates slice for coords of the line
+
+	for i := range polyg { // Finds coords of the Polygon
+		for j := range polyg[i] {
+			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
+			plineCoords = append(plineCoords, []float64{lineY, lineX})
+		}
+		polygCoords = append(polygCoords, plineCoords)
+
+	}
+
+	for m := range mpolyg {
+		for p := range mpolyg[m] {
+			for i := range mpolyg[m][p] {
+
+				lineY, lineX := GetFourDimArrayCoordinates(feature2, m, p, i)
+				mlineCoords = append(mlineCoords, []float64{lineX, lineY})
+
+			}
+			mpolygCoords = append(mpolygCoords, mlineCoords)
+		}
+	}
+
+	var pip bool
+	// Test if any point of Polygon is inside of the MultiPolygon
+	for i := range polygCoords {
+		for j := range polygCoords[i] {
+			y, x := polygCoords[i][j][0], polygCoords[i][j][1]
+
+			for m := range mpolyg {
+				pip = PIPJordanCurveTheorem(y, x, mpolyg[m])
+				if pip == true {
+
+					break
+				}
+			}
+		}
+	}
+
+	if pip == true {
+		distance = 0
+
+	} else {
+
+		// Test if any point of MultiPolygon is inside of the Polygon
+		for i := range mpolygCoords {
+			for j := range mpolygCoords[i] {
+				y, x := mpolygCoords[i][j][0], mpolygCoords[i][j][1]
+
+				pip = PIPJordanCurveTheorem(y, x, polyg)
+				if pip == true {
+					break
+
+				}
+			}
+		}
+
+		if pip == true {
+			distance = 0
+		} else {
+
+			for m := range polygCoords {
+				for i := 0; i < len(polygCoords[m])-1; i++ {
+
+					yL1, xL1 := polygCoords[m][i][0], polygCoords[m][i][1]
+					yL2, xL2 := polygCoords[m][i+1][0], polygCoords[m][i+1][1]
+
+					for m := range mpolyg {
+
+						for p := range mpolyg[m] {
+
+							for j := 0; j < len(mpolyg[m][p])-1; j++ {
+
+								yP1, xP1 := mpolyg[m][p][j][0], mpolyg[m][p][j][1]
+								yP2, xP2 := mpolyg[m][p][j+1][0], mpolyg[m][p][j+1][1]
+
+								distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
+
+							}
+						}
+					}
+				}
+			}
+			distance = MinDistance(distarr)
+		}
+	}
+
+	return distance
+}
