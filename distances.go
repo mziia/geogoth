@@ -746,15 +746,14 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 	for i := range polyg2 { // Finds coords of the second Polygon
 		for j := range polyg2[i] {
 			y, x := GetThreeDimArrayCoordinates(feature2, i, j)
-			polyg1Coords = append(polyg2Coords, []float64{y, x})
+			polyg2Coords = append(polyg2Coords, []float64{y, x})
 		}
 	}
 
 	var pip bool
 	// Test if any point of Polygon 1 is inside of the Polygon 2
 	for i := range polyg1Coords {
-		y, x := polyg1Coords[i][0], polyg1Coords[i][1]
-		pip = PIPJordanCurveTheorem(y, x, polyg2)
+		pip = PIPJordanCurveTheorem(polyg1Coords[i][0], polyg1Coords[i][1], polyg2)
 		if pip == true {
 			break
 		}
@@ -762,12 +761,12 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 
 	if pip == true {
 		distance = 0
+
 	} else {
 
-		// Test if any point of Polygon 1 is inside of the Polygon 2
+		// Test if any point of Polygon 2 is inside of the Polygon 1
 		for i := range polyg2Coords {
-			y, x := polyg2Coords[i][0], polyg2Coords[i][1]
-			pip = PIPJordanCurveTheorem(y, x, polyg2)
+			pip = PIPJordanCurveTheorem(polyg2Coords[i][0], polyg2Coords[i][1], polyg1)
 
 			if pip == true {
 				break
@@ -776,6 +775,7 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 
 		if pip == true {
 			distance = 0
+
 		} else {
 
 			for p1 := range polyg1 {
@@ -797,8 +797,8 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 					}
 				}
 			}
+			distance = MinDistance(distarr)
 		}
-		distance = MinDistance(distarr)
 	}
 
 	return distance
