@@ -1,6 +1,7 @@
 package geogoth
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -326,6 +327,7 @@ func DistanceMultiPointMultiLinestring(feature1, feature2 *Feature) float64 {
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
+		lineCoords = nil // empty slice
 
 	}
 
@@ -619,6 +621,7 @@ func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
+		lineCoords = nil // empty slice
 
 	}
 
@@ -677,6 +680,7 @@ func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
+		lineCoords = nil // empty slice
 
 	}
 
@@ -720,7 +724,6 @@ func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 		}
 		distance = MinDistance(distarr)
 	}
-
 	return distance
 }
 
@@ -811,9 +814,10 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 	polyg := (feature1.Geom.Coordinates).([][][]float64)
 	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
 
-	distarr := make([]float64, 0)          // Creates slice for distances
+	distarr := make([]float64, 0) // Creates slice for distances
+
 	polygCoords := make([][][]float64, 0)  // Creates slice for coords of the Polygon
-	mpolygCoords := make([][][]float64, 0) // Creates slice for coords of the Polygon
+	mpolygCoords := make([][][]float64, 0) // Creates slice for coords of the MultiPolygon
 	plineCoords := make([][]float64, 0)    // Creates slice for coords of the line
 	mlineCoords := make([][]float64, 0)    // Creates slice for coords of the line
 
@@ -823,6 +827,7 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 			plineCoords = append(plineCoords, []float64{lineY, lineX})
 		}
 		polygCoords = append(polygCoords, plineCoords)
+		plineCoords = nil // empty slice
 
 	}
 
@@ -831,12 +836,16 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 			for i := range mpolyg[m][p] {
 
 				lineY, lineX := GetFourDimArrayCoordinates(feature2, m, p, i)
-				mlineCoords = append(mlineCoords, []float64{lineX, lineY})
+				mlineCoords = append(mlineCoords, []float64{lineY, lineX})
 
 			}
 			mpolygCoords = append(mpolygCoords, mlineCoords)
+			mlineCoords = nil // empty slice
+
 		}
 	}
+	fmt.Println("mpolygCoords: ", mpolygCoords)
+	fmt.Println()
 
 	var pip bool
 	// Test if any point of Polygon is inside of the MultiPolygon
