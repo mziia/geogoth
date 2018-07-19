@@ -6,7 +6,7 @@
 
 ## Installation and Usage 
 
-###Download and install:
+##Download and install:
 
 > go get github.com/mziia/geogoth
 
