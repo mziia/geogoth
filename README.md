@@ -45,7 +45,9 @@ Find distance between Features:
 
 ```go
 // The order of parameters' transfer does not matter
-distance := geogoth.Distance(feature1, feature2) OR distance := geogoth.Distance(feature2, feature1)
+distance := geogoth.Distance(feature1, feature2)
+OR
+distance := geogoth.Distance(feature2, feature1)
 
 ```
 
