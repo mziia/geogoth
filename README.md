@@ -7,17 +7,20 @@
 ## Installation and Usage 
 
 Download and install:
-> go get github.com/mziia/geogoth
+```sh
+$ go get github.com/mziia/geogoth
+```
 
 Import: 
-> import "github.com/mziia/geogoth"
-
+```go
+import "github.com/mziia/geogoth"
+```
 
 ## Quick start
 
 Create GeoJSON:
 
-```
+```go
 	collection := geogoth.NewFeatureCollection()
 
 	point1 := geogoth.NewPoint([]float64{37.6175, 55.752})  // lon, lat
@@ -40,7 +43,7 @@ Create GeoJSON:
 
 Find distance between Features: 
 
-```
+```go
 // The order of parameters' transfer does not matter
 distance := geogoth.Distance(feature1, feature2) OR distance := geogoth.Distance(feature2, feature1)
 
