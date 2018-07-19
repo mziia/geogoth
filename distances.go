@@ -1,7 +1,6 @@
 package geogoth
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -318,7 +317,7 @@ func DistanceMultiPointMultiLinestring(feature1, feature2 *Feature) float64 {
 	multlinestr := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
 
 	distarr := make([]float64, 0)         // Creates slice for distances
-	lineCoords := make([][]float64, 0)    // Creates slice for coords of the line
+	lineCoords := make([][]float64, 0)    // Creates slice for coords of one line
 	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
 
 	for i := range multlinestr { // Finds coords of the MultiLineString
@@ -613,7 +612,7 @@ func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 	distarr := make([]float64, 0) // Creates slice for distances
 
 	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
-	lineCoords := make([][]float64, 0)    // Creates slice for coords of the line
+	lineCoords := make([][]float64, 0)    // Creates slice for coords of one line
 
 	for i := range mlinestr { // Finds coords of the MultiLineString
 		for j := range mlinestr[i] {
@@ -672,7 +671,7 @@ func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 
 	distarr := make([]float64, 0)         // Creates slice for distances
 	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
-	lineCoords := make([][]float64, 0)    // Creates slice for coords of the line
+	lineCoords := make([][]float64, 0)    // Creates slice for coords of one line
 
 	for i := range mlinestr { // Finds coords of the MultiLineString
 		for j := range mlinestr[i] {
@@ -818,8 +817,8 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 
 	polygCoords := make([][][]float64, 0)  // Creates slice for coords of the Polygon
 	mpolygCoords := make([][][]float64, 0) // Creates slice for coords of the MultiPolygon
-	plineCoords := make([][]float64, 0)    // Creates slice for coords of the line
-	mlineCoords := make([][]float64, 0)    // Creates slice for coords of the line
+	plineCoords := make([][]float64, 0)    // Creates slice for coords of one line
+	mlineCoords := make([][]float64, 0)    // Creates slice for coords of one line
 
 	for i := range polyg { // Finds coords of the Polygon
 		for j := range polyg[i] {
@@ -844,8 +843,6 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 
 		}
 	}
-	fmt.Println("mpolygCoords: ", mpolygCoords)
-	fmt.Println()
 
 	var pip bool
 	// Test if any point of Polygon is inside of the MultiPolygon
@@ -856,7 +853,6 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 			for m := range mpolyg {
 				pip = PIPJordanCurveTheorem(y, x, mpolyg[m])
 				if pip == true {
-
 					break
 				}
 			}
@@ -876,7 +872,6 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 				pip = PIPJordanCurveTheorem(y, x, polyg)
 				if pip == true {
 					break
-
 				}
 			}
 		}
@@ -911,5 +906,109 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 		}
 	}
 
+	return distance
+}
+
+// DistanceMultiPolygonMultiPolygon counts distance between MultiPolygon and MultiPolygon
+func DistanceMultiPolygonMultiPolygon(feature1, feature2 *Feature) float64 {
+	var distance float64
+
+	mpolyg1 := (feature1.Geom.Coordinates).([][][][]float64)
+	mpolyg2 := (feature2.Geom.Coordinates).([][][][]float64)
+
+	distarr := make([]float64, 0)
+
+	mpolyg1Coords := make([][][]float64, 0) // / Creates slice for coords of the MultiPolygon
+	mline1Coords := make([][]float64, 0)    // Creates slice for coords of one line
+	mpolyg2Coords := make([][][]float64, 0) // / Creates slice for coords of the MultiPolygon
+	mline2Coords := make([][]float64, 0)    // Creates slice for coords of one line
+
+	for m := range mpolyg1 {
+		for p := range mpolyg1[m] {
+			for i := range mpolyg1[m][p] {
+				lineY, lineX := GetFourDimArrayCoordinates(feature1, m, p, i)
+				mline1Coords = append(mline1Coords, []float64{lineY, lineX})
+			}
+			mpolyg1Coords = append(mpolyg1Coords, mline1Coords)
+			mline1Coords = nil // empty slice
+
+		}
+	}
+
+	for m := range mpolyg2 {
+		for p := range mpolyg2[m] {
+			for i := range mpolyg2[m][p] {
+				lineY, lineX := GetFourDimArrayCoordinates(feature2, m, p, i)
+				mline2Coords = append(mline2Coords, []float64{lineY, lineX})
+			}
+			mpolyg2Coords = append(mpolyg2Coords, mline2Coords)
+			mline2Coords = nil // empty slice
+		}
+	}
+
+	var pip bool
+	// Test if any point of the firs MultiPolygon is inside of the second MultiPolygon
+
+	for i := range mpolyg1Coords {
+		for j := range mpolyg1Coords[i] {
+			y, x := mpolyg1Coords[i][j][0], mpolyg1Coords[i][j][1]
+
+			for m := range mpolyg2 {
+				pip = PIPJordanCurveTheorem(y, x, mpolyg2[m])
+				if pip == true {
+					break
+				}
+			}
+		}
+	}
+	if pip == true {
+		distance = 0
+	} else {
+
+		for i := range mpolyg2Coords {
+			for j := range mpolyg2Coords[i] {
+				y, x := mpolyg2Coords[i][j][0], mpolyg2Coords[i][j][1]
+
+				for m := range mpolyg1 {
+					pip = PIPJordanCurveTheorem(y, x, mpolyg1[m])
+					if pip == true {
+						break
+					}
+				}
+			}
+		}
+
+		if pip == true {
+			distance = 0
+
+		} else {
+
+			for m1 := range mpolyg1 {
+				for p1 := range mpolyg1[m1] {
+					for i := 0; i < len(mpolyg1[m1][p1])-1; i++ {
+						y1P1, x1P1 := mpolyg1[m1][p1][i][0], mpolyg1[m1][p1][i][1]
+						y2P1, x2P1 := mpolyg1[m1][p1][i+1][0], mpolyg1[m1][p1][i+1][1]
+
+						for m2 := range mpolyg2 {
+							for p2 := range mpolyg2[m2] {
+								for j := 0; j < len(mpolyg2[m2][p2])-1; j++ {
+
+									y1P2, x1P2 := mpolyg2[m2][p2][j][0], mpolyg2[m2][p2][j][1]
+									y2P2, x2P2 := mpolyg2[m2][p2][j+1][0], mpolyg2[m2][p2][j+1][1]
+
+									distarr = append(distarr, DistanceLineLine(y1P1, x1P1, y2P1, x2P1, y1P2, x1P2, y2P2, x2P2))
+
+								}
+							}
+						}
+
+					}
+
+				}
+			}
+			distance = MinDistance(distarr)
+		}
+
+	}
 	return distance
 }
