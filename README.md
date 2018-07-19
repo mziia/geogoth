@@ -51,3 +51,72 @@ distance := geogoth.Distance(feature2, feature1)
 
 ```
 
+You can transfer to Distance() any kind of geometry (Point, MultiPoint, LineString, Polygon etc):
+
+
+```go
+
+	mu := geogoth.NewMultiPolygon([][][][]float64{
+
+		[][][]float64{
+			[][]float64{
+
+				[]float64{37.55744934082031, 55.76189525593947},
+				[]float64{37.56088256835937, 55.76150892439349},
+				[]float64{37.596588134765625, 55.74373353535969},
+				[]float64{37.58354187011719, 55.78622642787003},
+				[]float64{37.55744934082031, 55.76189525593947},
+			}},
+
+		[][][]float64{
+			[][]float64{
+
+				[]float64{37.63298034667969, 55.789121984291626},
+				[]float64{37.61821746826172, 55.77135918323877},
+				[]float64{37.68241882324219, 55.773097205876766},
+				[]float64{37.677955627441406, 55.82404473410693},
+				[]float64{37.63298034667969, 55.789121984291626}}}})
+
+	feature34 := geogoth.NewFeature()
+	feature34.SetProperty("MPolyg", "[][][]")
+	feature34.SetID("00034")
+	feature34.SetGeometry(mu)
+
+
+
+
+
+
+mu37 := geogoth.NewMultiPolygon([][][][]float64{
+
+		[][][]float64{
+			[][]float64{
+
+				[]float64{37.62542724609375, 55.70409619139846},
+				[]float64{37.680015563964844, 55.70312892423751},
+				[]float64{37.68241882324219, 55.74605252374095},
+				[]float64{37.62542724609375, 55.70409619139846},
+			}},
+
+		[][][]float64{
+			[][]float64{
+
+				[]float64{37.513160705566406, 55.82250184886082},
+				[]float64{37.540283203125, 55.80205284218845},
+				[]float64{37.60379791259765, 55.81652259056771},
+				[]float64{37.58422851562499, 55.840434111266205},
+				[]float64{37.513160705566406, 55.82250184886082}}}})
+
+	feature37 := geogoth.NewFeature()
+	feature37.SetProperty("MPolyg", "[][][]")
+	feature37.SetID("00037")
+	feature37.SetGeometry(mu37)
+
+	fmt.Println("Distance MultiPolygon -  MultiPolygon ( feature37, feature34 ):  ", geogoth.Distance(feature37, feature34))
+
+```
+
+
+
+
+
