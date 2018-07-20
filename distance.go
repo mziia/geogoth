@@ -1,6 +1,6 @@
 package geogoth
 
-// Distance retern between teo given geo objects
+// Distance retern between two given geo objects
 func Distance(feature1, feature2 *Feature) float64 {
 	// long = longitude = 37... (долгота Y)
 	// lat = latitude = 55.... (широта X)

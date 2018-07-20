@@ -1,14 +1,14 @@
-package main
+package examples
 
 import (
 	"encoding/json"
 	"fmt"
 
-	geogoth "github.com/mziia/geogoth"
+	"github.com/mziia/geogoth"
 )
 
-func main() {
-
+// CreateCollection creates collection and features, adds features to the collection
+func CreateCollection() {
 	collection := geogoth.NewFeatureCollection() // GeoJson
 
 	point := geogoth.NewPoint([]float64{125.6, 10.1}) // Point
@@ -35,5 +35,4 @@ func main() {
 
 	fmt.Println(geogoth.GetGeoType(feature1))
 	fmt.Println(string(geogoth.GetGeoType(collection.Features[1])))
-
 }
