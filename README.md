@@ -51,43 +51,11 @@ func main() {
 	fmt.Println("Distance between Points (feature2 - feature1): ", geogoth.Distance(feature2, feature1))
 
 }
-
 ```
-package main
-
-import (
-	"fmt"
-
-	"github.com/mziia/geogoth"
-)
-
-func main() {
-	collection := geogoth.NewFeatureCollection()
-
-	point1 := geogoth.NewPoint([]float64{37.6175, 55.752})  // lon, lat
-	point2 := geogoth.NewPoint([]float64{37.6048, 55.7649}) // y, x
-
-	feature1 := geogoth.NewFeature()
-	feature1.SetProperty("локация", "Кремль")
-	feature1.SetID("0001")
-	feature1.SetGeometry(point1)
-
-	feature2 := geogoth.NewFeature()
-	feature2.SetProperty("локация", "Тверская")
-	feature2.SetID("0002")
-	feature2.SetGeometry(point2)
-
-	collection.AddFeature(feature1)
-	collection.AddFeature(feature2)
-
-	// The order of parameters' transfer does not matter
-	fmt.Println("Distance between Points (feature1 - feature2): ", geogoth.Distance(feature1, feature2))
-	fmt.Println("Distance between Points (feature2 - feature1): ", geogoth.Distance(feature2, feature1))
-
-}
 
 ```sh
-
+Distance between Points (feature1 - feature2):  1639.8005076177767
+Distance between Points (feature2 - feature1):  1639.8005076177767
 
 ```
 
