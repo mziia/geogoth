@@ -64,7 +64,16 @@ You can transfer to Distance() any kind of geometry (Point, MultiPoint, LineStri
 
 ```go
 
-	mu := geogoth.NewMultiPolygon([][][][]float64{
+package main
+
+import (
+	"fmt"
+
+	"github.com/mziia/geogoth"
+)
+
+func main() {
+	mu1 := geogoth.NewMultiPolygon([][][][]float64{
 
 		[][][]float64{
 			[][]float64{
@@ -85,17 +94,12 @@ You can transfer to Distance() any kind of geometry (Point, MultiPoint, LineStri
 				[]float64{37.677955627441406, 55.82404473410693},
 				[]float64{37.63298034667969, 55.789121984291626}}}})
 
-	feature34 := geogoth.NewFeature()
-	feature34.SetProperty("MPolyg", "[][][]")
-	feature34.SetID("00034")
-	feature34.SetGeometry(mu)
+	feature1 := geogoth.NewFeature()
+	feature1.SetProperty("MPolyg", "[][][]")
+	feature1.SetID("0001")
+	feature1.SetGeometry(mu1)
 
-
-
-
-
-
-mu37 := geogoth.NewMultiPolygon([][][][]float64{
+	mu2 := geogoth.NewMultiPolygon([][][][]float64{
 
 		[][][]float64{
 			[][]float64{
@@ -115,15 +119,23 @@ mu37 := geogoth.NewMultiPolygon([][][][]float64{
 				[]float64{37.58422851562499, 55.840434111266205},
 				[]float64{37.513160705566406, 55.82250184886082}}}})
 
-	feature37 := geogoth.NewFeature()
-	feature37.SetProperty("MPolyg", "[][][]")
-	feature37.SetID("00037")
-	feature37.SetGeometry(mu37)
+	feature2 := geogoth.NewFeature()
+	feature2.SetProperty("MPolyg", "[][][]")
+	feature2.SetID("0002")
+	feature2.SetGeometry(mu2)
 
-	fmt.Println("Distance MultiPolygon -  MultiPolygon ( feature37, feature34 ):  ", geogoth.Distance(feature37, feature34))
+	fmt.Println("Distance MultiPolygon -  MultiPolygon ( feature1, feature2 ):  ", geogoth.Distance(feature1, feature2))
+
+}
 
 ```
 
+```sh
+
+Distance MultiPolygon -  MultiPolygon ( feature1, feature2 ):   2647.108678983299
+
+
+```
 
 
 
