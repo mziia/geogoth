@@ -6,7 +6,7 @@
 ## Contents
 - [Installation](#installation)
 - [Quick start](#quick-start)
-    - [Creating FeatureCollection](#creating-featureCollection)
+    - [Creating FeatureCollection](#creating-featurecollection)
     - [Distance](#distance)
     - [Length](#length)
     
