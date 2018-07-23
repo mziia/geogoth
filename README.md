@@ -6,6 +6,11 @@
 ## Contents
 - [Installation](#installation)
 - [Quick start](#quick-start)
+    - [Creating FeatureCollection](#creating-featureCollection)
+    - [Distance](#distance)
+    - [Length](#length)
+    
+    
 
 
 
@@ -24,6 +29,7 @@ import "github.com/mziia/geogoth"
 
 ## Quick start
 
+### Creating FeatureCollection
 ```go
 package main
 
@@ -64,6 +70,7 @@ Distance between Points (feature1 - feature2):  1639.8005076177767
 Distance between Points (feature2 - feature1):  1639.8005076177767
 
 ```
+### Distance
 
 You can transfer to Distance() any kind of geometry (Point, MultiPoint, LineString, Polygon etc):
 
@@ -143,6 +150,13 @@ Distance MultiPolygon -  MultiPolygon ( feature1, feature2 ):   2647.10867898329
 
 ```
 
+### Length
+
+```go
+
+feature1.Length()
+
+```
 
 
 
