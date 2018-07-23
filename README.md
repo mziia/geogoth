@@ -152,6 +152,8 @@ Distance MultiPolygon -  MultiPolygon ( feature1, feature2 ):   2647.10867898329
 
 ### Length
 
+Method works for LineString, MultiLineString, Polygon, MultiPolygon:  
+
 ```go
 
 feature1.Length()
