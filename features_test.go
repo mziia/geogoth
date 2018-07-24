@@ -8,6 +8,30 @@ import (
 
 func TestNewFeatureCollection(t *testing.T) {
 	assert := assert.New(t)
+	collection := NewFeatureCollection()
+
+	assert.True(collection.Type == "FeatureCollection")
+
+}
+
+func TestNewNewFeature(t *testing.T) {
+	assert := assert.New(t)
+
+	point1 := NewPoint([]float64{37.6175, 55.752})
+
+	feature1 := NewFeature()
+	feature1.SetProperty("локация", "Кремль")
+	feature1.SetID("0001")
+	feature1.SetGeometry(point1)
+
+	f1 := (feature1.Geom.Coordinates).([]float64)
+	assert.True(f1[0] == 37.6175)
+	assert.True(f1[1] == 55.752)
+
+}
+
+func TestAddFeature(t *testing.T) {
+	assert := assert.New(t)
 
 	collection := NewFeatureCollection()
 
@@ -31,8 +55,63 @@ func TestNewFeatureCollection(t *testing.T) {
 	assert.True(len(collection.Features) == 2)
 	assert.False(len(collection.Features) == 8)
 
-	f1 := (feature1.Geom.Coordinates).([]float64)
-	assert.True(f1[0] == 37.6175)
-	assert.True(f1[1] == 55.752)
+}
+
+func TestSetProperty(t *testing.T) {
+	assert := assert.New(t)
+
+	point := NewPoint([]float64{37.6175, 55.752})
+
+	feature := NewFeature()
+	feature.SetProperty("локация", "Кремль")
+	feature.SetID("0000")
+	feature.SetGeometry(point)
+
+	assert.True(feature.Properties["локация"] == "Кремль")
+	assert.False(feature.Properties["локация"] == "Не_Кремль")
+
+}
+
+func TestSetID(t *testing.T) {
+	assert := assert.New(t)
+
+	point := NewPoint([]float64{37.6175, 55.752})
+
+	feature := NewFeature()
+	feature.SetProperty("локация", "Кремль")
+	feature.SetID("0000")
+	feature.SetGeometry(point)
+
+	assert.True(feature.ID == "0000")
+	assert.False(feature.ID == "8888")
+}
+
+func TestSetGeometry(t *testing.T) {
+	assert := assert.New(t)
+
+	point := NewPoint([]float64{37.6175, 55.752})
+
+	feature := NewFeature()
+	feature.SetProperty("локация", "Кремль")
+	feature.SetID("000")
+	feature.SetGeometry(point)
+
+	f := (feature.Geom.Coordinates).([]float64)
+	assert.True(f[0] == 37.6175)
+	assert.True(f[1] == 55.752)
+
+}
+
+func TestGetGeoType(t *testing.T) {
+	assert := assert.New(t)
+	point := NewPoint([]float64{37.6175, 55.752})
+
+	feature := NewFeature()
+	feature.SetProperty("локация", "Кремль")
+	feature.SetID("000")
+	feature.SetGeometry(point)
+
+	assert.True(feature.Geom.Type == "Point")
+	assert.False(feature.Geom.Type == "Polygon")
 
 }
