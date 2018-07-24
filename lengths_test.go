@@ -21,7 +21,7 @@ func TestLineStringLength(t *testing.T) {
 	})
 
 	feature := geogoth.NewFeature()
-	feature.SetProperty("Лайнстринг", "Йеп")
+	feature.SetProperty("LineStr", "[][]")
 	feature.SetID("ftr")
 	feature.SetGeometry(linestr)
 
@@ -46,7 +46,7 @@ func TestMultiLineStringLength(t *testing.T) {
 			[]float64{37.62989044189453, 55.74503798328292}}})
 
 	feature := geogoth.NewFeature()
-	feature.SetProperty("МультиЛайнСтринг", "Йеп")
+	feature.SetProperty("MLineStr", "[][][]")
 	feature.SetID("ftr")
 	feature.SetGeometry(multLine)
 
@@ -75,7 +75,7 @@ func TestPolygonLength(t *testing.T) {
 			[]float64{37.53822326660156, 55.76884856927786}}})
 
 	feature := geogoth.NewFeature()
-	feature.SetProperty("Полигон", "[][][]")
+	feature.SetProperty("Polyg", "[][][]")
 	feature.SetID("ftr")
 	feature.SetGeometry(polyg)
 
@@ -112,7 +112,7 @@ func TestMultipolygonLength(t *testing.T) {
 				[]float64{37.57427215576172, 55.74856460562653}}}})
 
 	feature := geogoth.NewFeature()
-	feature.SetProperty("Полигон", "[][][]")
+	feature.SetProperty("Polyg", "[][][]")
 	feature.SetID("ftr")
 	feature.SetGeometry(multipol)
 
