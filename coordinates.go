@@ -29,6 +29,14 @@ func NewMultiPoint(coordinates [][]float64) *Geometry {
 	}
 }
 
+// NewLineString create NewLineString with given coordinates
+func NewLineString(coordinates [][]float64) *Geometry {
+	return &Geometry{
+		Type:        LineString,
+		Coordinates: coordinates,
+	}
+}
+
 // GetTwoDimArrayCoordinates returns array of longitude, latitude of Two-dimensional arrays (MultiPoint, Linestring)
 // coordnum - index of coordinate arr
 func GetTwoDimArrayCoordinates(feature *Feature, coordnum int) (float64, float64) {
@@ -38,36 +46,6 @@ func GetTwoDimArrayCoordinates(feature *Feature, coordnum int) (float64, float64
 	lat := coords[coordnum][1]
 
 	return lon, lat // longitude (Y), latitude (X)
-}
-
-// GetThreeDimArrayCoordinates returns array of longitude, latitude of Three-dimensional arrays (MultiLineString, Polygon)
-// coordnum - index of coordinate arr
-func GetThreeDimArrayCoordinates(feature *Feature, setnum, coordnum int) (float64, float64) {
-	coords := (feature.Geom.Coordinates).([][][]float64)
-
-	lon := coords[setnum][coordnum][0]
-	lat := coords[setnum][coordnum][1]
-
-	return lon, lat // longitude (Y), latitude (X)
-}
-
-// GetFourDimArrayCoordinates returns array of longitude, latitude of Three-dimensional arrays (MultiLineString, Polygon)
-// coordnum - index of coordinate arr
-func GetFourDimArrayCoordinates(feature *Feature, setsnum, setnum, coordnum int) (float64, float64) {
-	coords := (feature.Geom.Coordinates).([][][][]float64)
-
-	lon := coords[setsnum][setnum][coordnum][0]
-	lat := coords[setsnum][setnum][coordnum][1]
-
-	return lon, lat // longitude (Y), latitude (X)
-}
-
-// NewLineString create NewLineString with given coordinates
-func NewLineString(coordinates [][]float64) *Geometry {
-	return &Geometry{
-		Type:        LineString,
-		Coordinates: coordinates,
-	}
 }
 
 // NewMultiLineString create NewMultiLineString with given coordinates
@@ -86,10 +64,32 @@ func NewPolygon(polygon [][][]float64) *Geometry {
 	}
 }
 
+// GetThreeDimArrayCoordinates returns array of longitude, latitude of Three-dimensional arrays (MultiLineString, Polygon)
+// coordnum - index of coordinate arr
+func GetThreeDimArrayCoordinates(feature *Feature, setnum, coordnum int) (float64, float64) {
+	coords := (feature.Geom.Coordinates).([][][]float64)
+
+	lon := coords[setnum][coordnum][0]
+	lat := coords[setnum][coordnum][1]
+
+	return lon, lat // longitude (Y), latitude (X)
+}
+
 // NewMultiPolygon create NewMultiPolygon with given coordinates
 func NewMultiPolygon(polygons [][][][]float64) *Geometry {
 	return &Geometry{
 		Type:        MultiPolygon,
 		Coordinates: polygons,
 	}
+}
+
+// GetFourDimArrayCoordinates returns array of longitude, latitude of Three-dimensional arrays (MultiLineString, Polygon)
+// coordnum - index of coordinate arr
+func GetFourDimArrayCoordinates(feature *Feature, setsnum, setnum, coordnum int) (float64, float64) {
+	coords := (feature.Geom.Coordinates).([][][][]float64)
+
+	lon := coords[setsnum][setnum][coordnum][0]
+	lat := coords[setsnum][setnum][coordnum][1]
+
+	return lon, lat // longitude (Y), latitude (X)
 }

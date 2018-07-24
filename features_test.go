@@ -17,16 +17,16 @@ func TestNewFeatureCollection(t *testing.T) {
 func TestNewNewFeature(t *testing.T) {
 	assert := assert.New(t)
 
-	point1 := NewPoint([]float64{37.6175, 55.752})
+	point := NewPoint([]float64{37.6175, 55.752})
 
-	feature1 := NewFeature()
-	feature1.SetProperty("локация", "Кремль")
-	feature1.SetID("0001")
-	feature1.SetGeometry(point1)
+	feature := NewFeature()
+	feature.SetProperty("локация", "Кремль")
+	feature.SetID("000")
+	feature.SetGeometry(point)
 
-	f1 := (feature1.Geom.Coordinates).([]float64)
-	assert.True(f1[0] == 37.6175)
-	assert.True(f1[1] == 55.752)
+	f := (feature.Geom.Coordinates).([]float64)
+	assert.True(f[0] == 37.6175)
+	assert.True(f[1] == 55.752)
 
 }
 
