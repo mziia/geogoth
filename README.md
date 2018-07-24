@@ -3,12 +3,27 @@
 > GeoGoth is a package for creating geojson using golang language  <img src="https://user-images.githubusercontent.com/24193681/41141904-75a44f22-6afc-11e8-83c0-5ee152d600e3.png" width="250" align="right"> 
 
 
+## Contents
+- [Installation](#installation)
+- [Quick start](#quick-start)
+    - [Creating FeatureCollection](#creating-featurecollection)
+    - [Distance](#distance)
+    - [Length](#length)
+    
+    
 
-## Installation and Usage 
+
+
+
+## Installation 
 
 Download and install:
 ```sh
 $ go get github.com/mziia/geogoth
+```
+Update: 
+```sh
+$ go get -u github.com/mziia/geogoth
 ```
 
 Import: 
@@ -18,6 +33,7 @@ import "github.com/mziia/geogoth"
 
 ## Quick start
 
+### Creating FeatureCollection
 ```go
 package main
 
@@ -58,6 +74,7 @@ Distance between Points (feature1 - feature2):  1639.8005076177767
 Distance between Points (feature2 - feature1):  1639.8005076177767
 
 ```
+### Distance
 
 You can transfer to Distance() any kind of geometry (Point, MultiPoint, LineString, Polygon etc):
 
@@ -137,6 +154,51 @@ Distance MultiPolygon -  MultiPolygon ( feature1, feature2 ):   2647.10867898329
 
 ```
 
+### Length
+
+Method works for LineString, MultiLineString, Polygon, MultiPolygon:  
+
+```go
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/mziia/geogoth"
+)
+
+func main() {
+	linestr := geogoth.NewLineString([][]float64{
+		[]float64{37.566375732421875, 55.761702090644896},
+		[]float64{37.58800506591796, 55.74856460562653},
+		[]float64{37.58491516113281, 55.72981671057788},
+		[]float64{37.596588134765625, 55.72169627105833},
+		[]float64{37.595901489257805, 55.7114466394498},
+		[]float64{37.59727478027344, 55.70796502063464},
+		[]float64{37.61272430419922, 55.70100085220915},
+	})
+
+	feature := geogoth.NewFeature()
+	feature.SetProperty("Лайнстринг", "Йеп")
+	feature.SetID("ftr")
+	feature.SetGeometry(linestr)
+
+	lengths := geogoth.LineStringLength(feature)
+	length := feature.Length()
+
+	fmt.Println("Length of Linestring: ", lengths)
+	fmt.Println("Length of Linestring: ", length)
+
+}
+```
+```sh
+
+Length of Linestring:  8023.4822342726075
+Length of Linestring:  8023.4822342726075
+
+
+```
 
 
 
