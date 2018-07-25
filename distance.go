@@ -21,11 +21,11 @@ func Distance(feature1, feature2 *Feature) float64 {
 		case "LineString": // Point & LineString
 			distance = DistancePointLinstring(feature1, feature2)
 		case "MultiLineString": // Point & MultiLineString
-			distance = DistancePointLinstring(feature1, feature2)
+			distance = DistancePointMultiLineString(feature1, feature2)
 		case "Polygon": // Point & Polygon
 			distance = DistancePointPolygon(feature1, feature2)
 		case "MultiPolygon": // Point & MultiPolygon
-			distance = DistancePointPolygon(feature1, feature2)
+			distance = DistancePointMultiPolygon(feature1, feature2)
 
 		}
 
@@ -75,7 +75,7 @@ func Distance(feature1, feature2 *Feature) float64 {
 		switch GetGeoType(feature2) {
 
 		case "Point": // MultiLineString & Point
-			distance = DistancePointLinstring(feature2, feature1)
+			distance = DistancePointMultiLineString(feature2, feature1)
 		case "MultiPoint": // MultiLineString & MultiPoint
 			distance = DistanceMultiPointMultiLinestring(feature2, feature1)
 		case "LineString": // MultiLineString & LineString
@@ -114,7 +114,7 @@ func Distance(feature1, feature2 *Feature) float64 {
 		switch GetGeoType(feature2) {
 
 		case "Point": // MultiPolygon & Point
-			distance = DistancePointPolygon(feature2, feature1)
+			distance = DistancePointMultiPolygon(feature2, feature1)
 		case "MultiPoint": // MultiPolygon & MultiPoint
 			distance = DistanceMultiPointMultiPolygon(feature2, feature1)
 		case "LineString": // MultiPolygon & LineString
