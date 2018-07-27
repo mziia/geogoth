@@ -10,6 +10,13 @@ func TestLength(t *testing.T) {
 
 	assert := assert.New(t)
 
+	ftr := &Ftrs
+	CreateFtr1() // Point
+	assert.True(ftr.Feature1.Length() == 0)
+
+	CreateFtr3() // MultiPoint
+	assert.True(ftr.Feature3.Length() == 0)
+
 	linestr := NewLineString([][]float64{
 		[]float64{37.566375732421875, 55.761702090644896},
 		[]float64{37.58800506591796, 55.74856460562653},

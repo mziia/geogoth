@@ -6,13 +6,17 @@ func (feature *Feature) Length() float64 {
 
 	switch GetGeoType(feature) {
 
-	case "LineString": // Point & LineString
+	case "Point": //  Point length
+		length = 0
+	case "MultiPoint": //  Point length
+		length = 0
+	case "LineString": //  LineString length
 		length = LineStringLength(feature)
-	case "MultiLineString": // Point & MultiLineString
+	case "MultiLineString": // MultiLineString length
 		length = MultiLineStringLength(feature)
-	case "Polygon": // Point & Polygon
+	case "Polygon": // Polygon length
 		length = PolygonLength(feature)
-	case "MultiPolygon": // Point & MultiPolygon
+	case "MultiPolygon": // MultiPolygon length
 		length = MultipolygonLength(feature)
 	}
 
