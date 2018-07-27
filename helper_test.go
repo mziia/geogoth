@@ -280,7 +280,10 @@ func TestLineLineIntersection(t *testing.T) {
 
 }
 
-// func TestDistanceLineLine(t *testing.T) {
+func TestDistanceLineLine(t *testing.T) {
 
-// 	assert := assert.New(t)
-// }
+	assert := assert.New(t)
+
+	assert.True(DistanceLineLine(37.58422851562499, 55.840434111266205, 37.513160705566406, 55.82250184886082, 37.677955627441406, 55.82404473410693, 37.63298034667969, 55.789121984291626) == 5810.770008570808)
+
+}
