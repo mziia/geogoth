@@ -34,35 +34,6 @@ func Bearing(latA, lonA, latB, lonB float64) float64 {
 
 }
 
-// PointInPolygonEvenOdd returns true if point(feature1) is inside of the polygon(feature2)
-// returns false if point(feature1) is outside of the polygon(feature2)
-//  Using Even–odd rule algorithm: https://en.wikipedia.org/wiki/Even%E2%80%93odd_rule
-func PointInPolygonEvenOdd(feature1, feature2 *Feature) bool {
-
-	intersects := false
-
-	polygon := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
-	y, x := GetPointCoordinates(feature1)
-
-	j := len(polygon) - 1
-
-	for p := range polygon {
-		pol := polygon[p]
-		for i := range pol {
-
-			if ((pol[i][0] > y) != (pol[j][0] > y)) &&
-				(x < pol[i][1]+(pol[j][1]-pol[i][1])*(y-pol[i][0])/(pol[j][0]-pol[i][0])) {
-				intersects = true
-			}
-			j = i
-		}
-
-	}
-
-	return intersects
-
-}
-
 // PIPJordanCurveTheorem returns true if point(feature1) is inside of the polygon(feature2)
 // returns false if point(feature1) is outside of the polygon(feature2)
 // C/C++ algorithm implementation:  https://sidvind.com/wiki/Point-in-polygon:_Jordan_Curve_Theorem

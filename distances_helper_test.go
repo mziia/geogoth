@@ -27,13 +27,13 @@ func TestBearing(t *testing.T) {
 	assert.True(Bearing(0.9733938460598921, 0.6565617535524124, 0.9745994309845489, 0.6559685344195972) == 6.0136365913744)
 }
 
-// func TestPointInPolygonEvenOdd(t *testing.T) {
+// func TestPIPJordanCurveTheorem(t *testing.T) {
 
 // 	assert := assert.New(t)
 
 // }
 
-func TestPointInPolygonWindingNum(t *testing.T) {
+func TestPointInPolygon(t *testing.T) {
 
 	assert := assert.New(t)
 
@@ -216,29 +216,6 @@ func TestPointInPolygonWindingNum(t *testing.T) {
 	assert.True(PointInPolygon(feature017, feature) == false)
 
 }
-
-// func TestIsLeft(t *testing.T) {
-
-// 	assert := assert.New(t)
-// }
-
-// func TestTestTest(t *testing.T) {
-
-// 	assert := assert.New(t)
-
-// }
-
-// func TestPIPJordanCurveTheorem(t *testing.T) {
-
-// 	assert := assert.New(t)
-
-// }
-
-// func TestPointInPolygon(t *testing.T) {
-
-// 	assert := assert.New(t)
-
-// }
 
 // func TestLineLineIntersection(t *testing.T) {
 
