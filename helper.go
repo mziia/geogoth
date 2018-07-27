@@ -1,6 +1,7 @@
 package geogoth
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -109,6 +110,7 @@ func PointInPolygon(feature1, feature2 *Feature) bool {
 // Algorithm from https://ideone.com/PnPJgb
 func LineLineIntersection(yA, xA, yB, xB, yC, xC, yD, xD float64) bool {
 
+	fmt.Println("yA, xA, yB, xB, yC, xC, yD, xD: ", yA, xA, yB, xB, yC, xC, yD, xD)
 	yCmP, xCmP := yC-yA, xC-xA
 	yr, xr := yB-yA, xB-xA
 	ys, xs := yD-yC, xD-xC
@@ -120,15 +122,19 @@ func LineLineIntersection(yA, xA, yB, xB, yC, xC, yD, xD float64) bool {
 	if cmpXr == 0 {
 		// Lines are collinear, and so intersect if they have any overlap
 		return ((xC-xA < 0) != (xC-xB < 0)) || ((yC-yA < 0) != (yC-yB < 0))
+		fmt.Println("((xC-xA < 0) != (xC-xB < 0)) || ((yC-yA < 0) != (yC-yB < 0)): ", ((xC-xA < 0) != (xC-xB < 0)) || ((yC-yA < 0) != (yC-yB < 0)))
+
 	}
 
 	if rXs == 0 {
+		fmt.Println("rxs==0", false)
 		return false // Lines are parallel
 	}
 
 	rXsr := 1 / rXs
 	t := cmpXs * rXsr
 	u := cmpXr * rXsr
+	fmt.Println(" (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1): ", (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1))
 
 	return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)
 }

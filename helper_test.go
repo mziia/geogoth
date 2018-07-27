@@ -271,10 +271,15 @@ func TestPointInPolygon(t *testing.T) {
 
 }
 
-// func TestLineLineIntersection(t *testing.T) {
+func TestLineLineIntersection(t *testing.T) {
 
-// 	assert := assert.New(t)
-// }
+	assert := assert.New(t)
+
+	assert.True(LineLineIntersection(37.62036323547363, 55.75223581897627, 37.625813484191895, 55.751366352300806, 37.62409687042236, 55.754989002265646, 37.6255989074707, 55.74665640434626) == true)
+	assert.True(LineLineIntersection(37.62036323547363, 55.75223581897627, 37.625813484191895, 55.751366352300806, 37.626585960388184, 55.75218751578049, 37.62401103973388, 55.74465148474084) == false)
+
+}
+
 // func TestDistanceLineLine(t *testing.T) {
 
 // 	assert := assert.New(t)
