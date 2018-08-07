@@ -128,35 +128,37 @@ func DistancePointLinstring(point Point, linestr LineString) float64 {
 
 }
 
-// // DistancePointMultiLineString finds the smallest distance between Point and MultiLineString
-// func DistancePointMultiLineString(feature1, feature2 *Feature) float64 {
-// 	var distance float64
-// 	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
-// 	distarr := make([]float64, 0)                   // Creates slice for distances between Point and edges of MultiLineString
+// DistancePointMultiLineString finds the smallest distance between Point and MultiLineString
+func DistancePointMultiLineString(point Point, mlinestr MultiLineString) float64 {
+	var distance float64
 
-// 	coords := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
+	pcoord := (point.GetCoordinates()).([]float64)
+	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
+	distarr := make([]float64, 0)          // Creates slice for distances between Point and edges of MultiLineString
 
-// 	for i := range coords {
-// 		for j := range coords[i] {
-// 			if j > 0 {
-// 				lineY0, lineX0 := GetThreeDimArrayCoordinates(feature2, i, j)   // Coordinates of LineString
-// 				lineY1, lineX1 := GetThreeDimArrayCoordinates(feature2, i, j-1) // Coordinates of LineString
+	coords := (mlinestr.GetCoordinates()).([][][]float64) // Convert interface to [][][]float64
 
-// 				distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
-// 			}
-// 		}
-// 	}
+	for i := range coords {
+		for j := range coords[i] {
+			if j > 0 {
+				lineY0, lineX0 := coords[i][j][0], coords[i][j][1]     // Coordinates of LineString
+				lineY1, lineX1 := coords[i][j-1][0], coords[i][j-1][1] // Coordinates of LineString
 
-// 	if len(distarr) == 1 { // if distarr array has only 1 smallest distance (line cocnsists of 2 points)
-// 		distance = distarr[0] // the only distance is the distance between point and line
-// 	} else { // if distarr has more than 2 points
+				distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
+			}
+		}
+	}
 
-// 		distance = MinDistance(distarr)
-// 	}
+	if len(distarr) == 1 { // if distarr array has only 1 smallest distance (line cocnsists of 2 points)
+		distance = distarr[0] // the only distance is the distance between point and line
+	} else { // if distarr has more than 2 points
 
-// 	return distance
+		distance = MinDistance(distarr)
+	}
 
-// }
+	return distance
+
+}
 
 // // DistancePointPolygon finds the smallest distance between Point and Polygon
 // func DistancePointPolygon(feature1, feature2 *Feature) float64 {
