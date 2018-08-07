@@ -21,36 +21,36 @@ func LineStringLength(linestr LineString) float64 {
 	return length
 }
 
-// // MultiLineStringLength counts lenght of MultiLineString
-// func MultiLineStringLength(feature *Feature) float64 {
-// 	var length float64
+// MultiLineStringLength counts lenght of MultiLineString
+func MultiLineStringLength(mlineStr MultiLineString) float64 {
+	var length float64
 
-// 	lineCoords := make([][]float64, 0)                        // Creates slice for coords of one line
-// 	mlineCoords := make([][][]float64, 0)                     // Creates slice for coords of the MultiLineString
-// 	multlinestr := (feature.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
+	lineCoords := make([][]float64, 0)    // Creates slice for coords of one line
+	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
+	multlinestr := (mlineStr.Coords)      // Convert interface to [][][]float64
 
-// 	for i := range multlinestr { // Finds coords of the MultiLineString
-// 		for j := range multlinestr[i] {
-// 			y, x := GetThreeDimArrayCoordinates(feature, i, j)
-// 			lineCoords = append(lineCoords, []float64{y, x})
-// 		}
-// 		mlineCoords = append(mlineCoords, lineCoords)
-// 		lineCoords = nil // empty slice
+	for i := range multlinestr { // Finds coords of the MultiLineString
+		for j := range multlinestr[i] {
+			y, x := multlinestr[i][j][0], multlinestr[i][j][1]
+			lineCoords = append(lineCoords, []float64{y, x})
+		}
+		mlineCoords = append(mlineCoords, lineCoords)
+		lineCoords = nil // empty slice
 
-// 	}
+	}
 
-// 	for i := range mlineCoords {
+	for i := range mlineCoords {
 
-// 		for j := 0; j < len(mlineCoords[i])-1; j++ {
+		for j := 0; j < len(mlineCoords[i])-1; j++ {
 
-// 			lengthTmp := DistancePointPointDeg(mlineCoords[i][j][0], mlineCoords[i][j][1], mlineCoords[i][j+1][0], mlineCoords[i][j+1][1])
-// 			length = length + lengthTmp
-// 		}
+			lengthTmp := DistancePointPointDeg(mlineCoords[i][j][0], mlineCoords[i][j][1], mlineCoords[i][j+1][0], mlineCoords[i][j+1][1])
+			length = length + lengthTmp
+		}
 
-// 	}
+	}
 
-// 	return length
-// }
+	return length
+}
 
 // // PolygonLength counts lenght of Polygon
 // func PolygonLength(feature *Feature) float64 {

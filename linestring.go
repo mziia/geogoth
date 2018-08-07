@@ -17,12 +17,12 @@ func (l LineString) GetCoordinates() interface{} {
 	return l.Coords // longitude (Y), latitude (X)
 }
 
-// GetType returns type of the MultiPoint (MultiPoint)
+// GetType returns type of the LineString (LineString)
 func (l LineString) GetType() string {
 	return "LineString"
 }
 
-// GetLength returns length of the MultiPoint
+// GetLength returns length of the LineString
 func (l LineString) GetLength() float64 {
 	return LineStringLength(l)
 }

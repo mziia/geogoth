@@ -6,7 +6,7 @@ var Objects struct {
 	Object2 Point
 	Object3 MultiPoint
 	Object4 LineString
-	// Object5
+	Object5 MultiLineString
 	// Object6
 	// Object7
 	// Object8
@@ -52,5 +52,19 @@ func CreateObj4() {
 	Obj.Object4 = NewLineString([][]float64{
 		[]float64{37.624941407105, 55.738048529295},
 		[]float64{37.570792444518, 55.784581739175}})
+
+}
+
+// CreateObj5 creates MultiLineString
+func CreateObj5() {
+	Obj := &Objects
+	Obj.Object5 = NewMultiLineString([][][]float64{
+		[][]float64{[]float64{37.61911869049072, 55.75634137200424},
+			[]float64{37.626585960388184, 55.75218751578049},
+			[]float64{37.62401103973388, 55.74465148474084}},
+		[][]float64{[]float64{37.614097595214844, 55.7528396038768},
+			[]float64{37.62409687042236, 55.754989002265646},
+			[]float64{37.6255989074707, 55.74665640434626},
+			[]float64{37.62989044189453, 55.74503798328292}}})
 
 }
