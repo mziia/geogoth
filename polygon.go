@@ -33,6 +33,9 @@ func (p Polygon) DistanceTo(f Feature) float64 {
 	var distance float64
 
 	switch f.GetType() {
+	case "Point":
+		point := f.(*Point)
+		distance = DistancePointPolygon(*point, p)
 	}
 
 	return distance

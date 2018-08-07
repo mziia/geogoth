@@ -55,7 +55,7 @@ func TestLengthMLineStr(t *testing.T) {
 
 }
 
-func TestDistanceTo(t *testing.T) {
+func TestDistanceToMLstr(t *testing.T) {
 	assert := assert.New(t)
 
 	mlstr := &Objects.Object5

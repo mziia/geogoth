@@ -56,3 +56,16 @@ func TestLength(t *testing.T) {
 
 	assert.True(polyg.GetLength() == 82890.25104294329)
 }
+
+func TestDistanceToPolygon(t *testing.T) {
+	assert := assert.New(t)
+
+	polyg := &Objects.Object6
+	CreateObj6()
+
+	// Polygon - Point
+	point := &Objects.Object1
+	CreateObj1()
+	assert.True(int(polyg.DistanceTo(point)) == 315)
+
+}
