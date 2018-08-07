@@ -1,5 +1,7 @@
 package geogoth
 
+import "math"
+
 // MinDistance searches for the smallest distance
 func MinDistance(distarr []float64) float64 {
 	distance := distarr[0]
@@ -12,23 +14,23 @@ func MinDistance(distarr []float64) float64 {
 	return distance
 }
 
-// // NegToPosRad converts brng to positive if it's negative
-// func NegToPosRad(rad float64) float64 {
-// 	if rad > 0 {
-// 		return rad
-// 	} else {
-// 		return 2*math.Pi + rad
-// 	}
-// }
+// NegToPosRad converts brng to positive if it's negative
+func NegToPosRad(rad float64) float64 {
+	if rad > 0 {
+		return rad
+	} else {
+		return 2*math.Pi + rad
+	}
+}
 
-// // Bearing Finds the bearing from one lat/lon point to another.
-// func Bearing(latA, lonA, latB, lonB float64) float64 {
+// Bearing Finds the bearing from one lat/lon point to another.
+func Bearing(latA, lonA, latB, lonB float64) float64 {
 
-// 	brng := math.Atan2(math.Sin(lonB-lonA)*math.Cos(latB), math.Cos(latA)*math.Sin(latB)-math.Sin(latA)*math.Cos(latB)*math.Cos(lonB-lonA))
+	brng := math.Atan2(math.Sin(lonB-lonA)*math.Cos(latB), math.Cos(latA)*math.Sin(latB)-math.Sin(latA)*math.Cos(latB)*math.Cos(lonB-lonA))
 
-// 	return NegToPosRad(brng)
+	return NegToPosRad(brng)
 
-// }
+}
 
 // // PIPJordanCurveTheorem returns true if point(feature1) is inside of the polygon(feature2)
 // // returns false if point(feature1) is outside of the polygon(feature2)

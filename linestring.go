@@ -34,7 +34,8 @@ func (l LineString) DistanceTo(f Feature) float64 {
 
 	switch f.GetType() {
 	case "Point":
-
+		point := f.(*Point)
+		distance = DistancePointLinstring(*point, l)
 	}
 
 	return distance

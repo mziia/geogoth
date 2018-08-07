@@ -29,6 +29,15 @@ func TestGetCoordinateslStr(t *testing.T) {
 	assert.True(coords[1][1] == 55.784581739175)
 }
 
+func TestGetTypeLineStr(t *testing.T) {
+	assert := assert.New(t)
+
+	linestr := &Objects.Object4
+	CreateObj4()
+
+	assert.True(linestr.GetType() == "LineString")
+}
+
 func TestNGetLengthLineString(t *testing.T) {
 	assert := assert.New(t)
 
@@ -42,5 +51,19 @@ func TestNGetLengthLineString(t *testing.T) {
 		[]float64{37.61272430419922, 55.70100085220915},
 	})
 	assert.True(linestr.GetLength() == 8023.4822342726075)
+
+}
+
+func TestDistanceToLineStr(t *testing.T) {
+	assert := assert.New(t)
+
+	linestr := &Objects.Object4
+	CreateObj4()
+
+	// LineString - Point
+	point := &Objects.Object1
+	CreateObj1()
+
+	assert.True(int(linestr.DistanceTo(point)) == 459)
 
 }

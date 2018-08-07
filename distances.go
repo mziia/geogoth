@@ -57,73 +57,76 @@ func DistancePointMultipoint(object1 Point, object2 MultiPoint) float64 {
 
 // LineString distance
 
-// // DistancePointLine Calculates the shortest distance between Point and Line in meters
-// func DistancePointLine(plon, plat, lon1, lat1, lon2, lat2 float64) float64 {
+// DistancePointLine Calculates the shortest distance between Point and Line in meters
+func DistancePointLine(plon, plat, lon1, lat1, lon2, lat2 float64) float64 {
 
-// 	lat1 = lat1 * rad // Line
-// 	lat2 = lat2 * rad // Line
-// 	plat = plat * rad // Point
-// 	lon1 = lon1 * rad // Line
-// 	lon2 = lon2 * rad // Line
-// 	plon = plon * rad // Point
+	lat1 = lat1 * rad // Line
+	lat2 = lat2 * rad // Line
+	plat = plat * rad // Point
+	lon1 = lon1 * rad // Line
+	lon2 = lon2 * rad // Line
+	plon = plon * rad // Point
 
-// 	bear12 := Bearing(lat1, lon1, lat2, lon2)
-// 	bear13 := Bearing(lat1, lon1, plat, plon)
-// 	dis13 := DistancePointPointRad(lat1, lon1, plat, plon)
+	bear12 := Bearing(lat1, lon1, lat2, lon2)
+	bear13 := Bearing(lat1, lon1, plat, plon)
+	dis13 := DistancePointPointRad(lat1, lon1, plat, plon)
 
-// 	var dxa float64
-// 	var dxt float64
-// 	var dis12 float64
-// 	var dis14 float64
+	var dxa float64
+	var dxt float64
+	var dis12 float64
+	var dis14 float64
 
-// 	if math.Abs(bear13-bear12) > (math.Pi / 2) {
-// 		dxa = dis13
+	if math.Abs(bear13-bear12) > (math.Pi / 2) {
+		dxa = dis13
 
-// 	} else {
-// 		//  Finds the cross-track distance.
-// 		dxt = math.Asin(math.Sin(dis13/EarthRadius)*math.Sin(bear13-bear12)) * EarthRadius
+	} else {
+		//  Finds the cross-track distance.
+		dxt = math.Asin(math.Sin(dis13/EarthRadius)*math.Sin(bear13-bear12)) * EarthRadius
 
-// 		dis12 = DistancePointPointRad(lat1, lon1, lat2, lon2)
-// 		dis14 = math.Acos(math.Cos(dis13/EarthRadius)/math.Cos(dxt/EarthRadius)) * EarthRadius
-// 		if dis14 > dis12 {
-// 			dxa = DistancePointPointRad(lat2, lon2, plat, plon)
-// 		} else {
-// 			dxa = math.Abs(dxt)
+		dis12 = DistancePointPointRad(lat1, lon1, lat2, lon2)
+		dis14 = math.Acos(math.Cos(dis13/EarthRadius)/math.Cos(dxt/EarthRadius)) * EarthRadius
+		if dis14 > dis12 {
+			dxa = DistancePointPointRad(lat2, lon2, plat, plon)
+		} else {
+			dxa = math.Abs(dxt)
 
-// 		}
-// 	}
+		}
+	}
 
-// 	return dxa
-// }
+	return dxa
+}
 
-// // DistancePointLinstring finds the smallest distance between Point and LineString || MultiLineString
-// func DistancePointLinstring(feature1, feature2 *Feature) float64 {
+// DistancePointLinstring finds the smallest distance between Point and LineString || MultiLineString
+func DistancePointLinstring(point Point, linestr LineString) float64 {
 
-// 	var distance float64
-// 	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
-// 	distarr := make([]float64, 0)                   // Creates slice for distances between Point and edges of LineString
+	var distance float64
 
-// 	coords := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
-// 	for i := range coords {
-// 		if i > 0 {
-// 			lineY0, lineX0 := GetTwoDimArrayCoordinates(feature2, i)   // Coordinates of LineString
-// 			lineY1, lineX1 := GetTwoDimArrayCoordinates(feature2, i-1) // Coordinates of LineString
+	pcoord := (point.GetCoordinates()).([]float64)
+	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
 
-// 			distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
+	distarr := make([]float64, 0) // Creates slice for distances between Point and edges of LineString
 
-// 		}
-// 	}
+	coords := (linestr.GetCoordinates()).([][]float64) // Convert interface to [][]float64
+	for i := range coords {
+		if i > 0 {
+			lineY0, lineX0 := coords[i][0], coords[i][1]     // Coordinates of LineString
+			lineY1, lineX1 := coords[i-1][0], coords[i-1][1] // Coordinates of LineString
 
-// 	if len(distarr) == 1 { // if distarr array has only 1 smallest distance (line cocnsists of 2 points)
-// 		distance = distarr[0] // the only distance is the distance between point and line
-// 	} else { // if distarr has more than 2 points
+			distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
 
-// 		distance = MinDistance(distarr)
-// 	}
+		}
+	}
 
-// 	return distance
+	if len(distarr) == 1 { // if distarr array has only 1 smallest distance (line cocnsists of 2 points)
+		distance = distarr[0] // the only distance is the distance between point and line
+	} else { // if distarr has more than 2 points
 
-// }
+		distance = MinDistance(distarr)
+	}
+
+	return distance
+
+}
 
 // // DistancePointMultiLineString finds the smallest distance between Point and MultiLineString
 // func DistancePointMultiLineString(feature1, feature2 *Feature) float64 {

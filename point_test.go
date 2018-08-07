@@ -67,4 +67,11 @@ func TestDistanceToPoint(t *testing.T) {
 
 	assert.True(int(point1.DistanceTo(mpoint)) == 1619)
 
+	// Point - LineString
+
+	linestr := &Objects.Object4
+	CreateObj4()
+
+	assert.True(int(point1.DistanceTo(linestr)) == 459)
+
 }
