@@ -30,14 +30,12 @@ func DistancePointPointDeg(y1, x1, y2, x2 float64) float64 {
 
 // DistancePointPointRad count distance between two points (radians parameters)
 func DistancePointPointRad(latA, lonA, latB, lonB float64) float64 {
-
 	distance := math.Acos(math.Sin(latA)*math.Sin(latB)+math.Cos(latA)*math.Cos(latB)*math.Cos(lonB-lonA)) * EarthRadius
 	return distance
 }
 
 // DistancePointMultipoint count distance between Point and MultiPoint
 func DistancePointMultipoint(object1 Point, object2 MultiPoint) float64 {
-
 	var distance float64
 
 	pcoord := (object1.GetCoordinates()).([]float64)
@@ -98,7 +96,6 @@ func DistancePointLine(plon, plat, lon1, lat1, lon2, lat2 float64) float64 {
 
 // DistancePointLinstring finds the smallest distance between Point and LineString || MultiLineString
 func DistancePointLinstring(point Point, linestr LineString) float64 {
-
 	var distance float64
 
 	pcoord := (point.GetCoordinates()).([]float64)
@@ -160,33 +157,34 @@ func DistancePointMultiLineString(point Point, mlinestr MultiLineString) float64
 
 }
 
-// // DistancePointPolygon finds the smallest distance between Point and Polygon
-// func DistancePointPolygon(feature1, feature2 *Feature) float64 {
+// DistancePointPolygon finds the smallest distance between Point and Polygon
+func DistancePointPolygon(point Point, polygon Polygon) float64 {
+	var distance float64
 
-// 	var distance float64
-// 	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
-// 	distarr := make([]float64, 0)                   // Creates slice for distances between Point and edges of LineString
+	pcoord := (point.GetCoordinates()).([]float64)
+	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
+	distarr := make([]float64, 0)          // Creates slice for distances between Point and edges of LineString
 
-// 	coords := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
-// 	if PIPJordanCurveTheorem(pointY, pointX, feature2.Geom.Coordinates) == true {
-// 		distance = 0
-// 	} else {
-// 		for i := range coords {
-// 			for j := range coords[i] {
-// 				if j > 0 {
-// 					lineY0, lineX0 := GetThreeDimArrayCoordinates(feature2, i, j)   // Coordinates of LineString
-// 					lineY1, lineX1 := GetThreeDimArrayCoordinates(feature2, i, j-1) // Coordinates of LineString
+	coords := (polygon.GetCoordinates()).([][][]float64) // Convert interface to [][][]float64
+	if PIPJordanCurveTheorem(pointY, pointX, polygon.Coords) == true {
+		distance = 0
+	} else {
+		for i := range coords {
+			for j := range coords[i] {
+				if j > 0 {
+					lineY0, lineX0 := coords[i][j][0], coords[i][j][1]     // Coordinates of LineString
+					lineY1, lineX1 := coords[i][j-1][0], coords[i][j-1][1] // Coordinates of LineString
 
-// 					distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
-// 				}
-// 			}
-// 		}
-// 		distance = MinDistance(distarr)
+					distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
+				}
+			}
+		}
+		distance = MinDistance(distarr)
 
-// 	}
+	}
 
-// 	return distance
-// }
+	return distance
+}
 
 // // DistancePointMultiPolygon finds the smallest distance between Point and Polygon
 // func DistancePointMultiPolygon(feature1, feature2 *Feature) float64 {

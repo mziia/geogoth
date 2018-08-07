@@ -74,4 +74,9 @@ func TestDistanceToPoint(t *testing.T) {
 	mlinestr := &Objects.Object5
 	CreateObj5()
 	assert.True(int(point.DistanceTo(mlinestr)) == 163)
+
+	// Point - Polygon
+	polygon := &Objects.Object6
+	CreateObj6()
+	assert.True(int(point.DistanceTo(polygon)) == 315)
 }

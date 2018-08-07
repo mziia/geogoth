@@ -32,66 +32,66 @@ func Bearing(latA, lonA, latB, lonB float64) float64 {
 
 }
 
-// // PIPJordanCurveTheorem returns true if point(feature1) is inside of the polygon(feature2)
-// // returns false if point(feature1) is outside of the polygon(feature2)
-// // C/C++ algorithm implementation:  https://sidvind.com/wiki/Point-in-polygon:_Jordan_Curve_Theorem
-// func PIPJordanCurveTheorem(py, px float64, pol interface{}) bool {
+// PIPJordanCurveTheorem returns true if point(feature1) is inside of the polygon(feature2)
+// returns false if point(feature1) is outside of the polygon(feature2)
+// C/C++ algorithm implementation:  https://sidvind.com/wiki/Point-in-polygon:_Jordan_Curve_Theorem
+func PIPJordanCurveTheorem(py, px float64, pol interface{}) bool {
 
-// 	// pol - feature2.Geom.Coordinates
-// 	polygon := (pol).([][][]float64) // Convert interface to [][][]float64
+	// pol - feature2.Geom.Coordinates
+	polygon := (pol).([][][]float64) // Convert interface to [][][]float64
 
-// 	var x1, x2, k float64
-// 	crossing := 0
+	var x1, x2, k float64
+	crossing := 0
 
-// 	for p := range polygon {
-// 		for i := range polygon[p] {
+	for p := range polygon {
+		for i := range polygon[p] {
 
-// 			/* This is done to ensure that we get the same result when
-// 			   the line goes from left to right and right to left */
-// 			if polygon[p][i][1] < polygon[p][(i+1)%len(polygon[p])][1] {
-// 				x1 = polygon[p][i][1]
-// 				x2 = polygon[p][(i+1)%len(polygon[p])][1]
-// 			} else {
-// 				x1 = polygon[p][(i+1)%len(polygon[p])][1]
-// 				x2 = polygon[p][i][1]
+			/* This is done to ensure that we get the same result when
+			   the line goes from left to right and right to left */
+			if polygon[p][i][1] < polygon[p][(i+1)%len(polygon[p])][1] {
+				x1 = polygon[p][i][1]
+				x2 = polygon[p][(i+1)%len(polygon[p])][1]
+			} else {
+				x1 = polygon[p][(i+1)%len(polygon[p])][1]
+				x2 = polygon[p][i][1]
 
-// 			}
+			}
 
-// 			/* First check if the ray is possible to cross the line */
-// 			if px > x1 && px <= x2 && (py < polygon[p][i][0] || py <= polygon[p][(i+1)%len(polygon[p])][0]) {
-// 				eps := 0.000001
+			/* First check if the ray is possible to cross the line */
+			if px > x1 && px <= x2 && (py < polygon[p][i][0] || py <= polygon[p][(i+1)%len(polygon[p])][0]) {
+				eps := 0.000001
 
-// 				/* Calculate the equation of the line */
-// 				dx := polygon[p][(i+1)%len(polygon[p])][1] - polygon[p][i][1]
-// 				dy := polygon[p][(i+1)%len(polygon[p])][0] - polygon[p][i][0]
+				/* Calculate the equation of the line */
+				dx := polygon[p][(i+1)%len(polygon[p])][1] - polygon[p][i][1]
+				dy := polygon[p][(i+1)%len(polygon[p])][0] - polygon[p][i][0]
 
-// 				if math.Abs(dx) < eps {
-// 					k = 999999999999999999
-// 				} else {
-// 					k = dy / dx
-// 				}
+				if math.Abs(dx) < eps {
+					k = 999999999999999999
+				} else {
+					k = dy / dx
+				}
 
-// 				m := polygon[p][i][0] - k*polygon[p][i][1]
+				m := polygon[p][i][0] - k*polygon[p][i][1]
 
-// 				/* Find if the ray crosses the line */
-// 				y2 := k*px + m
-// 				if py <= y2 {
-// 					crossing++
-// 				}
-// 			}
-// 		}
+				/* Find if the ray crosses the line */
+				y2 := k*px + m
+				if py <= y2 {
+					crossing++
+				}
+			}
+		}
 
-// 	}
+	}
 
-// 	// fmt.Println(fmt.Sprintf("The point is crossing %v lines", crossing))
+	// fmt.Println(fmt.Sprintf("The point is crossing %v lines", crossing))
 
-// 	if crossing%2 == 1 {
-// 		return true // The Point is instide of the Polygon
-// 	} else {
-// 		return false // The Point is outside of the Polygon
-// 	}
+	if crossing%2 == 1 {
+		return true // The Point is instide of the Polygon
+	} else {
+		return false // The Point is outside of the Polygon
+	}
 
-// }
+}
 
 // // PointInPolygon ...
 // func PointInPolygon(feature1, feature2 *Feature) bool {
