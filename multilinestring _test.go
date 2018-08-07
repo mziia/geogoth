@@ -17,7 +17,7 @@ func TestNewMultiLineString(t *testing.T) {
 
 }
 
-func TestGetCoordinatesmlinestr(t *testing.T) {
+func TestGetCoordinatesMlinestr(t *testing.T) {
 	assert := assert.New(t)
 
 	mlstr := &Objects.Object5

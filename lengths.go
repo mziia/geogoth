@@ -52,36 +52,36 @@ func MultiLineStringLength(mlineStr MultiLineString) float64 {
 	return length
 }
 
-// // PolygonLength counts lenght of Polygon
-// func PolygonLength(feature *Feature) float64 {
-// 	var length float64
+// PolygonLength counts lenght of Polygon
+func PolygonLength(polygon Polygon) float64 {
+	var length float64
 
-// 	lineCoords := make([][]float64, 0)                    // Creates slice for coords of one line
-// 	polygCoords := make([][][]float64, 0)                 // Creates slice for coords of the MultiLineString
-// 	polygon := (feature.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
+	lineCoords := make([][]float64, 0)  // Creates slice for coords of one line
+	polCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
+	polygonCoords := polygon.Coords     // Convert interface to [][][]float64
 
-// 	for i := range polygon { // Finds coords of the MultiLineString
-// 		for j := range polygon[i] {
-// 			y, x := GetThreeDimArrayCoordinates(feature, i, j)
-// 			lineCoords = append(lineCoords, []float64{y, x})
-// 		}
-// 		polygCoords = append(polygCoords, lineCoords)
-// 		lineCoords = nil // empty slice
+	for i := range polygonCoords { // Finds coords of the MultiLineString
+		for j := range polygonCoords[i] {
+			y, x := polygon.Coords[i][j][0], polygon.Coords[i][j][1]
+			lineCoords = append(lineCoords, []float64{y, x})
+		}
+		polCoords = append(polCoords, lineCoords)
+		lineCoords = nil // empty slice
 
-// 	}
+	}
 
-// 	for i := range polygCoords {
+	for i := range polCoords {
 
-// 		for j := 0; j < len(polygCoords[i])-1; j++ {
+		for j := 0; j < len(polCoords[i])-1; j++ {
 
-// 			lengthTmp := DistancePointPointDeg(polygCoords[i][j][0], polygCoords[i][j][1], polygCoords[i][j+1][0], polygCoords[i][j+1][1])
-// 			length = length + lengthTmp
-// 		}
+			lengthTmp := DistancePointPointDeg(polCoords[i][j][0], polCoords[i][j][1], polCoords[i][j+1][0], polCoords[i][j+1][1])
+			length = length + lengthTmp
+		}
 
-// 	}
+	}
 
-// 	return length
-// }
+	return length
+}
 
 // // MultipolygonLength counts lenght of MultipolygonLength
 // func MultipolygonLength(feature *Feature) float64 {
