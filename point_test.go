@@ -51,27 +51,27 @@ func TestGetLengthPoint(t *testing.T) {
 func TestDistanceToPoint(t *testing.T) {
 	assert := assert.New(t)
 
-	point1 := &Objects.Object1
+	point := &Objects.Object1
 	CreateObj1()
 
 	// Point - Point
 	point2 := &Objects.Object2
 	CreateObj2()
-	assert.True(int(point1.DistanceTo(point2)) == 1639)
-	assert.True(int(point2.DistanceTo(point1)) == 1639)
+	assert.True(int(point.DistanceTo(point2)) == 1639)
+	assert.True(int(point2.DistanceTo(point)) == 1639)
 
 	// Point - MultiPoint
 	mpoint := &Objects.Object3
 	CreateObj3()
-	assert.True(int(point1.DistanceTo(mpoint)) == 1619)
+	assert.True(int(point.DistanceTo(mpoint)) == 1619)
 
 	// Point - LineString
 	linestr := &Objects.Object4
 	CreateObj4()
-	assert.True(int(point1.DistanceTo(linestr)) == 459)
+	assert.True(int(point.DistanceTo(linestr)) == 459)
 
 	// Point -MultiLineString
 	mlinestr := &Objects.Object5
 	CreateObj5()
-	assert.True(int(point1.DistanceTo(mlinestr)) == 163)
+	assert.True(int(point.DistanceTo(mlinestr)) == 163)
 }

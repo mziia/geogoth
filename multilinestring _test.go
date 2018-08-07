@@ -54,3 +54,16 @@ func TestLengthMLineStr(t *testing.T) {
 	assert.True(multLine.GetLength() == 3434.744143073227)
 
 }
+
+func TestDistanceTo(t *testing.T) {
+	assert := assert.New(t)
+
+	mlstr := &Objects.Object5
+	CreateObj5()
+
+	// MultiLineString - Point
+	point := &Objects.Object1
+	CreateObj1()
+	assert.True(int(mlstr.DistanceTo(point)) == 163)
+
+}
