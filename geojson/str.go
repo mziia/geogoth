@@ -1,5 +1,6 @@
 package geogoth
 
+// Ftrs ...
 var Ftrs struct {
 	Feature1  *Feature
 	Feature2  *Feature
@@ -24,6 +25,7 @@ var Ftrs struct {
 	Feature21 *Feature
 }
 
+// CreateFtr1 ...
 func CreateFtr1() {
 	ftr := &Ftrs
 
@@ -35,6 +37,7 @@ func CreateFtr1() {
 
 }
 
+// CreateFtr2 ...
 func CreateFtr2() {
 	ftr := &Ftrs
 
@@ -45,6 +48,7 @@ func CreateFtr2() {
 	ftr.Feature2.SetGeometry(point2)
 }
 
+// CreateFtr3 ...
 func CreateFtr3() {
 	ftr := &Ftrs
 
@@ -58,6 +62,7 @@ func CreateFtr3() {
 
 }
 
+// CreateFtr4 ...
 func CreateFtr4() {
 	ftr := &Ftrs
 
@@ -72,6 +77,7 @@ func CreateFtr4() {
 	ftr.Feature4.SetGeometry(linestr)
 }
 
+// CreateFtr5 ...
 func CreateFtr5() {
 	ftr := &Ftrs
 
@@ -90,6 +96,7 @@ func CreateFtr5() {
 	ftr.Feature5.SetGeometry(multLine)
 }
 
+// CreateFtr6 ...
 func CreateFtr6() {
 	ftr := &Ftrs
 
@@ -108,6 +115,7 @@ func CreateFtr6() {
 	ftr.Feature6.SetGeometry(pol)
 }
 
+// CreateFtr7 ...
 func CreateFtr7() {
 	ftr := &Ftrs
 
@@ -134,6 +142,7 @@ func CreateFtr7() {
 	ftr.Feature7.SetGeometry(multpol)
 }
 
+// CreateFtr8 ...
 func CreateFtr8() {
 	ftr := &Ftrs
 
@@ -150,6 +159,7 @@ func CreateFtr8() {
 	ftr.Feature8.SetGeometry(multPoint000)
 }
 
+// CreateFtr9 ...
 func CreateFtr9() {
 	ftr := &Ftrs
 
@@ -165,6 +175,7 @@ func CreateFtr9() {
 	ftr.Feature9.SetGeometry(linestr0)
 }
 
+// CreateFtr10 ...
 func CreateFtr10() {
 	ftr := &Ftrs
 
@@ -182,6 +193,7 @@ func CreateFtr10() {
 	ftr.Feature10.SetGeometry(poly)
 }
 
+// CreateFtr11 ...
 func CreateFtr11() {
 	ftr := &Ftrs
 
@@ -196,6 +208,7 @@ func CreateFtr11() {
 	ftr.Feature11.SetGeometry(multPoint)
 }
 
+// CreateFtr12 ...
 func CreateFtr12() {
 	ftr := &Ftrs
 
@@ -209,6 +222,7 @@ func CreateFtr12() {
 
 }
 
+// CreateFtr13 ...
 func CreateFtr13() {
 	ftr := &Ftrs
 
@@ -239,6 +253,7 @@ func CreateFtr13() {
 	ftr.Feature13.SetGeometry(multipol)
 }
 
+// CreateFtr14 ...
 func CreateFtr14() {
 	ftr := &Ftrs
 
@@ -254,6 +269,7 @@ func CreateFtr14() {
 	ftr.Feature14.SetGeometry(linestr14)
 }
 
+// CreateFtr15 ...
 func CreateFtr15() {
 	ftr := &Ftrs
 
@@ -267,6 +283,7 @@ func CreateFtr15() {
 	ftr.Feature15.SetGeometry(linestr15)
 }
 
+// CreateFtr16 ...
 func CreateFtr16() {
 	ftr := &Ftrs
 
@@ -282,6 +299,7 @@ func CreateFtr16() {
 	ftr.Feature16.SetGeometry(linestr16)
 }
 
+// CreateFtr17 ...
 func CreateFtr17() {
 	ftr := &Ftrs
 
@@ -301,6 +319,7 @@ func CreateFtr17() {
 	ftr.Feature17.SetGeometry(multLine17)
 }
 
+// CreateFtr18 ...
 func CreateFtr18() {
 	ftr := &Ftrs
 
@@ -321,6 +340,7 @@ func CreateFtr18() {
 	ftr.Feature18.SetGeometry(multLine18)
 }
 
+// CreateFtr19 ...
 func CreateFtr19() {
 	ftr := &Ftrs
 
@@ -338,6 +358,7 @@ func CreateFtr19() {
 	ftr.Feature19.SetGeometry(polp)
 }
 
+// CreateFtr20 ...
 func CreateFtr20() {
 	ftr := &Ftrs
 
@@ -368,6 +389,7 @@ func CreateFtr20() {
 	ftr.Feature20.SetGeometry(mu)
 }
 
+// CreateFtr21 ...
 func CreateFtr21() {
 	ftr := &Ftrs
 
