@@ -83,37 +83,37 @@ func PolygonLength(polygon Polygon) float64 {
 	return length
 }
 
-// // MultipolygonLength counts lenght of MultipolygonLength
-// func MultipolygonLength(feature *Feature) float64 {
-// 	var length float64
+// MultipolygonLength counts lenght of MultipolygonLength
+func MultipolygonLength(mpolygon MultiPolygon) float64 {
+	var length float64
 
-// 	mpolyg := (feature.Geom.Coordinates).([][][][]float64)
+	mpolyg := mpolygon.Coords
 
-// 	mpolygCoords := make([][][]float64, 0) // Creates slice for coords of the MultiPolygon
-// 	mlineCoords := make([][]float64, 0)    // Creates slice for coords of one line
+	mpolygCoords := make([][][]float64, 0) // Creates slice for coords of the MultiPolygon
+	mlineCoords := make([][]float64, 0)    // Creates slice for coords of one line
 
-// 	for m := range mpolyg { // Finds coords of MultiPolygon
-// 		for p := range mpolyg[m] {
-// 			for i := range mpolyg[m][p] {
+	for m := range mpolyg { // Finds coords of MultiPolygon
+		for p := range mpolyg[m] {
+			for i := range mpolyg[m][p] {
 
-// 				y, x := GetFourDimArrayCoordinates(feature, m, p, i)
-// 				mlineCoords = append(mlineCoords, []float64{y, x})
+				y, x := mpolygon.Coords[m][p][i][0], mpolygon.Coords[m][p][i][1]
+				mlineCoords = append(mlineCoords, []float64{y, x})
 
-// 			}
-// 			mpolygCoords = append(mpolygCoords, mlineCoords)
-// 			mlineCoords = nil // empty slice
+			}
+			mpolygCoords = append(mpolygCoords, mlineCoords)
+			mlineCoords = nil // empty slice
 
-// 		}
-// 	}
+		}
+	}
 
-// 	for i := range mpolygCoords {
-// 		for j := 0; j < len(mpolygCoords[i])-1; j++ {
+	for i := range mpolygCoords {
+		for j := 0; j < len(mpolygCoords[i])-1; j++ {
 
-// 			lengthTmp := DistancePointPointDeg(mpolygCoords[i][j][0], mpolygCoords[i][j][1], mpolygCoords[i][j+1][0], mpolygCoords[i][j+1][1])
-// 			length = length + lengthTmp
-// 		}
-// 	}
+			lengthTmp := DistancePointPointDeg(mpolygCoords[i][j][0], mpolygCoords[i][j][1], mpolygCoords[i][j+1][0], mpolygCoords[i][j+1][1])
+			length = length + lengthTmp
+		}
+	}
 
-// 	return length
+	return length
 
-// }
+}

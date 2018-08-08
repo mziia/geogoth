@@ -8,7 +8,7 @@ var Objects struct {
 	Object4 LineString
 	Object5 MultiLineString
 	Object6 Polygon
-	// Object7
+	Object7 MultiPolygon
 	// Object8
 	// Object9
 	// Object10
@@ -69,7 +69,7 @@ func CreateObj5() {
 
 }
 
-// CreateObj6 creates MultiLineString
+// CreateObj6 creates Polygon
 func CreateObj6() {
 	Obj := &Objects
 	Obj.Object6 = NewPolygon([][][]float64{
@@ -80,5 +80,27 @@ func CreateObj6() {
 			[]float64{37.60671615600586, 55.74986889204201},
 			[]float64{37.61246681213379, 55.75209090920951},
 			[]float64{37.60027885437012, 55.75573764130792}}})
+
+}
+
+// CreateObj7 creates MultiPolygon
+func CreateObj7() {
+	Obj := &Objects
+	Obj.Object7 = NewMultiPolygon([][][][]float64{
+		[][][]float64{
+			[][]float64{
+				[]float64{37.55744934082031, 55.76189525593947},
+				[]float64{37.56088256835937, 55.76150892439349},
+				[]float64{37.596588134765625, 55.74373353535969},
+				[]float64{37.58354187011719, 55.78622642787003},
+				[]float64{37.55744934082031, 55.76189525593947},
+			}},
+		[][][]float64{
+			[][]float64{
+				[]float64{38.08904439210892, 55.81190491362447},
+				[]float64{38.08977395296096, 55.81190491362447},
+				[]float64{38.08977395296096, 55.81212194465421},
+				[]float64{38.08904439210892, 55.81212194465421},
+				[]float64{38.08904439210892, 55.81190491362447}}}})
 
 }
