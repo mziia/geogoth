@@ -34,12 +34,24 @@ func (m MultiPoint) DistanceTo(f Feature) float64 {
 
 	switch f.GetType() {
 	case "Point":
-		point := (f).(*Point)
+		point := f.(*Point)
 		distance = DistancePointMultipoint(*point, m)
-		// case "MultiPoint":
 
-		// 	mpoint := (f).(*MultiPoint)
-		// 	distance =
+	case "MultiPoint":
+		mpoint := f.(*MultiPoint)
+		distance = DistanceMultipointMultipoint(m, *mpoint)
+
+	case "LineString":
+		linestr := f.(*LineString)
+		distance = DistanceMultipointLinestring(m, *linestr)
+
+	case "MultiLineString":
+		mlinestr := f.(*MultiLineString)
+		distance = DistanceMultiPointMultiLinestring(m, *mlinestr)
+
+	case "Polygon":
+
+	case "MultiPolygon":
 
 	}
 

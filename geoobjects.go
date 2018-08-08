@@ -9,8 +9,8 @@ var Objects struct {
 	Object5 MultiLineString
 	Object6 Polygon
 	Object7 MultiPolygon
-	// Object8
-	// Object9
+	Object8 MultiPoint
+	Object9 LineString
 	// Object10
 	// Object11
 	// Object12
@@ -102,5 +102,28 @@ func CreateObj7() {
 				[]float64{38.08977395296096, 55.81212194465421},
 				[]float64{38.08904439210892, 55.81212194465421},
 				[]float64{38.08904439210892, 55.81190491362447}}}})
+
+}
+
+// CreateObj8  creates MultiPoint
+func CreateObj8() {
+	Obj := &Objects
+	Obj.Object8 = NewMultiPoint([][]float64{
+		[]float64{37.566375732421875, 55.761702090644896},
+		[]float64{37.58800506591796, 55.74856460562653},
+		[]float64{37.58491516113281, 55.72981671057788},
+		[]float64{37.596588134765625, 55.72169627105833},
+	})
+
+}
+
+// CreateObj9  creates MultiPoint
+func CreateObj9() {
+	Obj := &Objects
+	Obj.Object9 = NewLineString([][]float64{
+		[]float64{37.566375732421875, 55.761702090644896},
+		[]float64{37.58800506591796, 55.74856460562653},
+		[]float64{37.58491516113281, 55.72981671057788},
+		[]float64{37.596588134765625, 55.72169627105833}})
 
 }

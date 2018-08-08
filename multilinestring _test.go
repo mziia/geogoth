@@ -66,4 +66,10 @@ func TestDistanceToMLstr(t *testing.T) {
 	CreateObj1()
 	assert.True(int(mlstr.DistanceTo(point)) == 163)
 
+	// MultiLineString - MultiPoint
+	mpoint := &Objects.Object3
+	CreateObj3()
+
+	assert.True(int(mlstr.DistanceTo(mpoint)) == 736)
+
 }

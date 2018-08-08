@@ -36,6 +36,16 @@ func (m MultiPolygon) DistanceTo(f Feature) float64 {
 	case "Point":
 		point := f.(*Point)
 		distance = DistancePointMultiPolygon(*point, m)
+
+	case "MultiPoint":
+
+	case "LineString":
+
+	case "MultiLineString":
+
+	case "Polygon":
+
+	case "MultiPolygon":
 	}
 
 	return distance
