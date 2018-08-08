@@ -70,3 +70,16 @@ func TestGetLengthMPolygon(t *testing.T) {
 	assert.True(mpolyg.GetLength() == 27769.448354979733)
 
 }
+
+func TestDistanceToMPolyg(t *testing.T) {
+	assert := assert.New(t)
+
+	mpolyg := &Objects.Object7
+	CreateObj7()
+
+	// MultiPolygon - Point
+	point := &Objects.Object1
+	CreateObj1()
+	assert.True(int(mpolyg.DistanceTo(point)) == 1445)
+
+}

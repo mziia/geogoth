@@ -26,3 +26,17 @@ func (m MultiPolygon) GetType() string {
 func (m MultiPolygon) GetLength() float64 {
 	return MultipolygonLength(m)
 }
+
+// DistanceTo returns distance between two geo objects
+func (m MultiPolygon) DistanceTo(f Feature) float64 {
+
+	var distance float64
+
+	switch f.GetType() {
+	case "Point":
+		point := f.(*Point)
+		distance = DistancePointMultiPolygon(*point, m)
+	}
+
+	return distance
+}

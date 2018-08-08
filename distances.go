@@ -186,38 +186,41 @@ func DistancePointPolygon(point Point, polygon Polygon) float64 {
 	return distance
 }
 
-// // DistancePointMultiPolygon finds the smallest distance between Point and Polygon
-// func DistancePointMultiPolygon(feature1, feature2 *Feature) float64 {
+// DistancePointMultiPolygon finds the smallest distance between Point and Polygon
+func DistancePointMultiPolygon(point Point, multipol MultiPolygon) float64 {
 
-// 	var distance float64
-// 	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
-// 	distarr := make([]float64, 0)
+	var distance float64
 
-// 	coords := (feature2.Geom.Coordinates).([][][][]float64) // Convert interface to [][][]float64
+	pcoord := (point.GetCoordinates()).([]float64)
+	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
 
-// 	for p := range coords {
-// 		if PIPJordanCurveTheorem(pointY, pointX, coords[p]) == true {
-// 			distance = 0
-// 			break
-// 		} else {
+	distarr := make([]float64, 0)
 
-// 			for i := range coords[p] {
-// 				for j := range coords[p][i] {
-// 					if j > 0 {
-// 						lineY0, lineX0 := GetFourDimArrayCoordinates(feature2, p, i, j)   // Coordinates of LineString
-// 						lineY1, lineX1 := GetFourDimArrayCoordinates(feature2, p, i, j-1) // Coordinates of LineString
+	coords := multipol.Coords // Convert interface to [][][]float64
 
-// 						distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
-// 					}
-// 				}
-// 			}
-// 		}
-// 		distance = MinDistance(distarr)
-// 	}
+	for p := range coords {
+		if PIPJordanCurveTheorem(pointY, pointX, coords[p]) == true {
+			distance = 0
+			break
+		} else {
 
-// 	return distance
+			for i := range coords[p] {
+				for j := range coords[p][i] {
+					if j > 0 {
+						lineY0, lineX0 := coords[p][i][j][0], coords[p][i][j][1]     // Coordinates of LineString
+						lineY1, lineX1 := coords[p][i][j-1][0], coords[p][i][j-1][1] // Coordinates of LineString
 
-// }
+						distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
+					}
+				}
+			}
+		}
+		distance = MinDistance(distarr)
+	}
+
+	return distance
+
+}
 
 // // DistanceLineStringLineString counts the smallest distance between two LineStrings
 // func DistanceLineStringLineString(feature1, feature2 *Feature) float64 {
