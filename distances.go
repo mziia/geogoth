@@ -377,43 +377,43 @@ func DistanceMultiPointMultiLinestring(mpoint MultiPoint, mlinestr MultiLineStri
 	return distance
 }
 
-// // DistanceMultiPointPolygon counts distance between MultiPoint and Polygon
-// func DistanceMultiPointPolygon(feature1, feature2 *Feature) float64 {
+// DistanceMultiPointPolygon counts distance between MultiPoint and Polygon
+func DistanceMultiPointPolygon(mpoint MultiPoint, polyg Polygon) float64 {
 
-// 	var distance float64
-// 	multipoint := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
-// 	polygon := (feature2.Geom.Coordinates).([][][]float64)  // Convert interface to [][][]float64
+	var distance float64
+	multipoint := mpoint.Coords // Convert interface to [][]float64
+	polygon := polyg.Coords     // Convert interface to [][][]float64
 
-// 	distarr := make([]float64, 0) // Creates slice for distances
+	distarr := make([]float64, 0) // Creates slice for distances
 
-// 	for i := range multipoint {
-// 		yPoint, xPoint := GetTwoDimArrayCoordinates(feature1, i) // Coordinates of Multipoint[i] point
+	for i := range multipoint {
+		yPoint, xPoint := mpoint.Coords[i][0], mpoint.Coords[i][1] // Coordinates of Multipoint[i] point
 
-// 		if PIPJordanCurveTheorem(yPoint, xPoint, feature2.Geom.Coordinates) == true {
-// 			distance = 0
-// 			break
+		if PIPJordanCurveTheorem(yPoint, xPoint, polyg.Coords) == true {
+			distance = 0
+			break
 
-// 		} else {
+		} else {
 
-// 			for j := range polygon {
+			for j := range polygon {
 
-// 				for p := 0; p < len(polygon[j])-1; p++ {
+				for p := 0; p < len(polygon[j])-1; p++ {
 
-// 					yPol1 := polygon[j][p][0]
-// 					xPol1 := polygon[j][p][1]
-// 					yPol2 := polygon[j][p+1][0]
-// 					xPol2 := polygon[j][p+1][1]
+					yPol1 := polygon[j][p][0]
+					xPol1 := polygon[j][p][1]
+					yPol2 := polygon[j][p+1][0]
+					xPol2 := polygon[j][p+1][1]
 
-// 					distarr = append(distarr, DistancePointLine(yPoint, xPoint, yPol1, xPol1, yPol2, xPol2))
-// 				}
-// 			}
-// 			distance = MinDistance(distarr)
+					distarr = append(distarr, DistancePointLine(yPoint, xPoint, yPol1, xPol1, yPol2, xPol2))
+				}
+			}
+			distance = MinDistance(distarr)
 
-// 		}
-// 	}
+		}
+	}
 
-// 	return distance
-// }
+	return distance
+}
 
 // // DistanceMultiPointMultiPolygon counts distance between MultiPoint and MultiPolygon
 // func DistanceMultiPointMultiPolygon(feature1, feature2 *Feature) float64 {

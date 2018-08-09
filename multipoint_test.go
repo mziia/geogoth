@@ -77,5 +77,12 @@ func TestDistanceToMPoint(t *testing.T) {
 	assert.True(int(mpoint.DistanceTo(mlstr)) == 736)
 
 	// MultiPoint - Polygon
+	pol := &Objects.Object10
+	CreateObj10()
+	multp := &Objects.Object11
+	CreateObj11()
+
+	assert.True(int(multp.DistanceTo(pol)) == 3783)
+
 	// MultiPoint - MultiPolygon
 }

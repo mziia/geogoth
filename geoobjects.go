@@ -2,19 +2,19 @@ package geogoth
 
 // Objects struct for geo objects
 var Objects struct {
-	Object1 Point
-	Object2 Point
-	Object3 MultiPoint
-	Object4 LineString
-	Object5 MultiLineString
-	Object6 Polygon
-	Object7 MultiPolygon
-	Object8 MultiPoint
-	Object9 LineString
-	// Object10
-	// Object11
-	// Object12
-	// Object13
+	Object1  Point
+	Object2  Point
+	Object3  MultiPoint
+	Object4  LineString
+	Object5  MultiLineString
+	Object6  Polygon
+	Object7  MultiPolygon
+	Object8  MultiPoint
+	Object9  LineString
+	Object10 Polygon
+	Object11 MultiPoint
+	Object12 MultiPoint
+	Object13 MultiPolygon
 	// Object14
 	// Object15
 	// Object16
@@ -127,3 +127,68 @@ func CreateObj9() {
 		[]float64{37.596588134765625, 55.72169627105833}})
 
 }
+
+// CreateObj10  creates Polygon
+func CreateObj10() {
+	Obj := &Objects
+	Obj.Object10 = NewPolygon([][][]float64{
+		[][]float64{
+			[]float64{37.57770538330078, 55.76691721773862},
+			[]float64{37.57942199707031, 55.7659515060885},
+			[]float64{37.63298034667969, 55.73406960018026},
+			[]float64{37.644996643066406, 55.76884856927786},
+			[]float64{37.57770538330078, 55.76691721773862}}})
+
+}
+
+// CreateObj11 creates MultiPoint
+func CreateObj11() {
+	Obj := &Objects
+	Obj.Object11 = NewMultiPoint([][]float64{
+		[]float64{37.69306182861328, 55.78950804222006},
+		[]float64{37.71228790283203, 55.79028014659872},
+		[]float64{37.71263122558593, 55.76981420916759}})
+
+}
+
+// CreateObj12   creates
+func CreateObj12() {
+	Obj := &Objects
+	Obj.Object12 = NewMultiPoint([][]float64{
+		[]float64{37.570792444518, 55.784581739175},
+		[]float64{37.624941407105, 55.738048529295}})
+
+}
+
+// CreateObj13   creates
+func CreateObj13() {
+	Obj := &Objects
+	Obj.Object13 = NewMultiPolygon([][][][]float64{
+
+		[][][]float64{
+			[][]float64{
+
+				[]float64{37.57770538330078, 55.76691721773862},
+				[]float64{37.57942199707031, 55.7659515060885},
+				[]float64{37.63298034667969, 55.73406960018026},
+				[]float64{37.644996643066406, 55.76884856927786},
+				[]float64{37.57770538330078, 55.76691721773862},
+			}},
+
+		[][][]float64{
+			[][]float64{
+
+				[]float64{37.57427215576172, 55.74856460562653},
+				[]float64{37.610321044921875, 55.73928842238313},
+				[]float64{37.64568328857422, 55.78410288303946},
+				[]float64{37.60414123535156, 55.78062774182665},
+				[]float64{37.57427215576172, 55.74856460562653}}}})
+
+}
+
+// // CreateObj   creates
+// func CreateObj() {
+// 	Obj := &Objects
+// 	Obj.Object
+
+// }
