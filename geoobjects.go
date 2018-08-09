@@ -151,7 +151,7 @@ func CreateObj11() {
 
 }
 
-// CreateObj12   creates
+// CreateObj12 creates MultiPoint
 func CreateObj12() {
 	Obj := &Objects
 	Obj.Object12 = NewMultiPoint([][]float64{
@@ -160,7 +160,7 @@ func CreateObj12() {
 
 }
 
-// CreateObj13   creates
+// CreateObj13 creates MultiPolygon
 func CreateObj13() {
 	Obj := &Objects
 	Obj.Object13 = NewMultiPolygon([][][][]float64{

@@ -82,4 +82,12 @@ func TestDistanceToMPolyg(t *testing.T) {
 	CreateObj1()
 	assert.True(int(mpolyg.DistanceTo(point)) == 1445)
 
+	// MultiPolygon - MultiPoint
+	mpoint := &Objects.Object12
+	CreateObj12()
+	mpol := &Objects.Object13
+	CreateObj13()
+
+	assert.True(int(mpol.DistanceTo(mpoint)) == 61)
+
 }
