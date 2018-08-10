@@ -18,8 +18,8 @@ var Objects struct {
 	Object14 LineString
 	Object15 LineString
 	Object16 LineString
-	// Object17
-	// Object18
+	Object17 MultiLineString
+	Object18 MultiLineString
 	// Object19
 	// Object20
 	// Object21
@@ -215,6 +215,37 @@ func CreateObj16() {
 		[]float64{37.64293670654297, 55.79607044162981},
 		[]float64{37.659759521484375, 55.79935122671461},
 	})
+
+}
+
+// CreateObj17 creates
+func CreateObj17() {
+	Obj := &Objects
+	Obj.Object17 = NewMultiLineString([][][]float64{
+		[][]float64{[]float64{37.58766174316406, 55.78178615666911},
+			[]float64{37.545433044433594, 55.74740520331641},
+			[]float64{37.57495880126953, 55.71589492312098}},
+
+		[][]float64{[]float64{37.63092041015624, 55.71492794801965},
+			[]float64{37.61787414550781, 55.72769009202728},
+			[]float64{37.64396667480469, 55.74817814201809},
+			[]float64{37.69718170166015, 55.71879570480289}}})
+
+}
+
+// CreateObj18 creates
+func CreateObj18() {
+	Obj := &Objects
+	Obj.Object18 = NewMultiLineString([][][]float64{
+		[][]float64{
+			[]float64{37.62165069580078, 55.8238518767974},
+			[]float64{37.644309997558594, 55.77946929254524},
+			[]float64{37.67864227294922, 55.789701069749528}},
+
+		[][]float64{
+			[]float64{37.662506103515625, 55.834457609133935},
+			[]float64{37.66490936279297, 55.810156563965364},
+			[]float64{37.73700714111328, 55.73387629706783}}})
 
 }
 

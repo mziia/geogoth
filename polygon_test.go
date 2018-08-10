@@ -76,4 +76,19 @@ func TestDistanceToPolygon(t *testing.T) {
 	CreateObj11()
 
 	assert.True(int(pol.DistanceTo(mpoint)) == 3783)
+
+	// Polygon - LineString
+	lst := &Objects.Object14
+	CreateObj14()
+
+	assert.True(int(polyg.DistanceTo(lst)) == 83203)
+
+	// Polygon - MultiLineString
+	mlstr := &Objects.Object18
+	CreateObj18()
+
+	assert.True(int(mlstr.DistanceTo(polyg)) == 3638)
+
 }
+
+// assert.True(int()==)

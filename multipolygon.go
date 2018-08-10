@@ -46,6 +46,8 @@ func (m MultiPolygon) DistanceTo(f Feature) float64 {
 		distance = DistanceLineStringMultiPolygon(*ln, m)
 
 	case "MultiLineString":
+		mlstr := f.(*MultiLineString)
+		distance = DistanceMultiLineStringMultiPolygon(*mlstr, m)
 
 	case "Polygon":
 
