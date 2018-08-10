@@ -20,7 +20,7 @@ var Objects struct {
 	Object16 LineString
 	Object17 MultiLineString
 	Object18 MultiLineString
-	// Object19
+	Object19 Polygon
 	// Object20
 	// Object21
 }
@@ -246,6 +246,19 @@ func CreateObj18() {
 			[]float64{37.662506103515625, 55.834457609133935},
 			[]float64{37.66490936279297, 55.810156563965364},
 			[]float64{37.73700714111328, 55.73387629706783}}})
+
+}
+
+// CreateObj19 creates
+func CreateObj19() {
+	Obj := &Objects
+	Obj.Object19 = NewPolygon([][][]float64{
+		[][]float64{
+			[]float64{37.48809814453125, 55.867605966997786},
+			[]float64{37.522430419921875, 55.831372603449026},
+			[]float64{37.615814208984375, 55.83522882231773},
+			[]float64{37.6007080078125, 55.8845546603819},
+			[]float64{37.48809814453125, 55.867605966997786}}})
 
 }
 
