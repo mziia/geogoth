@@ -103,55 +103,55 @@ func PIPJordanCurveTheorem(py, px float64, pol interface{}) bool {
 
 // }
 
-// // LineLineIntersection returns true if lines intersectd; false if lines do not intersect
-// // Algorithm from https://ideone.com/PnPJgb
-// func LineLineIntersection(yA, xA, yB, xB, yC, xC, yD, xD float64) bool {
+// LineLineIntersection returns true if lines intersectd; false if lines do not intersect
+// Algorithm from https://ideone.com/PnPJgb
+func LineLineIntersection(yA, xA, yB, xB, yC, xC, yD, xD float64) bool {
 
-// 	yCmP, xCmP := yC-yA, xC-xA
-// 	yr, xr := yB-yA, xB-xA
-// 	ys, xs := yD-yC, xD-xC
+	yCmP, xCmP := yC-yA, xC-xA
+	yr, xr := yB-yA, xB-xA
+	ys, xs := yD-yC, xD-xC
 
-// 	cmpXr := xCmP*yr - yCmP*xr
-// 	cmpXs := xCmP*ys - yCmP*xs
-// 	rXs := xr*ys - yr*xs
+	cmpXr := xCmP*yr - yCmP*xr
+	cmpXs := xCmP*ys - yCmP*xs
+	rXs := xr*ys - yr*xs
 
-// 	if cmpXr == 0 {
-// 		// Lines are collinear, and so intersect if they have any overlap
-// 		return ((xC-xA < 0) != (xC-xB < 0)) || ((yC-yA < 0) != (yC-yB < 0))
-// 	}
+	if cmpXr == 0 {
+		// Lines are collinear, and so intersect if they have any overlap
+		return ((xC-xA < 0) != (xC-xB < 0)) || ((yC-yA < 0) != (yC-yB < 0))
+	}
 
-// 	if rXs == 0 {
-// 		return false // Lines are parallel
-// 	}
+	if rXs == 0 {
+		return false // Lines are parallel
+	}
 
-// 	rXsr := 1 / rXs
-// 	t := cmpXs * rXsr
-// 	u := cmpXr * rXsr
+	rXsr := 1 / rXs
+	t := cmpXs * rXsr
+	u := cmpXr * rXsr
 
-// 	return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)
-// }
+	return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)
+}
 
-// // DistanceLineLine finds distance between two lines
-// // func DistanceLineLine(feature1, feature2 *Feature) float64 {
-// func DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2 float64) float64 {
+// DistanceLineLine finds distance between two lines
+// func DistanceLineLine(feature1, feature2 *Feature) float64 {
+func DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2 float64) float64 {
 
-// 	var distance float64
+	var distance float64
 
-// 	if LineLineIntersection(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2) == true {
-// 		distance = 0
-// 	} else {
+	if LineLineIntersection(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2) == true {
+		distance = 0
+	} else {
 
-// 		distarr := make([]float64, 0) // Creates slice for distances between Point and edges of LineString
+		distarr := make([]float64, 0) // Creates slice for distances between Point and edges of LineString
 
-// 		distarr = append(distarr, DistancePointLine(line1Y1, line1X1, line2Y1, line2X1, line2Y2, line2X2))
-// 		distarr = append(distarr, DistancePointLine(line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2))
+		distarr = append(distarr, DistancePointLine(line1Y1, line1X1, line2Y1, line2X1, line2Y2, line2X2))
+		distarr = append(distarr, DistancePointLine(line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2))
 
-// 		distarr = append(distarr, DistancePointLine(line2Y1, line2X1, line1Y1, line1X1, line1Y2, line1X2))
-// 		distarr = append(distarr, DistancePointLine(line2Y2, line2X2, line1Y1, line1X1, line1Y2, line1X2))
+		distarr = append(distarr, DistancePointLine(line2Y1, line2X1, line1Y1, line1X1, line1Y2, line1X2))
+		distarr = append(distarr, DistancePointLine(line2Y2, line2X2, line1Y1, line1X1, line1Y2, line1X2))
 
-// 		distance = MinDistance(distarr)
-// 	}
+		distance = MinDistance(distarr)
+	}
 
-// 	return distance
+	return distance
 
-// }
+}

@@ -15,9 +15,9 @@ var Objects struct {
 	Object11 MultiPoint
 	Object12 MultiPoint
 	Object13 MultiPolygon
-	// Object14
-	// Object15
-	// Object16
+	Object14 LineString
+	Object15 LineString
+	Object16 LineString
 	// Object17
 	// Object18
 	// Object19
@@ -183,6 +183,38 @@ func CreateObj13() {
 				[]float64{37.64568328857422, 55.78410288303946},
 				[]float64{37.60414123535156, 55.78062774182665},
 				[]float64{37.57427215576172, 55.74856460562653}}}})
+
+}
+
+// CreateObj14   creates
+func CreateObj14() {
+	Obj := &Objects
+	Obj.Object14 = NewLineString([][]float64{
+		[]float64{38.408203125, 57.61010702068388},
+		[]float64{34.1455078125, 54.213861000644926},
+		[]float64{40.3857421875, 52.348763181988105},
+		[]float64{39.7265625, 48.922499263758255}})
+
+}
+
+// CreateObj15   creates
+func CreateObj15() {
+	Obj := &Objects
+	Obj.Object15 = NewLineString([][]float64{
+		[]float64{38.935546875, 55.229023057406344},
+		[]float64{41.3525390625, 53.51418452077113}})
+
+}
+
+// CreateObj16 creates
+func CreateObj16() {
+	Obj := &Objects
+	Obj.Object16 = NewLineString([][]float64{
+		[]float64{37.60499954223633, 55.78979758315554},
+		[]float64{37.634525299072266, 55.799158247007924},
+		[]float64{37.64293670654297, 55.79607044162981},
+		[]float64{37.659759521484375, 55.79935122671461},
+	})
 
 }
 

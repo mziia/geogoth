@@ -74,4 +74,33 @@ func TestDistanceToLineStr(t *testing.T) {
 
 	assert.True(int(lstr.DistanceTo(mpoint)) == 2410)
 
+	// LineString - LineString
+	lst1 := &Objects.Object14
+	CreateObj14()
+	lst2 := &Objects.Object15
+	CreateObj15()
+
+	assert.True(int(lst1.DistanceTo(lst2)) == 144703)
+	assert.True(int(lst2.DistanceTo(lst1)) == 144703)
+
+	// LineString - MultiLineString
+	mlinestr := &Objects.Object5
+	CreateObj5()
+
+	assert.True(int(lst1.DistanceTo(mlinestr)) == 84091)
+
+	// LineString - Polygon
+	pol := &Objects.Object6
+	CreateObj6()
+
+	assert.True(int(lst1.DistanceTo(pol)) == 83203)
+
+	// LineString - MultiPolygon
+	mpol := &Objects.Object13
+	CreateObj13()
+	ln := &Objects.Object16
+	CreateObj16()
+
+	assert.True(int(ln.DistanceTo(mpol)) == 1000)
+
 }

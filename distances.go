@@ -222,53 +222,6 @@ func DistancePointMultiPolygon(point Point, multipol MultiPolygon) float64 {
 
 }
 
-// // DistanceLineStringLineString counts the smallest distance between two LineStrings
-// func DistanceLineStringLineString(feature1, feature2 *Feature) float64 {
-
-// 	var distance float64
-
-// 	distarr := make([]float64, 0)
-// 	coords1 := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
-// 	coords2 := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
-
-// 	coordsArr1 := make([][]float64, 0)
-// 	coordsArr2 := make([][]float64, 0)
-
-// 	for i := range coords1 { // Finds coords of the first LineString
-// 		line1Y, line1X := GetTwoDimArrayCoordinates(feature1, i)
-// 		coordsArr1 = append(coordsArr1, []float64{line1Y, line1X})
-
-// 	}
-
-// 	for i := range coords2 { // Finds coords of the second LineString
-// 		line2Y, line2X := GetTwoDimArrayCoordinates(feature2, i)
-// 		coordsArr2 = append(coordsArr2, []float64{line2Y, line2X})
-// 	}
-
-// 	for i := 0; i < len(coordsArr1)-1; i++ {
-
-// 		line1Y1 := coordsArr1[i][0]
-// 		line1X1 := coordsArr1[i][1]
-// 		line1Y2 := coordsArr1[i+1][0]
-// 		line1X2 := coordsArr1[i+1][1]
-
-// 		for j := 0; j < len(coordsArr2)-1; j++ {
-
-// 			line2Y1 := coordsArr2[j][0]
-// 			line2X1 := coordsArr2[j][1]
-// 			line2Y2 := coordsArr2[j+1][0]
-// 			line2X2 := coordsArr2[j+1][1]
-
-// 			distarr = append(distarr, DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2))
-// 		}
-
-// 	}
-
-// 	distance = MinDistance(distarr)
-
-// 	return distance
-// }
-
 // DistanceMultipointMultipoint counts distance between MultiPoint and MultiPoint
 func DistanceMultipointMultipoint(mpoint1 MultiPoint, mpoint2 MultiPoint) float64 {
 
@@ -456,143 +409,190 @@ func DistanceMultiPointMultiPolygon(mpoint MultiPoint, mpolyg MultiPolygon) floa
 
 }
 
-// // DistanceLineStringMultiLineString counts distance between LineString and MultiLineString
-// func DistanceLineStringMultiLineString(feature1, feature2 *Feature) float64 {
-// 	var distance float64
+// DistanceLineStringLineString counts the smallest distance between two LineStrings
+func DistanceLineStringLineString(linestr1 LineString, linestr2 LineString) float64 {
 
-// 	linestr := (feature1.Geom.Coordinates).([][]float64)
-// 	mlinestr := (feature2.Geom.Coordinates).([][][]float64)
+	var distance float64
 
-// 	distarr := make([]float64, 0)         // Creates slice for distances
-// 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
+	distarr := make([]float64, 0)
+	coords1 := linestr1.Coords // Convert interface to [][]float64
+	coords2 := linestr2.Coords // Convert interface to [][]float64
 
-// 	for i := range linestr { // Finds coords of LineString
-// 		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
-// 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
-// 	}
+	coordsArr1 := make([][]float64, 0)
+	coordsArr2 := make([][]float64, 0)
 
-// 	for i := 0; i < len(lineStrCoords)-1; i++ {
-// 		yL1, xL1 := lineStrCoords[i][0], lineStrCoords[i][1]
-// 		yL2, xL2 := lineStrCoords[i+1][0], lineStrCoords[i+1][1]
+	for i := range coords1 { // Finds coords of the first LineString
+		line1Y, line1X := linestr1.Coords[i][0], linestr1.Coords[i][1]
+		coordsArr1 = append(coordsArr1, []float64{line1Y, line1X})
 
-// 		for m := range mlinestr {
+	}
 
-// 			for j := 0; j < len(mlinestr[m])-1; j++ {
+	for i := range coords2 { // Finds coords of the second LineString
+		line2Y, line2X := linestr2.Coords[i][0], linestr2.Coords[i][1]
+		coordsArr2 = append(coordsArr2, []float64{line2Y, line2X})
+	}
 
-// 				yM1, xM1 := mlinestr[m][j][0], mlinestr[m][j][1]
-// 				yM2, xM2 := mlinestr[m][j+1][0], mlinestr[m][j+1][1]
+	for i := 0; i < len(coordsArr1)-1; i++ {
 
-// 				distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yM1, xM1, yM2, xM2))
+		line1Y1 := coordsArr1[i][0]
+		line1X1 := coordsArr1[i][1]
+		line1Y2 := coordsArr1[i+1][0]
+		line1X2 := coordsArr1[i+1][1]
 
-// 			}
-// 		}
-// 	}
-// 	distance = MinDistance(distarr)
+		for j := 0; j < len(coordsArr2)-1; j++ {
 
-// 	return distance
-// }
+			line2Y1 := coordsArr2[j][0]
+			line2X1 := coordsArr2[j][1]
+			line2Y2 := coordsArr2[j+1][0]
+			line2X2 := coordsArr2[j+1][1]
 
-// // DistanceLineStringPolygon counts distance between LineString and  Polygon
-// func DistanceLineStringPolygon(feature1, feature2 *Feature) float64 {
-// 	var distance float64
+			distarr = append(distarr, DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2))
+		}
 
-// 	linestr := (feature1.Geom.Coordinates).([][]float64)
-// 	polyg := (feature2.Geom.Coordinates).([][][]float64)
+	}
 
-// 	distarr := make([]float64, 0)         // Creates slice for distances
-// 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
+	distance = MinDistance(distarr)
 
-// 	for i := range linestr { // Finds coords of LineString
-// 		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
-// 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
-// 	}
+	return distance
+}
 
-// 	var pip bool
-// 	// Test if any point of LineString is inside of the Polygon
-// 	for i := range lineStrCoords {
-// 		y, x := lineStrCoords[i][0], lineStrCoords[i][1]
-// 		pip = PIPJordanCurveTheorem(y, x, polyg)
-// 	}
+// DistanceLineStringMultiLineString counts distance between LineString and MultiLineString
+func DistanceLineStringMultiLineString(lstr LineString, mlstr MultiLineString) float64 {
+	var distance float64
 
-// 	if pip == true {
-// 		distance = 0
-// 	} else {
+	linestr := lstr.Coords
+	mlinestr := mlstr.Coords
 
-// 		for i := 0; i < len(lineStrCoords)-1; i++ {
-// 			yL1, xL1 := lineStrCoords[i][0], lineStrCoords[i][1]
-// 			yL2, xL2 := lineStrCoords[i+1][0], lineStrCoords[i+1][1]
+	distarr := make([]float64, 0)         // Creates slice for distances
+	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
-// 			for m := range polyg {
+	for i := range linestr { // Finds coords of LineString
+		lineY, lineX := lstr.Coords[i][0], lstr.Coords[i][1]
+		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
+	}
 
-// 				for j := 0; j < len(polyg[m])-1; j++ {
+	for i := 0; i < len(lineStrCoords)-1; i++ {
+		yL1, xL1 := lineStrCoords[i][0], lineStrCoords[i][1]
+		yL2, xL2 := lineStrCoords[i+1][0], lineStrCoords[i+1][1]
 
-// 					yP1, xP1 := polyg[m][j][0], polyg[m][j][1]
-// 					yP2, xP2 := polyg[m][j+1][0], polyg[m][j+1][1]
+		for m := range mlinestr {
 
-// 					distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
+			for j := 0; j < len(mlinestr[m])-1; j++ {
 
-// 				}
-// 			}
-// 		}
-// 		distance = MinDistance(distarr)
-// 	}
+				yM1, xM1 := mlinestr[m][j][0], mlinestr[m][j][1]
+				yM2, xM2 := mlinestr[m][j+1][0], mlinestr[m][j+1][1]
 
-// 	return distance
-// }
+				distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yM1, xM1, yM2, xM2))
 
-// // DistanceLineStringMultiPolygon counts distance between LineString and  Polygon
-// func DistanceLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
-// 	var distance float64
+			}
+		}
+	}
+	distance = MinDistance(distarr)
 
-// 	linestr := (feature1.Geom.Coordinates).([][]float64)
-// 	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
+	return distance
+}
 
-// 	distarr := make([]float64, 0)         // Creates slice for distances
-// 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
+// DistanceLineStringPolygon counts distance between LineString and  Polygon
+func DistanceLineStringPolygon(lstr LineString, pol Polygon) float64 {
+	var distance float64
 
-// 	for i := range linestr { // Finds coords of LineString
-// 		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
-// 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
-// 	}
+	linestr := lstr.Coords
+	polyg := pol.Coords
 
-// 	var pip bool
-// 	// Test if any point of LineString is inside of the MultiPolygon
-// 	for i := range lineStrCoords {
-// 		y, x := lineStrCoords[i][0], lineStrCoords[i][1]
+	distarr := make([]float64, 0)         // Creates slice for distances
+	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
-// 		for j := range mpolyg {
-// 			pip = PIPJordanCurveTheorem(y, x, mpolyg[j])
-// 		}
-// 	}
+	for i := range linestr { // Finds coords of LineString
+		lineY, lineX := lstr.Coords[i][0], lstr.Coords[i][1]
+		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
+	}
 
-// 	if pip == true {
-// 		distance = 0
-// 	} else {
+	var pip bool
+	// Test if any point of LineString is inside of the Polygon
+	for i := range lineStrCoords {
+		y, x := lineStrCoords[i][0], lineStrCoords[i][1]
+		pip = PIPJordanCurveTheorem(y, x, polyg)
+	}
 
-// 		for i := 0; i < len(lineStrCoords)-1; i++ {
-// 			yL1, xL1 := lineStrCoords[i][0], lineStrCoords[i][1]
-// 			yL2, xL2 := lineStrCoords[i+1][0], lineStrCoords[i+1][1]
+	if pip == true {
+		distance = 0
+	} else {
 
-// 			for m := range mpolyg {
+		for i := 0; i < len(lineStrCoords)-1; i++ {
+			yL1, xL1 := lineStrCoords[i][0], lineStrCoords[i][1]
+			yL2, xL2 := lineStrCoords[i+1][0], lineStrCoords[i+1][1]
 
-// 				for p := range mpolyg[m] {
+			for m := range polyg {
 
-// 					for j := 0; j < len(mpolyg[m][p])-1; j++ {
+				for j := 0; j < len(polyg[m])-1; j++ {
 
-// 						yP1, xP1 := mpolyg[m][p][j][0], mpolyg[m][p][j][1]
-// 						yP2, xP2 := mpolyg[m][p][j+1][0], mpolyg[m][p][j+1][1]
+					yP1, xP1 := polyg[m][j][0], polyg[m][j][1]
+					yP2, xP2 := polyg[m][j+1][0], polyg[m][j+1][1]
 
-// 						distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
+					distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
 
-// 					}
-// 				}
-// 			}
-// 		}
-// 		distance = MinDistance(distarr)
-// 	}
+				}
+			}
+		}
+		distance = MinDistance(distarr)
+	}
 
-// 	return distance
-// }
+	return distance
+}
+
+// DistanceLineStringMultiPolygon counts distance between LineString and  Polygon
+func DistanceLineStringMultiPolygon(lstr LineString, mpol MultiPolygon) float64 {
+	var distance float64
+
+	linestr := lstr.Coords
+	mpolyg := mpol.Coords
+
+	distarr := make([]float64, 0)         // Creates slice for distances
+	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
+
+	for i := range linestr { // Finds coords of LineString
+		lineY, lineX := lstr.Coords[i][0], lstr.Coords[i][1]
+		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
+	}
+
+	var pip bool
+	// Test if any point of LineString is inside of the MultiPolygon
+	for i := range lineStrCoords {
+		y, x := lineStrCoords[i][0], lineStrCoords[i][1]
+
+		for j := range mpolyg {
+			pip = PIPJordanCurveTheorem(y, x, mpolyg[j])
+		}
+	}
+
+	if pip == true {
+		distance = 0
+	} else {
+
+		for i := 0; i < len(lineStrCoords)-1; i++ {
+			yL1, xL1 := lineStrCoords[i][0], lineStrCoords[i][1]
+			yL2, xL2 := lineStrCoords[i+1][0], lineStrCoords[i+1][1]
+
+			for m := range mpolyg {
+
+				for p := range mpolyg[m] {
+
+					for j := 0; j < len(mpolyg[m][p])-1; j++ {
+
+						yP1, xP1 := mpolyg[m][p][j][0], mpolyg[m][p][j][1]
+						yP2, xP2 := mpolyg[m][p][j+1][0], mpolyg[m][p][j+1][1]
+
+						distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
+
+					}
+				}
+			}
+		}
+		distance = MinDistance(distarr)
+	}
+
+	return distance
+}
 
 // // DistanceMultiLineStringMultiLineString counts distance between MultiLineString and MultiLineString
 // func DistanceMultiLineStringMultiLineString(feature1, feature2 *Feature) float64 {
