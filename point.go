@@ -76,12 +76,7 @@ func (p Point) IntersectsWith(f Feature) bool {
 	switch f.GetType() {
 	case "Point":
 		point := f.(*Point)
-		coord1 := (p.GetCoordinates()).([]float64)
-		coord2 := (point.GetCoordinates()).([]float64)
-
-		if coord1[0] == coord2[0] && coord1[1] == coord2[1] {
-			intersection = true
-		}
+		intersection = PointPointIntersection(p, *point)
 
 	case "MultiPoint":
 		// mpoint := f.(*MultiPoint)

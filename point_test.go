@@ -93,7 +93,6 @@ func TestIntersectsWith(t *testing.T) {
 	CreateObj1()
 
 	// Point - Point
-
 	point1 := &Objects.Object1
 	CreateObj1()
 	point2 := &Objects.Object2
