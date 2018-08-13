@@ -85,3 +85,31 @@ func TestDistanceToPoint(t *testing.T) {
 	CreateObj7()
 	assert.True(int(point.DistanceTo(mpolyg)) == 1445)
 }
+
+func TestIntersectsWith(t *testing.T) {
+	assert := assert.New(t)
+
+	point := &Objects.Object1
+	CreateObj1()
+
+	// Point - Point
+
+	point1 := &Objects.Object1
+	CreateObj1()
+	point2 := &Objects.Object2
+	CreateObj2()
+
+	assert.True(point.IntersectsWith(point1))
+	assert.False(point.IntersectsWith(point2))
+
+	// Point - MultiPoint
+
+	// Point - LineString
+
+	// Point -MultiLineString
+
+	// Point - Polygon
+
+	// Point - MultiPolygon
+
+}

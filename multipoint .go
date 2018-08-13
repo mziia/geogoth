@@ -60,3 +60,31 @@ func (m MultiPoint) DistanceTo(f Feature) float64 {
 
 	return distance
 }
+
+// IntersectsWith returns true if geoObject intersects with Feature
+func (m MultiPoint) IntersectsWith(f Feature) bool {
+	var intersection bool
+
+	switch f.GetType() {
+	case "Point":
+		// point := f.(*Point)
+
+	case "MultiPoint":
+		// mpoint := f.(*MultiPoint)
+
+	case "LineString":
+		// lstr := f.(*LineString)
+
+	case "MultiLineString":
+		// mlinestr := f.(*MultiLineString)
+
+	case "Polygon":
+		// polygon := f.(*Polygon)
+
+	case "MultiPolygon":
+		// mpolyg := f.(*MultiPolygon)
+	}
+
+	return intersection
+
+}
