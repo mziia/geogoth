@@ -21,8 +21,8 @@ var Objects struct {
 	Object17 MultiLineString
 	Object18 MultiLineString
 	Object19 Polygon
-	// Object20
-	// Object21
+	// ***
+	Object20 MultiPoint
 }
 
 // CreateObj1 creates Point
@@ -259,6 +259,19 @@ func CreateObj19() {
 			[]float64{37.615814208984375, 55.83522882231773},
 			[]float64{37.6007080078125, 55.8845546603819},
 			[]float64{37.48809814453125, 55.867605966997786}}})
+
+}
+
+// CreateObj20  creates MultiPoint
+func CreateObj20() {
+	Obj := &Objects
+	Obj.Object20 = NewMultiPoint([][]float64{
+		[]float64{37.566375732421875, 55.761702090644896},
+		[]float64{37.58800506591796, 55.74856460562653},
+		[]float64{37.58491516113281, 55.72981671057788},
+		[]float64{37.6175, 55.752},
+		[]float64{37.596588134765625, 55.72169627105833},
+	})
 
 }
 
