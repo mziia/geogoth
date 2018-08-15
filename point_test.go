@@ -103,6 +103,12 @@ func TestIntersectsWith(t *testing.T) {
 
 	// Point - MultiPoint
 
+	mpoint := &Objects.Object20
+	CreateObj20()
+
+	assert.True(point1.IntersectsWith(mpoint))
+	assert.False(point2.IntersectsWith(mpoint))
+
 	// Point - LineString
 
 	// Point -MultiLineString

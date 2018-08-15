@@ -79,7 +79,8 @@ func (p Point) IntersectsWith(f Feature) bool {
 		intersection = PointPointIntersection(p, *point)
 
 	case "MultiPoint":
-		// mpoint := f.(*MultiPoint)
+		mpoint := f.(*MultiPoint)
+		intersection = PointMultiPointIntersection(p, *mpoint)
 
 	case "LineString":
 		// lstr := f.(*LineString)
