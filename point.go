@@ -83,10 +83,22 @@ func (p Point) IntersectsWith(f Feature) bool {
 		intersection = PointMultiPointIntersection(p, *mpoint)
 
 	case "LineString":
-		// lstr := f.(*LineString)
+		lstr := f.(*LineString)
+		if p.DistanceTo(lstr) == 0 {
+			intersection = true
+		} else {
+			intersection = false
+		}
 
 	case "MultiLineString":
 		// mlinestr := f.(*MultiLineString)
+
+		mlstr := f.(*MultiLineString)
+		if p.DistanceTo(mlstr) == 0 {
+			intersection = true
+		} else {
+			intersection = false
+		}
 
 	case "Polygon":
 		// polygon := f.(*Polygon)
