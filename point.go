@@ -107,7 +107,12 @@ func (p Point) IntersectsWith(f Feature) bool {
 		}
 
 	case "MultiPolygon":
-		// mpolyg := f.(*MultiPolygon)
+		mpolyg := f.(*MultiPolygon)
+		if p.DistanceTo(mpolyg) == 0 {
+			intersection = true
+		} else {
+			intersection = false
+		}
 	}
 
 	return intersection
