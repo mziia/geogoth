@@ -69,7 +69,7 @@ func (p Point) DistanceTo(f Feature) float64 {
 	return distance
 }
 
-// IntersectsWith returns true if geoObject intersects with Feature
+// IntersectsWith returns true if geoObject intersects with Feature(another geoObject)
 func (p Point) IntersectsWith(f Feature) bool {
 	var intersection bool
 

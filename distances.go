@@ -94,7 +94,7 @@ func DistancePointLine(plon, plat, lon1, lat1, lon2, lat2 float64) float64 {
 	return dxa
 }
 
-// DistancePointLinstring finds the smallest distance between Point and LineString || MultiLineString
+// DistancePointLinstring finds the smallest distance between Point and LineString
 func DistancePointLinstring(point Point, linestr LineString) float64 {
 	var distance float64
 
