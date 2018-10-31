@@ -13,7 +13,7 @@ type Features struct {
 // Feature structure for a single feature
 type Feature struct {
 	Type       string                 `json:"type"`
-	Properties map[string]interface{} `json:"properties"`
+	Properties map[string]interface{} `json:"properties,omitempty"`
 	ID         string                 `json:"id"`
 	Geom       Geometry               `json:"geometry"`
 }
