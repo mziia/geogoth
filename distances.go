@@ -7,7 +7,7 @@ import (
 const rad = math.Pi / 180 // Convert degrees to radians
 
 // EarthRadius radius of the Earth
-const EarthRadius = 6370986.884258304
+const EarthRadius = 6371000.0
 
 // DistancePointPointDeg count distance between two points (degree parameters)
 func DistancePointPointDeg(y1, x1, y2, x2 float64) float64 {
@@ -30,26 +30,27 @@ func DistancePointPointDeg(y1, x1, y2, x2 float64) float64 {
 
 // DistancePointPointRad count distance between two points (radians parameters)
 func DistancePointPointRad(latA, lonA, latB, lonB float64) float64 {
+
 	distance := math.Acos(math.Sin(latA)*math.Sin(latB)+math.Cos(latA)*math.Cos(latB)*math.Cos(lonB-lonA)) * EarthRadius
 	return distance
 }
 
 // DistancePointMultipoint count distance between Point and MultiPoint
-func DistancePointMultipoint(object1 Point, object2 MultiPoint) float64 {
+func DistancePointMultipoint(feature1, feature2 *Feature) float64 {
+
 	var distance float64
+	y1, x1 := GetPointCoordinates(feature1)             // Coordinates of Point
+	coords := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+	distarr := make([]float64, 0)                       // Creates slice for distances
 
-	pcoord := (object1.GetCoordinates()).([]float64)
-	y1, x1 := pcoord[0], pcoord[1] // Coordinates of Point
-	mcoords := object2.Coords
-	distarr := make([]float64, 0) // Creates slice for distances
-
-	for i := range mcoords {
-		y2, x2 := mcoords[i][0], mcoords[i][1]
+	for i := range coords {
+		y2, x2 := GetTwoDimArrayCoordinates(feature2, i)
 		distarr = append(distarr, DistancePointPointDeg(y1, x1, y2, x2)) // Adds distances to dastarr
 
 	}
 
 	distance = MinDistance(distarr)
+
 	return distance
 }
 
@@ -94,20 +95,18 @@ func DistancePointLine(plon, plat, lon1, lat1, lon2, lat2 float64) float64 {
 	return dxa
 }
 
-// DistancePointLinstring finds the smallest distance between Point and LineString
-func DistancePointLinstring(point Point, linestr LineString) float64 {
+// DistancePointLinstring finds the smallest distance between Point and LineString || MultiLineString
+func DistancePointLinstring(feature1, feature2 *Feature) float64 {
+
 	var distance float64
+	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
+	distarr := make([]float64, 0)                   // Creates slice for distances between Point and edges of LineString
 
-	pcoord := (point.GetCoordinates()).([]float64)
-	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
-
-	distarr := make([]float64, 0) // Creates slice for distances between Point and edges of LineString
-
-	coords := (linestr.GetCoordinates()).([][]float64) // Convert interface to [][]float64
+	coords := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
 	for i := range coords {
 		if i > 0 {
-			lineY0, lineX0 := coords[i][0], coords[i][1]     // Coordinates of LineString
-			lineY1, lineX1 := coords[i-1][0], coords[i-1][1] // Coordinates of LineString
+			lineY0, lineX0 := GetTwoDimArrayCoordinates(feature2, i)   // Coordinates of LineString
+			lineY1, lineX1 := GetTwoDimArrayCoordinates(feature2, i-1) // Coordinates of LineString
 
 			distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
 
@@ -126,20 +125,18 @@ func DistancePointLinstring(point Point, linestr LineString) float64 {
 }
 
 // DistancePointMultiLineString finds the smallest distance between Point and MultiLineString
-func DistancePointMultiLineString(point Point, mlinestr MultiLineString) float64 {
+func DistancePointMultiLineString(feature1, feature2 *Feature) float64 {
 	var distance float64
+	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
+	distarr := make([]float64, 0)                   // Creates slice for distances between Point and edges of MultiLineString
 
-	pcoord := (point.GetCoordinates()).([]float64)
-	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
-	distarr := make([]float64, 0)          // Creates slice for distances between Point and edges of MultiLineString
-
-	coords := (mlinestr.GetCoordinates()).([][][]float64) // Convert interface to [][][]float64
+	coords := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
 
 	for i := range coords {
 		for j := range coords[i] {
 			if j > 0 {
-				lineY0, lineX0 := coords[i][j][0], coords[i][j][1]     // Coordinates of LineString
-				lineY1, lineX1 := coords[i][j-1][0], coords[i][j-1][1] // Coordinates of LineString
+				lineY0, lineX0 := GetThreeDimArrayCoordinates(feature2, i, j)   // Coordinates of LineString
+				lineY1, lineX1 := GetThreeDimArrayCoordinates(feature2, i, j-1) // Coordinates of LineString
 
 				distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
 			}
@@ -158,22 +155,21 @@ func DistancePointMultiLineString(point Point, mlinestr MultiLineString) float64
 }
 
 // DistancePointPolygon finds the smallest distance between Point and Polygon
-func DistancePointPolygon(point Point, polygon Polygon) float64 {
+func DistancePointPolygon(feature1, feature2 *Feature) float64 {
+
 	var distance float64
+	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
+	distarr := make([]float64, 0)                   // Creates slice for distances between Point and edges of LineString
 
-	pcoord := (point.GetCoordinates()).([]float64)
-	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
-	distarr := make([]float64, 0)          // Creates slice for distances between Point and edges of LineString
-
-	coords := (polygon.GetCoordinates()).([][][]float64) // Convert interface to [][][]float64
-	if PIPJordanCurveTheorem(pointY, pointX, polygon.Coords) == true {
+	coords := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
+	if PIPJordanCurveTheorem(pointY, pointX, feature2.Geom.Coordinates) == true {
 		distance = 0
 	} else {
 		for i := range coords {
 			for j := range coords[i] {
 				if j > 0 {
-					lineY0, lineX0 := coords[i][j][0], coords[i][j][1]     // Coordinates of LineString
-					lineY1, lineX1 := coords[i][j-1][0], coords[i][j-1][1] // Coordinates of LineString
+					lineY0, lineX0 := GetThreeDimArrayCoordinates(feature2, i, j)   // Coordinates of LineString
+					lineY1, lineX1 := GetThreeDimArrayCoordinates(feature2, i, j-1) // Coordinates of LineString
 
 					distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
 				}
@@ -187,16 +183,13 @@ func DistancePointPolygon(point Point, polygon Polygon) float64 {
 }
 
 // DistancePointMultiPolygon finds the smallest distance between Point and Polygon
-func DistancePointMultiPolygon(point Point, multipol MultiPolygon) float64 {
+func DistancePointMultiPolygon(feature1, feature2 *Feature) float64 {
 
 	var distance float64
-
-	pcoord := (point.GetCoordinates()).([]float64)
-	pointY, pointX := pcoord[0], pcoord[1] // Coordinates of Point
-
+	pointY, pointX := GetPointCoordinates(feature1) // Coordinates of Point
 	distarr := make([]float64, 0)
 
-	coords := multipol.Coords // Convert interface to [][][]float64
+	coords := (feature2.Geom.Coordinates).([][][][]float64) // Convert interface to [][][]float64
 
 	for p := range coords {
 		if PIPJordanCurveTheorem(pointY, pointX, coords[p]) == true {
@@ -207,8 +200,8 @@ func DistancePointMultiPolygon(point Point, multipol MultiPolygon) float64 {
 			for i := range coords[p] {
 				for j := range coords[p][i] {
 					if j > 0 {
-						lineY0, lineX0 := coords[p][i][j][0], coords[p][i][j][1]     // Coordinates of LineString
-						lineY1, lineX1 := coords[p][i][j-1][0], coords[p][i][j-1][1] // Coordinates of LineString
+						lineY0, lineX0 := GetFourDimArrayCoordinates(feature2, p, i, j)   // Coordinates of LineString
+						lineY1, lineX1 := GetFourDimArrayCoordinates(feature2, p, i, j-1) // Coordinates of LineString
 
 						distarr = append(distarr, DistancePointLine(pointY, pointX, lineY0, lineX0, lineY1, lineX1))
 					}
@@ -222,21 +215,68 @@ func DistancePointMultiPolygon(point Point, multipol MultiPolygon) float64 {
 
 }
 
-// DistanceMultipointMultipoint counts distance between MultiPoint and MultiPoint
-func DistanceMultipointMultipoint(mpoint1 MultiPoint, mpoint2 MultiPoint) float64 {
+// DistanceLineStringLineString counts the smallest distance between two LineStrings
+func DistanceLineStringLineString(feature1, feature2 *Feature) float64 {
 
 	var distance float64
 
-	mult1 := mpoint1.Coords // Convert interface to [][]float64
-	mult2 := mpoint2.Coords // Convert interface to [][]float64
+	distarr := make([]float64, 0)
+	coords1 := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+	coords2 := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+
+	coordsArr1 := make([][]float64, 0)
+	coordsArr2 := make([][]float64, 0)
+
+	for i := range coords1 { // Finds coords of the first LineString
+		line1Y, line1X := GetTwoDimArrayCoordinates(feature1, i)
+		coordsArr1 = append(coordsArr1, []float64{line1Y, line1X})
+
+	}
+
+	for i := range coords2 { // Finds coords of the second LineString
+		line2Y, line2X := GetTwoDimArrayCoordinates(feature2, i)
+		coordsArr2 = append(coordsArr2, []float64{line2Y, line2X})
+	}
+
+	for i := 0; i < len(coordsArr1)-1; i++ {
+
+		line1Y1 := coordsArr1[i][0]
+		line1X1 := coordsArr1[i][1]
+		line1Y2 := coordsArr1[i+1][0]
+		line1X2 := coordsArr1[i+1][1]
+
+		for j := 0; j < len(coordsArr2)-1; j++ {
+
+			line2Y1 := coordsArr2[j][0]
+			line2X1 := coordsArr2[j][1]
+			line2Y2 := coordsArr2[j+1][0]
+			line2X2 := coordsArr2[j+1][1]
+
+			distarr = append(distarr, DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2))
+		}
+
+	}
+
+	distance = MinDistance(distarr)
+
+	return distance
+}
+
+// DistanceMultipointMultipoint counts distance between MultiPoint and MultiPoint
+func DistanceMultipointMultipoint(feature1, feature2 *Feature) float64 {
+
+	var distance float64
+
+	mult1 := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+	mult2 := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
 	for i := range mult1 {
-		y1, x1 := mult1[i][0], mult1[i][1]
+		y1, x1 := GetTwoDimArrayCoordinates(feature1, i)
 
 		for j := range mult2 {
-			y2, x2 := mult2[j][0], mult2[j][1]
+			y2, x2 := GetTwoDimArrayCoordinates(feature2, j)
 			distarr = append(distarr, DistancePointPointDeg(y1, x1, y2, x2)) // Adds distances to dastarr
 		}
 	}
@@ -247,24 +287,24 @@ func DistanceMultipointMultipoint(mpoint1 MultiPoint, mpoint2 MultiPoint) float6
 }
 
 // DistanceMultipointLinestring counts distance between Multipoint & Linestring
-func DistanceMultipointLinestring(mpoint MultiPoint, linestring LineString) float64 {
+func DistanceMultipointLinestring(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	multpoint := mpoint.Coords   // Convert interface to [][]float64
-	linestr := linestring.Coords // Convert interface to [][]float64
+	multpoint := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+	linestr := (feature2.Geom.Coordinates).([][]float64)   // Convert interface to [][]float64
 
 	distarr := make([]float64, 0)      // Creates slice for distances
 	lineCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
 	for i := range linestr { // Finds coords of the LineString
-		lineY, lineX := linestring.Coords[i][0], linestring.Coords[i][1]
+		lineY, lineX := GetTwoDimArrayCoordinates(feature2, i)
 		lineCoords = append(lineCoords, []float64{lineY, lineX})
 	}
 
 	for i := range multpoint {
 
-		y, x := mpoint.Coords[i][0], mpoint.Coords[i][1] // Coordinates of Multipoint[i] point
-		var lineY1, lineX1, lineY2, lineX2 float64       // Vars for Linestring's points
+		y, x := GetTwoDimArrayCoordinates(feature1, i) // Coordinates of Multipoint[i] point
+		var lineY1, lineX1, lineY2, lineX2 float64     // Vars for Linestring's points
 
 		for j := 0; j < len(lineCoords)-1; j++ {
 
@@ -287,12 +327,12 @@ func DistanceMultipointLinestring(mpoint MultiPoint, linestring LineString) floa
 }
 
 // DistanceMultiPointMultiLinestring counts distance between MultiPoint and MultiLineString
-func DistanceMultiPointMultiLinestring(mpoint MultiPoint, mlinestr MultiLineString) float64 {
+func DistanceMultiPointMultiLinestring(feature1, feature2 *Feature) float64 {
 
 	var distance float64
 
-	multpoint := mpoint.Coords     // Convert interface to [][]float64
-	multlinestr := mlinestr.Coords // Convert interface to [][][]float64
+	multpoint := (feature1.Geom.Coordinates).([][]float64)     // Convert interface to [][]float64
+	multlinestr := (feature2.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
 
 	distarr := make([]float64, 0)         // Creates slice for distances
 	lineCoords := make([][]float64, 0)    // Creates slice for coords of one line
@@ -300,7 +340,7 @@ func DistanceMultiPointMultiLinestring(mpoint MultiPoint, mlinestr MultiLineStri
 
 	for i := range multlinestr { // Finds coords of the MultiLineString
 		for j := range multlinestr[i] {
-			lineY, lineX := mlinestr.Coords[i][j][0], mlinestr.Coords[i][j][1]
+			lineY, lineX := GetThreeDimArrayCoordinates(feature2, i, j)
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
@@ -309,7 +349,7 @@ func DistanceMultiPointMultiLinestring(mpoint MultiPoint, mlinestr MultiLineStri
 	}
 
 	for i := range multpoint {
-		y, x := mpoint.Coords[i][0], mpoint.Coords[i][1] // Coordinates of Multipoint[i] point
+		y, x := GetTwoDimArrayCoordinates(feature1, i) // Coordinates of Multipoint[i] point
 
 		for m := range mlineCoords {
 			for j := 0; j < len(mlineCoords[m])-1; j++ {
@@ -331,18 +371,18 @@ func DistanceMultiPointMultiLinestring(mpoint MultiPoint, mlinestr MultiLineStri
 }
 
 // DistanceMultiPointPolygon counts distance between MultiPoint and Polygon
-func DistanceMultiPointPolygon(mpoint MultiPoint, polyg Polygon) float64 {
+func DistanceMultiPointPolygon(feature1, feature2 *Feature) float64 {
 
 	var distance float64
-	multipoint := mpoint.Coords // Convert interface to [][]float64
-	polygon := polyg.Coords     // Convert interface to [][][]float64
+	multipoint := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+	polygon := (feature2.Geom.Coordinates).([][][]float64)  // Convert interface to [][][]float64
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
 	for i := range multipoint {
-		yPoint, xPoint := mpoint.Coords[i][0], mpoint.Coords[i][1] // Coordinates of Multipoint[i] point
+		yPoint, xPoint := GetTwoDimArrayCoordinates(feature1, i) // Coordinates of Multipoint[i] point
 
-		if PIPJordanCurveTheorem(yPoint, xPoint, polyg.Coords) == true {
+		if PIPJordanCurveTheorem(yPoint, xPoint, feature2.Geom.Coordinates) == true {
 			distance = 0
 			break
 
@@ -369,15 +409,15 @@ func DistanceMultiPointPolygon(mpoint MultiPoint, polyg Polygon) float64 {
 }
 
 // DistanceMultiPointMultiPolygon counts distance between MultiPoint and MultiPolygon
-func DistanceMultiPointMultiPolygon(mpoint MultiPoint, mpolyg MultiPolygon) float64 {
+func DistanceMultiPointMultiPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
-	multipoint := mpoint.Coords  // Convert interface to [][]float64
-	multpolygon := mpolyg.Coords // Convert interface to [][][][]float64
+	multipoint := (feature1.Geom.Coordinates).([][]float64)      // Convert interface to [][]float64
+	multpolygon := (feature2.Geom.Coordinates).([][][][]float64) // Convert interface to [][][][]float64
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
 	for i := range multipoint {
-		yPoint, xPoint := mpoint.Coords[i][0], mpoint.Coords[i][1] // Coordinates of Multipoint[i] point
+		yPoint, xPoint := GetTwoDimArrayCoordinates(feature1, i) // Coordinates of Multipoint[i] point
 
 		for m := range multpolygon {
 
@@ -409,65 +449,18 @@ func DistanceMultiPointMultiPolygon(mpoint MultiPoint, mpolyg MultiPolygon) floa
 
 }
 
-// DistanceLineStringLineString counts the smallest distance between two LineStrings
-func DistanceLineStringLineString(linestr1 LineString, linestr2 LineString) float64 {
-
-	var distance float64
-
-	distarr := make([]float64, 0)
-	coords1 := linestr1.Coords // Convert interface to [][]float64
-	coords2 := linestr2.Coords // Convert interface to [][]float64
-
-	coordsArr1 := make([][]float64, 0)
-	coordsArr2 := make([][]float64, 0)
-
-	for i := range coords1 { // Finds coords of the first LineString
-		line1Y, line1X := linestr1.Coords[i][0], linestr1.Coords[i][1]
-		coordsArr1 = append(coordsArr1, []float64{line1Y, line1X})
-
-	}
-
-	for i := range coords2 { // Finds coords of the second LineString
-		line2Y, line2X := linestr2.Coords[i][0], linestr2.Coords[i][1]
-		coordsArr2 = append(coordsArr2, []float64{line2Y, line2X})
-	}
-
-	for i := 0; i < len(coordsArr1)-1; i++ {
-
-		line1Y1 := coordsArr1[i][0]
-		line1X1 := coordsArr1[i][1]
-		line1Y2 := coordsArr1[i+1][0]
-		line1X2 := coordsArr1[i+1][1]
-
-		for j := 0; j < len(coordsArr2)-1; j++ {
-
-			line2Y1 := coordsArr2[j][0]
-			line2X1 := coordsArr2[j][1]
-			line2Y2 := coordsArr2[j+1][0]
-			line2X2 := coordsArr2[j+1][1]
-
-			distarr = append(distarr, DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2))
-		}
-
-	}
-
-	distance = MinDistance(distarr)
-
-	return distance
-}
-
 // DistanceLineStringMultiLineString counts distance between LineString and MultiLineString
-func DistanceLineStringMultiLineString(lstr LineString, mlstr MultiLineString) float64 {
+func DistanceLineStringMultiLineString(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	linestr := lstr.Coords
-	mlinestr := mlstr.Coords
+	linestr := (feature1.Geom.Coordinates).([][]float64)
+	mlinestr := (feature2.Geom.Coordinates).([][][]float64)
 
 	distarr := make([]float64, 0)         // Creates slice for distances
 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
 	for i := range linestr { // Finds coords of LineString
-		lineY, lineX := lstr.Coords[i][0], lstr.Coords[i][1]
+		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
 	}
 
@@ -493,17 +486,17 @@ func DistanceLineStringMultiLineString(lstr LineString, mlstr MultiLineString) f
 }
 
 // DistanceLineStringPolygon counts distance between LineString and  Polygon
-func DistanceLineStringPolygon(lstr LineString, pol Polygon) float64 {
+func DistanceLineStringPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	linestr := lstr.Coords
-	polyg := pol.Coords
+	linestr := (feature1.Geom.Coordinates).([][]float64)
+	polyg := (feature2.Geom.Coordinates).([][][]float64)
 
 	distarr := make([]float64, 0)         // Creates slice for distances
 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
 	for i := range linestr { // Finds coords of LineString
-		lineY, lineX := lstr.Coords[i][0], lstr.Coords[i][1]
+		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
 	}
 
@@ -541,17 +534,17 @@ func DistanceLineStringPolygon(lstr LineString, pol Polygon) float64 {
 }
 
 // DistanceLineStringMultiPolygon counts distance between LineString and  Polygon
-func DistanceLineStringMultiPolygon(lstr LineString, mpol MultiPolygon) float64 {
+func DistanceLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	linestr := lstr.Coords
-	mpolyg := mpol.Coords
+	linestr := (feature1.Geom.Coordinates).([][]float64)
+	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
 
 	distarr := make([]float64, 0)         // Creates slice for distances
 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
 	for i := range linestr { // Finds coords of LineString
-		lineY, lineX := lstr.Coords[i][0], lstr.Coords[i][1]
+		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
 	}
 
@@ -595,12 +588,12 @@ func DistanceLineStringMultiPolygon(lstr LineString, mpol MultiPolygon) float64 
 }
 
 // DistanceMultiLineStringMultiLineString counts distance between MultiLineString and MultiLineString
-func DistanceMultiLineStringMultiLineString(ml1 MultiLineString, ml2 MultiLineString) float64 {
+func DistanceMultiLineStringMultiLineString(feature1, feature2 *Feature) float64 {
 
 	var distance float64
 
-	multlinestr := ml1.Coords
-	mlinestr := ml2.Coords
+	multlinestr := (feature1.Geom.Coordinates).([][][]float64)
+	mlinestr := (feature2.Geom.Coordinates).([][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
@@ -628,11 +621,11 @@ func DistanceMultiLineStringMultiLineString(ml1 MultiLineString, ml2 MultiLineSt
 }
 
 // DistanceMultiLineStringPolygon counts distance between MultiLineString and  Polygon
-func DistanceMultiLineStringPolygon(mlnstr MultiLineString, pol Polygon) float64 {
+func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	mlinestr := mlnstr.Coords
-	polyg := pol.Coords
+	mlinestr := (feature1.Geom.Coordinates).([][][]float64)
+	polyg := (feature2.Geom.Coordinates).([][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
@@ -641,7 +634,7 @@ func DistanceMultiLineStringPolygon(mlnstr MultiLineString, pol Polygon) float64
 
 	for i := range mlinestr { // Finds coords of the MultiLineString
 		for j := range mlinestr[i] {
-			lineY, lineX := mlinestr[i][j][0], mlinestr[i][j][1]
+			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
@@ -688,18 +681,19 @@ func DistanceMultiLineStringPolygon(mlnstr MultiLineString, pol Polygon) float64
 }
 
 // DistanceMultiLineStringMultiPolygon counts distance between MultiLineString and  MultiPolygon
-func DistanceMultiLineStringMultiPolygon(mlstr MultiLineString, mpl MultiPolygon) float64 {
+func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	mlinestr := mlstr.Coords
-	mpolyg := mpl.Coords
+	mlinestr := (feature1.Geom.Coordinates).([][][]float64)
+	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
+
 	distarr := make([]float64, 0)         // Creates slice for distances
 	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
 	lineCoords := make([][]float64, 0)    // Creates slice for coords of one line
 
 	for i := range mlinestr { // Finds coords of the MultiLineString
 		for j := range mlinestr[i] {
-			lineY, lineX := mlstr.Coords[i][j][0], mlstr.Coords[i][j][1]
+			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
@@ -751,11 +745,11 @@ func DistanceMultiLineStringMultiPolygon(mlstr MultiLineString, mpl MultiPolygon
 }
 
 // DistancePolygonPolygon counts distance between Polygon and Polygon
-func DistancePolygonPolygon(pol1 Polygon, pol2 Polygon) float64 {
+func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	polyg1 := pol1.Coords
-	polyg2 := pol2.Coords
+	polyg1 := (feature1.Geom.Coordinates).([][][]float64)
+	polyg2 := (feature2.Geom.Coordinates).([][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
@@ -764,14 +758,14 @@ func DistancePolygonPolygon(pol1 Polygon, pol2 Polygon) float64 {
 
 	for i := range polyg1 { // Finds coords of the first Polygon
 		for j := range polyg1[i] {
-			y, x := pol1.Coords[i][j][0], pol1.Coords[i][j][1]
+			y, x := GetThreeDimArrayCoordinates(feature1, i, j)
 			polyg1Coords = append(polyg1Coords, []float64{y, x})
 		}
 	}
 
 	for i := range polyg2 { // Finds coords of the second Polygon
 		for j := range polyg2[i] {
-			y, x := pol2.Coords[i][j][0], pol2.Coords[i][j][1]
+			y, x := GetThreeDimArrayCoordinates(feature2, i, j)
 			polyg2Coords = append(polyg2Coords, []float64{y, x})
 		}
 	}
@@ -831,11 +825,11 @@ func DistancePolygonPolygon(pol1 Polygon, pol2 Polygon) float64 {
 }
 
 // DistancePolygonMultiPolygon  counts distance between Polygon and MultiPolygon
-func DistancePolygonMultiPolygon(plgn Polygon, mplgn MultiPolygon) float64 {
+func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	polyg := plgn.Coords
-	mpolyg := mplgn.Coords
+	polyg := (feature1.Geom.Coordinates).([][][]float64)
+	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
@@ -846,7 +840,7 @@ func DistancePolygonMultiPolygon(plgn Polygon, mplgn MultiPolygon) float64 {
 
 	for i := range polyg { // Finds coords of the Polygon
 		for j := range polyg[i] {
-			lineY, lineX := plgn.Coords[i][j][0], plgn.Coords[i][j][1]
+			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
 			plineCoords = append(plineCoords, []float64{lineY, lineX})
 		}
 		polygCoords = append(polygCoords, plineCoords)
@@ -858,7 +852,7 @@ func DistancePolygonMultiPolygon(plgn Polygon, mplgn MultiPolygon) float64 {
 		for p := range mpolyg[m] {
 			for i := range mpolyg[m][p] {
 
-				lineY, lineX := mplgn.Coords[m][p][i][0], mplgn.Coords[m][p][i][1]
+				lineY, lineX := GetFourDimArrayCoordinates(feature2, m, p, i)
 				mlineCoords = append(mlineCoords, []float64{lineY, lineX})
 
 			}
@@ -934,11 +928,11 @@ func DistancePolygonMultiPolygon(plgn Polygon, mplgn MultiPolygon) float64 {
 }
 
 // DistanceMultiPolygonMultiPolygon counts distance between MultiPolygon and MultiPolygon
-func DistanceMultiPolygonMultiPolygon(mplg1 MultiPolygon, mplg2 MultiPolygon) float64 {
+func DistanceMultiPolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 	var distance float64
 
-	mpolyg1 := mplg1.Coords
-	mpolyg2 := mplg2.Coords
+	mpolyg1 := (feature1.Geom.Coordinates).([][][][]float64)
+	mpolyg2 := (feature2.Geom.Coordinates).([][][][]float64)
 
 	distarr := make([]float64, 0)
 
@@ -950,7 +944,7 @@ func DistanceMultiPolygonMultiPolygon(mplg1 MultiPolygon, mplg2 MultiPolygon) fl
 	for m := range mpolyg1 {
 		for p := range mpolyg1[m] {
 			for i := range mpolyg1[m][p] {
-				lineY, lineX := mplg1.Coords[m][p][i][0], mplg1.Coords[m][p][i][1]
+				lineY, lineX := GetFourDimArrayCoordinates(feature1, m, p, i)
 				mline1Coords = append(mline1Coords, []float64{lineY, lineX})
 			}
 			mpolyg1Coords = append(mpolyg1Coords, mline1Coords)
@@ -962,7 +956,7 @@ func DistanceMultiPolygonMultiPolygon(mplg1 MultiPolygon, mplg2 MultiPolygon) fl
 	for m := range mpolyg2 {
 		for p := range mpolyg2[m] {
 			for i := range mpolyg2[m][p] {
-				lineY, lineX := mplg2.Coords[m][p][i][0], mplg2.Coords[m][p][i][1]
+				lineY, lineX := GetFourDimArrayCoordinates(feature2, m, p, i)
 				mline2Coords = append(mline2Coords, []float64{lineY, lineX})
 			}
 			mpolyg2Coords = append(mpolyg2Coords, mline2Coords)
