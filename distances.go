@@ -7,7 +7,7 @@ import (
 const rad = math.Pi / 180 // Convert degrees to radians
 
 // EarthRadius radius of the Earth
-const EarthRadius = 6371000.0
+const EarthRadius = 6370986.884258304
 
 // DistancePointPointDeg count distance between two points (degree parameters)
 func DistancePointPointDeg(y1, x1, y2, x2 float64) float64 {
