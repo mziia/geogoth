@@ -14,8 +14,8 @@ func LineStringLength(feature *Feature) float64 {
 
 	for i := 0; i < len(lineCoords)-1; i++ {
 
-		length_tmp := DistancePointPointDeg(lineCoords[i][0], lineCoords[i][1], lineCoords[i+1][0], lineCoords[i+1][1])
-		length = length + length_tmp
+		lengthTmp := DistancePointPointDeg(lineCoords[i][0], lineCoords[i][1], lineCoords[i+1][0], lineCoords[i+1][1])
+		length = length + lengthTmp
 	}
 
 	return length
@@ -43,8 +43,8 @@ func MultiLineStringLength(feature *Feature) float64 {
 
 		for j := 0; j < len(mlineCoords[i])-1; j++ {
 
-			length_tmp := DistancePointPointDeg(mlineCoords[i][j][0], mlineCoords[i][j][1], mlineCoords[i][j+1][0], mlineCoords[i][j+1][1])
-			length = length + length_tmp
+			lengthTmp := DistancePointPointDeg(mlineCoords[i][j][0], mlineCoords[i][j][1], mlineCoords[i][j+1][0], mlineCoords[i][j+1][1])
+			length = length + lengthTmp
 		}
 
 	}
@@ -74,8 +74,8 @@ func PolygonLength(feature *Feature) float64 {
 
 		for j := 0; j < len(polygCoords[i])-1; j++ {
 
-			length_tmp := DistancePointPointDeg(polygCoords[i][j][0], polygCoords[i][j][1], polygCoords[i][j+1][0], polygCoords[i][j+1][1])
-			length = length + length_tmp
+			lengthTmp := DistancePointPointDeg(polygCoords[i][j][0], polygCoords[i][j][1], polygCoords[i][j+1][0], polygCoords[i][j+1][1])
+			length = length + lengthTmp
 		}
 
 	}
@@ -109,8 +109,8 @@ func MultipolygonLength(feature *Feature) float64 {
 	for i := range mpolygCoords {
 		for j := 0; j < len(mpolygCoords[i])-1; j++ {
 
-			length_tmp := DistancePointPointDeg(mpolygCoords[i][j][0], mpolygCoords[i][j][1], mpolygCoords[i][j+1][0], mpolygCoords[i][j+1][1])
-			length = length + length_tmp
+			lengthTmp := DistancePointPointDeg(mpolygCoords[i][j][0], mpolygCoords[i][j][1], mpolygCoords[i][j+1][0], mpolygCoords[i][j+1][1])
+			length = length + lengthTmp
 		}
 	}
 

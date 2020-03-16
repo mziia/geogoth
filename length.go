@@ -5,7 +5,6 @@ func (feature *Feature) Length() float64 {
 	var length float64
 
 	switch GetGeoType(feature) {
-
 	case "Point": //  Point length
 		length = 0
 	case "MultiPoint": //  Point length
