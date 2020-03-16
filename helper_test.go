@@ -81,8 +81,8 @@ func TestPIPJordanCurveTheorem(t *testing.T) {
 	feature001.SetID("000001")
 	feature001.SetGeometry(point001)
 
-	y, x = GetPointCoordinates(feature001)
-	pol = feature.Geom.Coordinates
+	// GetPointCoordinates(feature001)
+	// _ = feature.Geom.Coordinates
 	assert.True(PointInPolygon(feature001, feature) == true)
 
 }
