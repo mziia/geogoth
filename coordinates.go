@@ -83,7 +83,7 @@ func NewMultiPolygon(polygons [][][][]float64) *Geometry {
 	}
 }
 
-// GetFourDimArrayCoordinates returns array of longitude, latitude of Three-dimensional arrays (MultiLineString, Polygon)
+// GetFourDimArrayCoordinates returns array of longitude, latitude of Four-dimensional arrays (MultiPolygon)
 // coordnum - index of coordinate arr
 func GetFourDimArrayCoordinates(feature *Feature, setsnum, setnum, coordnum int) (float64, float64) {
 	coords := (feature.Geom.Coordinates).([][][][]float64)
