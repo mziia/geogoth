@@ -65,8 +65,8 @@ func (m MultiPoint) DistanceTo(f Feature) float64 {
 		distance = DistanceMultiPointPolygon(&m, &polyg)
 
 	case "MultiPolygon":
-		mpol := f.(*MultiPolygon)
-		distance = DistanceMultiPointMultiPolygon(m, *mpol)
+		mpol := f.(MultiPolygon)
+		distance = DistanceMultiPointMultiPolygon(&m, &mpol)
 	}
 
 	return distance

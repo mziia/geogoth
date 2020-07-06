@@ -396,34 +396,28 @@ func DistanceMultiPointPolygon(multiPoint *MultiPoint, polygon *Polygon) float64
 }
 
 // DistanceMultiPointMultiPolygon counts distance between MultiPoint and MultiPolygon
-func DistanceMultiPointMultiPolygon(feature1, feature2 *Feature) float64 {
+func DistanceMultiPointMultiPolygon(multiPoint *MultiPoint, multiPolygon *MultiPolygon) float64 {
 	var distance float64
-	multipoint := (feature1.Geom.Coordinates).([][]float64)      // Convert interface to [][]float64
-	multpolygon := (feature2.Geom.Coordinates).([][][][]float64) // Convert interface to [][][][]float64
+	multiPointCoords := (multiPoint.Coordinates()).([][]float64)         // Convert interface to [][]float64
+	multiPolygonCoords := (multiPolygon.Coordinates()).([][][][]float64) // Convert interface to [][][][]float64
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
-	for i := range multipoint {
-		yPoint, xPoint := GetTwoDimArrayCoordinates(feature1, i) // Coordinates of Multipoint[i] point
+	for i := range multiPointCoords {
+		yPoint, xPoint := multiPoint.GetCoordinates(i) // Coordinates of Multipoint[i] point
 
-		for m := range multpolygon {
+		for m := range multiPolygonCoords {
 
-			if PIPJordanCurveTheorem(yPoint, xPoint, multpolygon[m]) == true {
+			if PIPJordanCurveTheorem(yPoint, xPoint, multiPolygonCoords[m]) == true {
 				distance = 0
 				break
 
 			} else {
 
-				for j := range multpolygon[m] {
+				for j := range multiPolygonCoords[m] {
+					for p := 0; p < len(multiPolygonCoords[m][j])-1; p++ {
 
-					for p := 0; p < len(multpolygon[m][j])-1; p++ {
-
-						yPol1 := multpolygon[m][j][p][0]
-						xPol1 := multpolygon[m][j][p][1]
-						yPol2 := multpolygon[m][j][p+1][0]
-						xPol2 := multpolygon[m][j][p+1][1]
-
-						distarr = append(distarr, DistancePointLine(yPoint, xPoint, yPol1, xPol1, yPol2, xPol2))
+						distarr = append(distarr, DistancePointLine(yPoint, xPoint, multiPolygonCoords[m][j][p][0], multiPolygonCoords[m][j][p][1], multiPolygonCoords[m][j][p+1][0], multiPolygonCoords[m][j][p+1][1]))
 					}
 				}
 				distance = MinDistance(distarr)
