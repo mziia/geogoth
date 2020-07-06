@@ -268,20 +268,20 @@ func DistanceLineStringLineString(feature1, feature2 *Feature) float64 {
 }
 
 // DistanceMultipointMultipoint counts distance between MultiPoint and MultiPoint
-func DistanceMultipointMultipoint(feature1, feature2 *Feature) float64 {
+func DistanceMultipointMultipoint(multiPoint *MultiPoint, mPoint *MultiPoint) float64 {
 
 	var distance float64
 
-	mult1 := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
-	mult2 := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+	multiPointCoords := (multiPoint.Coordinates()).([][]float64) // Convert interface to [][]float64
+	mPointCoords := (mPoint.Coordinates()).([][]float64)         // Convert interface to [][]float64
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
-	for i := range mult1 {
-		y1, x1 := GetTwoDimArrayCoordinates(feature1, i)
+	for i := range multiPointCoords {
+		y1, x1 := multiPoint.GetCoordinates(i)
 
-		for j := range mult2 {
-			y2, x2 := GetTwoDimArrayCoordinates(feature2, j)
+		for j := range mPointCoords {
+			y2, x2 := mPoint.GetCoordinates(j)
 			distarr = append(distarr, DistancePointPointDeg(y1, x1, y2, x2)) // Adds distances to dastarr
 		}
 	}
