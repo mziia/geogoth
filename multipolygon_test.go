@@ -19,13 +19,13 @@ func TestNewMultiPolygon(t *testing.T) {
 
 }
 
-func TestGetCoordinatesMPolyg(t *testing.T) {
+func TestCoordinatesMPolyg(t *testing.T) {
 	assert := assert.New(t)
 
 	mpolyg := &Objects.Object7
 	CreateObj7()
 
-	coords := (mpolyg.GetCoordinates()).([][][][]float64)
+	coords := (mpolyg.Coordinates()).([][][][]float64)
 
 	assert.True(coords[0][0][2][0] == 37.596588134765625)
 	assert.True(coords[0][0][4][1] == 55.76189525593947)
@@ -34,16 +34,16 @@ func TestGetCoordinatesMPolyg(t *testing.T) {
 
 }
 
-func TestGetTypeMPolyg(t *testing.T) {
+func TestTypeMPolyg(t *testing.T) {
 	assert := assert.New(t)
 
 	mpolyg := &Objects.Object7
 	CreateObj7()
 
-	assert.True(mpolyg.GetType() == "MultiPolygon")
+	assert.True(mpolyg.Type() == "MultiPolygon")
 }
 
-func TestGetLengthMPolygon(t *testing.T) {
+func TestLengthMPolygon(t *testing.T) {
 	assert := assert.New(t)
 
 	mpolyg := NewMultiPolygon([][][][]float64{
@@ -67,7 +67,7 @@ func TestGetLengthMPolygon(t *testing.T) {
 				[]float64{37.60414123535156, 55.78062774182665},
 				[]float64{37.57427215576172, 55.74856460562653}}}})
 
-	assert.True(mpolyg.GetLength() == 27769.448354979733)
+	assert.True(mpolyg.Length() == 27769.448354979733)
 
 }
 

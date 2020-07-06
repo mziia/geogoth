@@ -17,28 +17,28 @@ func TestNewLineString(t *testing.T) {
 
 }
 
-func TestGetCoordinateslStr(t *testing.T) {
+func TestCoordinateslStr(t *testing.T) {
 	assert := assert.New(t)
 
 	lstr := &Objects.Object4
 	CreateObj4()
 
-	coords := (lstr.GetCoordinates()).([][]float64)
+	coords := (lstr.Coordinates()).([][]float64)
 
 	assert.True(coords[1][0] == 37.570792444518)
 	assert.True(coords[1][1] == 55.784581739175)
 }
 
-func TestGetTypeLineStr(t *testing.T) {
+func TestTypeLineStr(t *testing.T) {
 	assert := assert.New(t)
 
 	linestr := &Objects.Object4
 	CreateObj4()
 
-	assert.True(linestr.GetType() == "LineString")
+	assert.True(linestr.Type() == "LineString")
 }
 
-func TestNGetLengthLineString(t *testing.T) {
+func TestNLengthLineString(t *testing.T) {
 	assert := assert.New(t)
 
 	linestr := NewLineString([][]float64{
@@ -50,7 +50,7 @@ func TestNGetLengthLineString(t *testing.T) {
 		[]float64{37.59727478027344, 55.70796502063464},
 		[]float64{37.61272430419922, 55.70100085220915},
 	})
-	assert.True(linestr.GetLength() == 8023.4822342726075)
+	assert.True(linestr.Length() == 8023.4822342726075)
 
 }
 

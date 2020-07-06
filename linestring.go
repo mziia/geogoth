@@ -12,18 +12,29 @@ func NewLineString(coords [][]float64) LineString {
 	}
 }
 
-// GetCoordinates returns array of longitude, latitude of the LineString
-func (l LineString) GetCoordinates() interface{} {
+// Coordinates returns array of longitude, latitude of the LineString
+func (l LineString) Coordinates() interface{} {
 	return l.Coords // longitude (Y), latitude (X)
 }
 
-// GetType returns type of the LineString (LineString)
-func (l LineString) GetType() string {
+// GetCoordinates returns array of longitude, latitude of LineString
+// coordnum - index of coordinate arr
+func (l LineString) GetCoordinates(coordnum int) (float64, float64) {
+	coords := (l.Coordinates()).([][]float64)
+
+	lon := coords[coordnum][0]
+	lat := coords[coordnum][1]
+
+	return lon, lat // longitude (Y), latitude (X)
+}
+
+// Type returns type of the LineString (LineString)
+func (l LineString) Type() string {
 	return "LineString"
 }
 
-// GetLength returns length of the LineString
-func (l LineString) GetLength() float64 {
+// Length returns length of the LineString
+func (l LineString) Length() float64 {
 	return LineStringLength(l)
 }
 
@@ -32,7 +43,7 @@ func (l LineString) DistanceTo(f Feature) float64 {
 
 	var distance float64
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		point := f.(*Point)
 		distance = DistancePointLinstring(*point, l)
@@ -65,7 +76,7 @@ func (l LineString) DistanceTo(f Feature) float64 {
 func (l LineString) IntersectsWith(f Feature) bool {
 	var intersection bool
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		// point := f.(*Point)
 

@@ -12,18 +12,29 @@ func NewMultiPolygon(coords [][][][]float64) MultiPolygon {
 	}
 }
 
-// GetCoordinates returns array of longitude, latitude of the MultiPolygon
-func (m MultiPolygon) GetCoordinates() interface{} {
+// Coordinates returns array of longitude, latitude of the MultiPolygon
+func (m MultiPolygon) Coordinates() interface{} {
 	return m.Coords
 }
 
-// GetType returns type of the MultiPolygon (MultiPolygon)
-func (m MultiPolygon) GetType() string {
+// GetCoordinates returns array of longitude, latitude of Three-dimensional arrays (MultiLineString, Polygon)
+// coordnum - index of coordinate arr
+func (m MultiPolygon) GetCoordinates(setsnum, setnum, coordnum int) (float64, float64) {
+	coords := (m.Coordinates()).([][][][]float64)
+
+	lon := coords[setsnum][setnum][coordnum][0]
+	lat := coords[setsnum][setnum][coordnum][1]
+
+	return lon, lat // longitude (Y), latitude (X)
+}
+
+// Type returns type of the MultiPolygon (MultiPolygon)
+func (m MultiPolygon) Type() string {
 	return "MultiPolygon"
 }
 
-// GetLength returns length of the MultiPolygon
-func (m MultiPolygon) GetLength() float64 {
+// Length returns length of the MultiPolygon
+func (m MultiPolygon) Length() float64 {
 	return MultipolygonLength(m)
 }
 
@@ -32,7 +43,7 @@ func (m MultiPolygon) DistanceTo(f Feature) float64 {
 
 	var distance float64
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		point := f.(*Point)
 		distance = DistancePointMultiPolygon(*point, m)
@@ -65,7 +76,7 @@ func (m MultiPolygon) DistanceTo(f Feature) float64 {
 func (m MultiPolygon) IntersectsWith(f Feature) bool {
 	var intersection bool
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		// point := f.(*Point)
 

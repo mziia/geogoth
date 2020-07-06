@@ -12,18 +12,29 @@ func NewMultiPoint(coords [][]float64) MultiPoint {
 	}
 }
 
-// GetCoordinates returns array of longitude, latitude of the MultiPoint
-func (m MultiPoint) GetCoordinates() interface{} {
+// Coordinates returns array of longitude, latitude of the MultiPoint
+func (m MultiPoint) Coordinates() interface{} {
 	return m.Coords // longitude (Y), latitude (X)
 }
 
-// GetType returns type of the MultiPoint (MultiPoint)
-func (m MultiPoint) GetType() string {
+// GetCoordinates returns array of longitude, latitude of MultiPoint
+// coordnum - index of coordinate arr
+func (m MultiPoint) GetCoordinates(coordnum int) (float64, float64) {
+	coords := (m.Coordinates()).([][]float64)
+
+	lon := coords[coordnum][0]
+	lat := coords[coordnum][1]
+
+	return lon, lat // longitude (Y), latitude (X)
+}
+
+// Type returns type of the MultiPoint (MultiPoint)
+func (m MultiPoint) Type() string {
 	return "MultiPoint"
 }
 
-// GetLength returns length of the MultiPoint
-func (m MultiPoint) GetLength() float64 {
+// Length returns length of the MultiPoint
+func (m MultiPoint) Length() float64 {
 	return 0
 }
 
@@ -32,7 +43,7 @@ func (m MultiPoint) DistanceTo(f Feature) float64 {
 
 	var distance float64
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		point := f.(*Point)
 		distance = DistancePointMultipoint(*point, m)
@@ -65,7 +76,7 @@ func (m MultiPoint) DistanceTo(f Feature) float64 {
 func (m MultiPoint) IntersectsWith(f Feature) bool {
 	var intersection bool
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		// point := f.(*Point)
 

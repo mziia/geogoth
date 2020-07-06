@@ -17,26 +17,26 @@ func TestNewMultiLineString(t *testing.T) {
 
 }
 
-func TestGetCoordinatesMlinestr(t *testing.T) {
+func TestCoordinatesMlinestr(t *testing.T) {
 	assert := assert.New(t)
 
 	mlstr := &Objects.Object5
 	CreateObj5()
 
-	coords := (mlstr.GetCoordinates()).([][][]float64)
+	coords := (mlstr.Coordinates()).([][][]float64)
 
 	assert.True(coords[0][0][0] == 37.61911869049072)
 	assert.True(coords[1][1][1] == 55.754989002265646)
 
 }
 
-func TestGetTypeMLineStr(t *testing.T) {
+func TestTypeMLineStr(t *testing.T) {
 	assert := assert.New(t)
 
 	mlinestr := &Objects.Object5
 	CreateObj5()
 
-	assert.True(mlinestr.GetType() == "MultiLineString")
+	assert.True(mlinestr.Type() == "MultiLineString")
 }
 
 func TestLengthMLineStr(t *testing.T) {
@@ -51,7 +51,7 @@ func TestLengthMLineStr(t *testing.T) {
 			[]float64{37.6255989074707, 55.74665640434626},
 			[]float64{37.62989044189453, 55.74503798328292}}})
 
-	assert.True(multLine.GetLength() == 3434.744143073227)
+	assert.True(multLine.Length() == 3434.744143073227)
 
 }
 

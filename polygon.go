@@ -12,18 +12,29 @@ func NewPolygon(coords [][][]float64) Polygon {
 	}
 }
 
-// GetCoordinates returns array of longitude, latitude of the Polygon
-func (p Polygon) GetCoordinates() interface{} {
+// Coordinates returns array of longitude, latitude of the Polygon
+func (p Polygon) Coordinates() interface{} {
 	return p.Coords // longitude (Y), latitude (X)
 }
 
-// GetType returns type of the Polygon (Polygon)
-func (p Polygon) GetType() string {
+// GetCoordinates returns array of longitude, latitude of  Polygon
+// coordnum - index of coordinate arr
+func (p Polygon) GetCoordinates(setnum, coordnum int) (float64, float64) {
+	coords := (p.Coordinates()).([][][]float64)
+
+	lon := coords[setnum][coordnum][0]
+	lat := coords[setnum][coordnum][1]
+
+	return lon, lat // longitude (Y), latitude (X)
+}
+
+// Type returns type of the Polygon (Polygon)
+func (p Polygon) Type() string {
 	return "Polygon"
 }
 
-// GetLength returns length of the Polygon
-func (p Polygon) GetLength() float64 {
+// Length returns length of the Polygon
+func (p Polygon) Length() float64 {
 	return PolygonLength(p)
 }
 
@@ -32,7 +43,7 @@ func (p Polygon) DistanceTo(f Feature) float64 {
 
 	var distance float64
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		point := f.(*Point)
 		distance = DistancePointPolygon(*point, p)
@@ -65,7 +76,7 @@ func (p Polygon) DistanceTo(f Feature) float64 {
 func (p Polygon) IntersectsWith(f Feature) bool {
 	var intersection bool
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		// point := f.(*Point)
 

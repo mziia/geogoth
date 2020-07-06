@@ -16,36 +16,36 @@ func TestNewPoint(t *testing.T) {
 	assert.True(point.X == 55.752)
 }
 
-func TestGetCoordinatesPoint(t *testing.T) {
+func TestCoordinatesPoint(t *testing.T) {
 	assert := assert.New(t)
 
 	point := &Objects.Object1
 	CreateObj1()
 
-	coord := (point.GetCoordinates()).([]float64)
+	coord := (point.Coordinates()).([]float64)
 	y, x := coord[0], coord[1]
 
 	assert.True(y == 37.6175)
 	assert.True(x == 55.752)
 }
 
-func TestGetTypePoint(t *testing.T) {
+func TestTypePoint(t *testing.T) {
 	assert := assert.New(t)
 
 	point := &Objects.Object1
 	CreateObj1()
 
-	assert.True(point.GetType() == "Point")
+	assert.True(point.Type() == "Point")
 }
 
-func TestGetLengthPoint(t *testing.T) {
+func TestLengthPoint(t *testing.T) {
 	assert := assert.New(t)
 
 	point := &Objects.Object1
 	CreateObj1()
 
-	assert.True(point.GetLength() == 0)
-	assert.False(point.GetLength() == 37.6175)
+	assert.True(point.Length() == 0)
+	assert.False(point.Length() == 37.6175)
 }
 
 func TestDistanceToPoint(t *testing.T) {

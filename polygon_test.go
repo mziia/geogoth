@@ -17,25 +17,25 @@ func TestNewPolygon(t *testing.T) {
 
 }
 
-func TestGetCoordinatesPolyg(t *testing.T) {
+func TestCoordinatesPolyg(t *testing.T) {
 	assert := assert.New(t)
 
 	polyg := &Objects.Object6
 	CreateObj6()
 
-	coords := (polyg.GetCoordinates()).([][][]float64)
+	coords := (polyg.Coordinates()).([][][]float64)
 
 	assert.True(coords[0][4][0] == 37.61246681213379)
 	assert.True(coords[0][4][1] == 55.75209090920951)
 }
 
-func TestGetTypePolyg(t *testing.T) {
+func TestTypePolyg(t *testing.T) {
 	assert := assert.New(t)
 
 	polyg := &Objects.Object6
 	CreateObj6()
 
-	assert.True(polyg.GetType() == "Polygon")
+	assert.True(polyg.Type() == "Polygon")
 }
 
 func TestLength(t *testing.T) {
@@ -54,7 +54,7 @@ func TestLength(t *testing.T) {
 			[]float64{37.57598876953125, 55.79742138660978},
 			[]float64{37.53822326660156, 55.76884856927786}}})
 
-	assert.True(polyg.GetLength() == 82890.25104294329)
+	assert.True(polyg.Length() == 82890.25104294329)
 }
 
 func TestDistanceToPolygon(t *testing.T) {

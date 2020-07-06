@@ -12,18 +12,29 @@ func NewMultiLineString(coords [][][]float64) MultiLineString {
 	}
 }
 
-// GetCoordinates returns array of longitude, latitude of the MultiLineString
-func (m MultiLineString) GetCoordinates() interface{} {
+// Coordinates returns array of longitude, latitude of the MultiLineString
+func (m MultiLineString) Coordinates() interface{} {
 	return m.Coords // longitude (Y), latitude (X)
 }
 
-// GetType returns type of the MultiLineString (MultiLineString)
-func (m MultiLineString) GetType() string {
+// GetCoordinates returns array of longitude, latitude of MultiLineString
+// coordnum - index of coordinate arr
+func (m MultiLineString) GetCoordinates(setnum, coordnum int) (float64, float64) {
+	coords := (m.Coordinates()).([][][]float64)
+
+	lon := coords[setnum][coordnum][0]
+	lat := coords[setnum][coordnum][1]
+
+	return lon, lat // longitude (Y), latitude (X)
+}
+
+// Type returns type of the MultiLineString (MultiLineString)
+func (m MultiLineString) Type() string {
 	return "MultiLineString"
 }
 
-// GetLength returns length of the MultiLineString
-func (m MultiLineString) GetLength() float64 {
+// Length returns length of the MultiLineString
+func (m MultiLineString) Length() float64 {
 	return MultiLineStringLength(m)
 }
 
@@ -32,7 +43,7 @@ func (m MultiLineString) DistanceTo(f Feature) float64 {
 
 	var distance float64
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		point := f.(*Point)
 		distance = DistancePointMultiLineString(*point, m)
@@ -66,7 +77,7 @@ func (m MultiLineString) DistanceTo(f Feature) float64 {
 func (m MultiLineString) IntersectsWith(f Feature) bool {
 	var intersection bool
 
-	switch f.GetType() {
+	switch f.Type() {
 	case "Point":
 		// point := f.(*Point)
 

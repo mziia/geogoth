@@ -16,34 +16,34 @@ func TestNewMultiPoint(t *testing.T) {
 	assert.True(mpoint.Coords[2][1] == 55.77134814581)
 }
 
-func TestGetCoordinatesMPoint(t *testing.T) {
+func TestCoordinatesMPoint(t *testing.T) {
 	assert := assert.New(t)
 
 	mpoint := &Objects.Object3
 	CreateObj3()
 
-	coords := (mpoint.GetCoordinates()).([][]float64)
+	coords := (mpoint.Coordinates()).([][]float64)
 
 	assert.True(coords[1][0] == 37.624941407105)
 	assert.True(coords[1][1] == 55.738048529295)
 }
 
-func TestGetTypeMPoint(t *testing.T) {
+func TestTypeMPoint(t *testing.T) {
 	assert := assert.New(t)
 
 	mpoint := &Objects.Object3
 	CreateObj3()
 
-	assert.True(mpoint.GetType() == "MultiPoint")
+	assert.True(mpoint.Type() == "MultiPoint")
 }
 
-func TestGetLengthMPoint(t *testing.T) {
+func TestLengthMPoint(t *testing.T) {
 	assert := assert.New(t)
 
 	mpoint := &Objects.Object3
 	CreateObj3()
 
-	assert.True(mpoint.GetLength() == 0)
+	assert.True(mpoint.Length() == 0)
 }
 
 func TestDistanceToMPoint(t *testing.T) {
