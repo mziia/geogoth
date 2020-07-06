@@ -57,8 +57,8 @@ func (m MultiPoint) DistanceTo(f Feature) float64 {
 		distance = DistanceMultipointLinestring(&m, &linestr)
 
 	case "MultiLineString":
-		mlinestr := f.(*MultiLineString)
-		distance = DistanceMultiPointMultiLinestring(m, *mlinestr)
+		mlinestr := f.(MultiLineString)
+		distance = DistanceMultiPointMultiLinestring(&m, &mlinestr)
 
 	case "Polygon":
 		polyg := f.(*Polygon)
