@@ -15,6 +15,7 @@ func NewPoint(y, x float64) Point {
 }
 
 // Coordinates returns y,x of the Point
+// @ ToDo: Add pointers: func (p *Point) Coordinates() interface{} {
 func (p Point) Coordinates() interface{} {
 	return []float64{p.Y, p.X}
 }
