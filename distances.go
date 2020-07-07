@@ -167,7 +167,7 @@ func DistancePointPolygon(point *Point, polygon *Polygon) float64 {
 
 	coords := (polygon.Coordinates()).([][][]float64) // Convert interface to [][][]float64
 
-	if PIPJordanCurveTheorem(pointY, pointX, polygon.Coordinates) == true {
+	if PIPJordanCurveTheorem(pointY, pointX, polygon.Coordinates()) == true {
 		distance = 0
 	} else {
 		for i := range coords {
