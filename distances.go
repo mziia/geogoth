@@ -469,17 +469,17 @@ func DistanceLineStringMultiLineString(lineString *LineString, multiLineStr *Mul
 }
 
 // DistanceLineStringPolygon counts distance between LineString and  Polygon
-func DistanceLineStringPolygon(feature1, feature2 *Feature) float64 {
+func DistanceLineStringPolygon(lineString *LineString, polygon *Polygon) float64 {
 	var distance float64
 
-	linestr := (feature1.Geom.Coordinates).([][]float64)
-	polyg := (feature2.Geom.Coordinates).([][][]float64)
+	linestr := (lineString.Coordinates()).([][]float64)
+	polyg := (polygon.Coordinates()).([][][]float64)
 
 	distarr := make([]float64, 0)         // Creates slice for distances
 	lineStrCoords := make([][]float64, 0) // Creates slice for coords of the LineString
 
 	for i := range linestr { // Finds coords of LineString
-		lineY, lineX := GetTwoDimArrayCoordinates(feature1, i)
+		lineY, lineX := lineString.GetCoordinates(i)
 		lineStrCoords = append(lineStrCoords, []float64{lineY, lineX})
 	}
 

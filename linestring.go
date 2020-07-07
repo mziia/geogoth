@@ -35,7 +35,7 @@ func (l LineString) Type() string {
 
 // Length returns length of the LineString
 func (l LineString) Length() float64 {
-	return LineStringLength(l)
+	return LineStringLength(&l)
 }
 
 // DistanceTo returns distance between two geo objects
@@ -61,8 +61,8 @@ func (l LineString) DistanceTo(f Feature) float64 {
 		distance = DistanceLineStringMultiLineString(&l, &mlinestr)
 
 	case "Polygon":
-		pol := f.(*Polygon)
-		distance = DistanceLineStringPolygon(l, *pol)
+		pol := f.(Polygon)
+		distance = DistanceLineStringPolygon(&l, &pol)
 
 	case "MultiPolygon":
 		mpol := f.(*MultiPolygon)

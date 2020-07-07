@@ -1,7 +1,7 @@
 package geogoth
 
 // LineStringLength counts lenght of LineString
-func LineStringLength(linestr LineString) float64 {
+func LineStringLength(linestr *LineString) float64 {
 	var length float64
 
 	coords := linestr.Coords
