@@ -221,24 +221,24 @@ func DistancePointMultiPolygon(point *Point, mPolygon *MultiPolygon) float64 {
 }
 
 // DistanceLineStringLineString counts the smallest distance between two LineStrings
-func DistanceLineStringLineString(feature1, feature2 *Feature) float64 {
+func DistanceLineStringLineString(lineString *LineString, lineStr *LineString) float64 {
 
 	var distance float64
 	distarr := make([]float64, 0)
-	coords1 := (feature1.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
-	coords2 := (feature2.Geom.Coordinates).([][]float64) // Convert interface to [][]float64
+	coords1 := (lineString.Coordinates()).([][]float64) // Convert interface to [][]float64
+	coords2 := (lineStr.Coordinates()).([][]float64)    // Convert interface to [][]float64
 
 	coordsArr1 := make([][]float64, 0)
 	coordsArr2 := make([][]float64, 0)
 
 	for i := range coords1 { // Finds coords of the first LineString
-		line1Y, line1X := GetTwoDimArrayCoordinates(feature1, i)
+		line1Y, line1X := lineString.GetCoordinates(i)
 		coordsArr1 = append(coordsArr1, []float64{line1Y, line1X})
 
 	}
 
 	for i := range coords2 { // Finds coords of the second LineString
-		line2Y, line2X := GetTwoDimArrayCoordinates(feature2, i)
+		line2Y, line2X := lineStr.GetCoordinates(i)
 		coordsArr2 = append(coordsArr2, []float64{line2Y, line2X})
 	}
 
@@ -258,7 +258,6 @@ func DistanceLineStringLineString(feature1, feature2 *Feature) float64 {
 
 			distarr = append(distarr, DistanceLineLine(line1Y1, line1X1, line1Y2, line1X2, line2Y1, line2X1, line2Y2, line2X2))
 		}
-
 	}
 
 	distance = MinDistance(distarr)

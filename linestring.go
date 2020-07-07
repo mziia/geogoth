@@ -45,16 +45,16 @@ func (l LineString) DistanceTo(f Feature) float64 {
 
 	switch f.Type() {
 	case "Point":
-		point := f.(*Point)
-		distance = DistancePointLinstring(*point, l)
+		point := f.(Point)
+		distance = DistancePointLinstring(&point, &l)
 
 	case "MultiPoint":
-		mpoint := f.(*MultiPoint)
-		distance = DistanceMultipointLinestring(*mpoint, l)
+		mpoint := f.(MultiPoint)
+		distance = DistanceMultipointLinestring(&mpoint, &l)
 
 	case "LineString":
-		lstr := f.(*LineString)
-		distance = DistanceLineStringLineString(l, *lstr)
+		lstr := f.(LineString)
+		distance = DistanceLineStringLineString(&l, &lstr)
 
 	case "MultiLineString":
 		mlinestr := f.(*MultiLineString)
