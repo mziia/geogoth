@@ -373,7 +373,7 @@ func DistanceMultiPointPolygon(multiPoint *MultiPoint, polygon *Polygon) float64
 	for i := range multiPointCoords {
 		yPoint, xPoint := multiPoint.GetCoordinates(i) // Coordinates of Multipoint[i] point
 
-		if PIPJordanCurveTheorem(yPoint, xPoint, polygon.Coordinates) == true {
+		if PIPJordanCurveTheorem(yPoint, xPoint, polygon.Coordinates()) == true {
 			distance = 0
 			break
 
