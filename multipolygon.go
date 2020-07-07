@@ -45,28 +45,28 @@ func (m MultiPolygon) DistanceTo(f Feature) float64 {
 
 	switch f.Type() {
 	case "Point":
-		point := f.(Point)
-		distance = DistancePointMultiPolygon(&point, &m)
+		point := f.(*Point)
+		distance = DistancePointMultiPolygon(point, &m)
 
 	case "MultiPoint":
-		mpoint := f.(MultiPoint)
-		distance = DistanceMultiPointMultiPolygon(&mpoint, &m)
+		mpoint := f.(*MultiPoint)
+		distance = DistanceMultiPointMultiPolygon(mpoint, &m)
 
 	case "LineString":
-		ln := f.(LineString)
-		distance = DistanceLineStringMultiPolygon(&ln, &m)
+		ln := f.(*LineString)
+		distance = DistanceLineStringMultiPolygon(ln, &m)
 
 	case "MultiLineString":
-		mlstr := f.(MultiLineString)
-		distance = DistanceMultiLineStringMultiPolygon(&mlstr, &m)
+		mlstr := f.(*MultiLineString)
+		distance = DistanceMultiLineStringMultiPolygon(mlstr, &m)
 
 	case "Polygon":
-		plgn := f.(Polygon)
-		distance = DistancePolygonMultiPolygon(&plgn, &m)
+		plgn := f.(*Polygon)
+		distance = DistancePolygonMultiPolygon(plgn, &m)
 
 	case "MultiPolygon":
-		mpolyg := f.(MultiPolygon)
-		distance = DistanceMultiPolygonMultiPolygon(&m, &mpolyg)
+		mpolyg := f.(*MultiPolygon)
+		distance = DistanceMultiPolygonMultiPolygon(&m, mpolyg)
 	}
 
 	return distance

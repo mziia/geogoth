@@ -40,7 +40,7 @@ func DistancePointMultipoint(point *Point, mPoint *MultiPoint) float64 {
 
 	var distance float64
 	pointY, pointX := point.GetCoordinates()
-	mpCoords := (mPoint.Coordinates()).([][]float64)
+	mpCoords := ((*mPoint).Coordinates()).([][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 

@@ -56,24 +56,24 @@ func (p Point) DistanceTo(f Feature) float64 {
 		distance = DistancePointPointDeg(y1, x1, y2, x2)
 
 	case "MultiPoint":
-		mpoint := f.(MultiPoint)
-		distance = DistancePointMultipoint(&p, &mpoint)
+		mpoint := f.(*MultiPoint)
+		distance = DistancePointMultipoint(&p, mpoint)
 
 	case "LineString":
-		lstr := f.(LineString)
-		distance = DistancePointLinstring(&p, &lstr)
+		lstr := f.(*LineString)
+		distance = DistancePointLinstring(&p, lstr)
 
 	case "MultiLineString":
-		mlinestr := f.(MultiLineString)
-		distance = DistancePointMultiLineString(&p, &mlinestr)
+		mlinestr := f.(*MultiLineString)
+		distance = DistancePointMultiLineString(&p, mlinestr)
 
 	case "Polygon":
-		polygon := f.(Polygon)
-		distance = DistancePointPolygon(&p, &polygon)
+		polygon := f.(*Polygon)
+		distance = DistancePointPolygon(&p, polygon)
 
 	case "MultiPolygon":
-		mpolyg := f.(MultiPolygon)
-		distance = DistancePointMultiPolygon(&p, &mpolyg)
+		mpolyg := f.(*MultiPolygon)
+		distance = DistancePointMultiPolygon(&p, mpolyg)
 	}
 
 	return distance
