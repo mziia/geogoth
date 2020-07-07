@@ -801,11 +801,11 @@ func DistancePolygonPolygon(polygon *Polygon, pol *Polygon) float64 {
 }
 
 // DistancePolygonMultiPolygon  counts distance between Polygon and MultiPolygon
-func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
+func DistancePolygonMultiPolygon(polygon *Polygon, multiPolygon *MultiPolygon) float64 {
 	var distance float64
 
-	polyg := (feature1.Geom.Coordinates).([][][]float64)
-	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
+	polyg := (polygon.Coordinates()).([][][]float64)
+	mpolyg := (multiPolygon.Coordinates()).([][][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
@@ -816,7 +816,7 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 
 	for i := range polyg { // Finds coords of the Polygon
 		for j := range polyg[i] {
-			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
+			lineY, lineX := polygon.GetCoordinates(i, j)
 			plineCoords = append(plineCoords, []float64{lineY, lineX})
 		}
 		polygCoords = append(polygCoords, plineCoords)
@@ -828,9 +828,8 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 		for p := range mpolyg[m] {
 			for i := range mpolyg[m][p] {
 
-				lineY, lineX := GetFourDimArrayCoordinates(feature2, m, p, i)
+				lineY, lineX := multiPolygon.GetCoordinates(m, p, i)
 				mlineCoords = append(mlineCoords, []float64{lineY, lineX})
-
 			}
 			mpolygCoords = append(mpolygCoords, mlineCoords)
 			mlineCoords = nil // empty slice
@@ -855,9 +854,7 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 
 	if pip == true {
 		distance = 0
-
 	} else {
-
 		// Test if any point of MultiPolygon is inside of the Polygon
 		for i := range mpolygCoords {
 			for j := range mpolygCoords[i] {
@@ -869,11 +866,9 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 				}
 			}
 		}
-
 		if pip == true {
 			distance = 0
 		} else {
-
 			for m := range polygCoords {
 				for i := 0; i < len(polygCoords[m])-1; i++ {
 
@@ -890,7 +885,6 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 								yP2, xP2 := mpolyg[m][p][j+1][0], mpolyg[m][p][j+1][1]
 
 								distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
-
 							}
 						}
 					}
@@ -899,7 +893,6 @@ func DistancePolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 			distance = MinDistance(distarr)
 		}
 	}
-
 	return distance
 }
 
