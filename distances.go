@@ -604,11 +604,11 @@ func DistanceMultiLineStringMultiLineString(multiLineString *MultiLineString, mu
 }
 
 // DistanceMultiLineStringPolygon counts distance between MultiLineString and  Polygon
-func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
+func DistanceMultiLineStringPolygon(multiLineString *MultiLineString, polygon *Polygon) float64 {
 	var distance float64
 
-	mlinestr := (feature1.Geom.Coordinates).([][][]float64)
-	polyg := (feature2.Geom.Coordinates).([][][]float64)
+	mlinestr := (multiLineString.Coordinates()).([][][]float64)
+	polyg := (polygon.Coordinates()).([][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
@@ -617,7 +617,7 @@ func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 
 	for i := range mlinestr { // Finds coords of the MultiLineString
 		for j := range mlinestr[i] {
-			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
+			lineY, lineX := multiLineString.GetCoordinates(i, j)
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
@@ -664,11 +664,11 @@ func DistanceMultiLineStringPolygon(feature1, feature2 *Feature) float64 {
 }
 
 // DistanceMultiLineStringMultiPolygon counts distance between MultiLineString and  MultiPolygon
-func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
+func DistanceMultiLineStringMultiPolygon(multiLineString *MultiLineString, multiPolygon *MultiPolygon) float64 {
 	var distance float64
 
-	mlinestr := (feature1.Geom.Coordinates).([][][]float64)
-	mpolyg := (feature2.Geom.Coordinates).([][][][]float64)
+	mlinestr := (multiLineString.Coordinates()).([][][]float64)
+	mpolyg := (multiPolygon.Coordinates()).([][][][]float64)
 
 	distarr := make([]float64, 0)         // Creates slice for distances
 	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
@@ -676,7 +676,7 @@ func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 
 	for i := range mlinestr { // Finds coords of the MultiLineString
 		for j := range mlinestr[i] {
-			lineY, lineX := GetThreeDimArrayCoordinates(feature1, i, j)
+			lineY, lineX := multiLineString.GetCoordinates(i, j)
 			lineCoords = append(lineCoords, []float64{lineY, lineX})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
@@ -707,16 +707,13 @@ func DistanceMultiLineStringMultiPolygon(feature1, feature2 *Feature) float64 {
 				yL2, xL2 := mlineCoords[m][i+1][0], mlineCoords[m][i+1][1]
 
 				for m := range mpolyg {
-
 					for p := range mpolyg[m] {
 
 						for j := 0; j < len(mpolyg[m][p])-1; j++ {
-
 							yP1, xP1 := mpolyg[m][p][j][0], mpolyg[m][p][j][1]
 							yP2, xP2 := mpolyg[m][p][j+1][0], mpolyg[m][p][j+1][1]
 
 							distarr = append(distarr, DistanceLineLine(yL1, xL1, yL2, xL2, yP1, xP1, yP2, xP2))
-
 						}
 					}
 				}
