@@ -18,9 +18,9 @@ func MinDistance(distarr []float64) float64 {
 func NegToPosRad(rad float64) float64 {
 	if rad > 0 {
 		return rad
-	} else {
-		return 2*math.Pi + rad
 	}
+	return 2*math.Pi + rad
+
 }
 
 // Bearing Finds the bearing from one lat/lon point to another.
@@ -87,9 +87,8 @@ func PIPJordanCurveTheorem(py, px float64, pol interface{}) bool {
 
 	if crossing%2 == 1 {
 		return true // The Point is instide of the Polygon
-	} else {
-		return false // The Point is outside of the Polygon
 	}
+	return false // The Point is outside of the Polygon
 
 }
 

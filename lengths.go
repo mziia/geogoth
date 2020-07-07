@@ -1,6 +1,6 @@
 package geogoth
 
-// LineStringLength counts lenght of LineString
+// LineStringLength counts length of LineString
 func LineStringLength(linestr *LineString) float64 {
 	var length float64
 
@@ -21,7 +21,7 @@ func LineStringLength(linestr *LineString) float64 {
 	return length
 }
 
-// MultiLineStringLength counts lenght of MultiLineString
+// MultiLineStringLength counts length of MultiLineString
 func MultiLineStringLength(mlineStr MultiLineString) float64 {
 	var length float64
 
@@ -52,7 +52,7 @@ func MultiLineStringLength(mlineStr MultiLineString) float64 {
 	return length
 }
 
-// PolygonLength counts lenght of Polygon
+// PolygonLength counts length of Polygon
 func PolygonLength(polygon Polygon) float64 {
 	var length float64
 
@@ -83,7 +83,7 @@ func PolygonLength(polygon Polygon) float64 {
 	return length
 }
 
-// MultipolygonLength counts lenght of MultipolygonLength
+// MultipolygonLength counts length of MultipolygonLength
 func MultipolygonLength(mpolygon MultiPolygon) float64 {
 	var length float64
 

@@ -1,11 +1,10 @@
 package geogoth
 
-// Length counts lenght of geo object
+// Length counts length of geo object
 func (feature *Feature) Length() float64 {
 	var length float64
 
 	switch GetGeoType(feature) {
-
 	case "Point": //  Point length
 		length = 0
 	case "MultiPoint": //  Point length
