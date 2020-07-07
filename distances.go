@@ -725,11 +725,11 @@ func DistanceMultiLineStringMultiPolygon(multiLineString *MultiLineString, multi
 }
 
 // DistancePolygonPolygon counts distance between Polygon and Polygon
-func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
+func DistancePolygonPolygon(polygon *Polygon, pol *Polygon) float64 {
 	var distance float64
 
-	polyg1 := (feature1.Geom.Coordinates).([][][]float64)
-	polyg2 := (feature2.Geom.Coordinates).([][][]float64)
+	polyg1 := (polygon.Coordinates()).([][][]float64)
+	polyg2 := (pol.Coordinates()).([][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
@@ -738,14 +738,14 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 
 	for i := range polyg1 { // Finds coords of the first Polygon
 		for j := range polyg1[i] {
-			y, x := GetThreeDimArrayCoordinates(feature1, i, j)
+			y, x := polygon.GetCoordinates(i, j)
 			polyg1Coords = append(polyg1Coords, []float64{y, x})
 		}
 	}
 
 	for i := range polyg2 { // Finds coords of the second Polygon
 		for j := range polyg2[i] {
-			y, x := GetThreeDimArrayCoordinates(feature2, i, j)
+			y, x := pol.GetCoordinates(i, j)
 			polyg2Coords = append(polyg2Coords, []float64{y, x})
 		}
 	}
@@ -758,10 +758,8 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 			break
 		}
 	}
-
 	if pip == true {
 		distance = 0
-
 	} else {
 
 		// Test if any point of Polygon 2 is inside of the Polygon 1
@@ -792,7 +790,6 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 							y2P2, x2P2 := polyg2[p2][j+1][0], polyg2[p2][j+1][1]
 
 							distarr = append(distarr, DistanceLineLine(y1P1, x1P1, y2P1, x2P1, y1P2, x1P2, y2P2, x2P2))
-
 						}
 					}
 				}
@@ -800,7 +797,6 @@ func DistancePolygonPolygon(feature1, feature2 *Feature) float64 {
 			distance = MinDistance(distarr)
 		}
 	}
-
 	return distance
 }
 
