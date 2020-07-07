@@ -1,6 +1,8 @@
 package geogoth
 
-import "math"
+import (
+	"math"
+)
 
 // MinDistance searches for the smallest distance
 func MinDistance(distarr []float64) float64 {
@@ -18,9 +20,9 @@ func MinDistance(distarr []float64) float64 {
 func NegToPosRad(rad float64) float64 {
 	if rad > 0 {
 		return rad
+	} else {
+		return 2*math.Pi + rad
 	}
-	return 2*math.Pi + rad
-
 }
 
 // Bearing Finds the bearing from one lat/lon point to another.
@@ -87,20 +89,21 @@ func PIPJordanCurveTheorem(py, px float64, pol interface{}) bool {
 
 	if crossing%2 == 1 {
 		return true // The Point is instide of the Polygon
+	} else {
+		return false // The Point is outside of the Polygon
 	}
-	return false // The Point is outside of the Polygon
 
 }
 
-// // PointInPolygon ...
-// func PointInPolygon(feature1, feature2 *Feature) bool {
+// PointInPolygon ...
+func PointInPolygon(feature1, feature2 *Feature) bool {
 
-// 	py, px := GetPointCoordinates(feature1) // Coords of Point
-// 	pol := feature2.Geom.Coordinates
+	py, px := GetPointCoordinates(feature1) // Coords of Point
+	pol := feature2.Geom.Coordinates
 
-// 	return PIPJordanCurveTheorem(py, px, pol)
+	return PIPJordanCurveTheorem(py, px, pol)
 
-// }
+}
 
 // LineLineIntersection returns true if lines intersectd; false if lines do not intersect
 // Algorithm from https://ideone.com/PnPJgb

@@ -1,14 +1,14 @@
 package geogoth
 
 // LineStringLength counts length of LineString
-func LineStringLength(feature *Feature) float64 {
+func LineStringLength(linestr *LineString) float64 {
 	var length float64
 
-	coords := (feature.Geom.Coordinates).([][]float64) // Convert interface to [][][]float64
-	lineCoords := make([][]float64, 0)                 // Creates slice for coords of one line
+	coords := linestr.Coords
+	lineCoords := make([][]float64, 0) // Creates slice for coords of one line
 
 	for i := range coords {
-		y, x := GetTwoDimArrayCoordinates(feature, i) // Coordinates of LineString
+		y, x := linestr.Coords[i][0], linestr.Coords[i][1]
 		lineCoords = append(lineCoords, []float64{y, x})
 	}
 
@@ -22,16 +22,16 @@ func LineStringLength(feature *Feature) float64 {
 }
 
 // MultiLineStringLength counts length of MultiLineString
-func MultiLineStringLength(feature *Feature) float64 {
+func MultiLineStringLength(mlineStr MultiLineString) float64 {
 	var length float64
 
-	lineCoords := make([][]float64, 0)                        // Creates slice for coords of one line
-	mlineCoords := make([][][]float64, 0)                     // Creates slice for coords of the MultiLineString
-	multlinestr := (feature.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
+	lineCoords := make([][]float64, 0)    // Creates slice for coords of one line
+	mlineCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
+	multlinestr := (mlineStr.Coords)      // Convert interface to [][][]float64
 
 	for i := range multlinestr { // Finds coords of the MultiLineString
 		for j := range multlinestr[i] {
-			y, x := GetThreeDimArrayCoordinates(feature, i, j)
+			y, x := multlinestr[i][j][0], multlinestr[i][j][1]
 			lineCoords = append(lineCoords, []float64{y, x})
 		}
 		mlineCoords = append(mlineCoords, lineCoords)
@@ -53,28 +53,28 @@ func MultiLineStringLength(feature *Feature) float64 {
 }
 
 // PolygonLength counts length of Polygon
-func PolygonLength(feature *Feature) float64 {
+func PolygonLength(polygon Polygon) float64 {
 	var length float64
 
-	lineCoords := make([][]float64, 0)                    // Creates slice for coords of one line
-	polygCoords := make([][][]float64, 0)                 // Creates slice for coords of the MultiLineString
-	polygon := (feature.Geom.Coordinates).([][][]float64) // Convert interface to [][][]float64
+	lineCoords := make([][]float64, 0)  // Creates slice for coords of one line
+	polCoords := make([][][]float64, 0) // Creates slice for coords of the MultiLineString
+	polygonCoords := polygon.Coords     // Convert interface to [][][]float64
 
-	for i := range polygon { // Finds coords of the MultiLineString
-		for j := range polygon[i] {
-			y, x := GetThreeDimArrayCoordinates(feature, i, j)
+	for i := range polygonCoords { // Finds coords of the MultiLineString
+		for j := range polygonCoords[i] {
+			y, x := polygon.Coords[i][j][0], polygon.Coords[i][j][1]
 			lineCoords = append(lineCoords, []float64{y, x})
 		}
-		polygCoords = append(polygCoords, lineCoords)
+		polCoords = append(polCoords, lineCoords)
 		lineCoords = nil // empty slice
 
 	}
 
-	for i := range polygCoords {
+	for i := range polCoords {
 
-		for j := 0; j < len(polygCoords[i])-1; j++ {
+		for j := 0; j < len(polCoords[i])-1; j++ {
 
-			lengthTmp := DistancePointPointDeg(polygCoords[i][j][0], polygCoords[i][j][1], polygCoords[i][j+1][0], polygCoords[i][j+1][1])
+			lengthTmp := DistancePointPointDeg(polCoords[i][j][0], polCoords[i][j][1], polCoords[i][j+1][0], polCoords[i][j+1][1])
 			length = length + lengthTmp
 		}
 
@@ -84,10 +84,10 @@ func PolygonLength(feature *Feature) float64 {
 }
 
 // MultipolygonLength counts length of MultipolygonLength
-func MultipolygonLength(feature *Feature) float64 {
+func MultipolygonLength(mpolygon MultiPolygon) float64 {
 	var length float64
 
-	mpolyg := (feature.Geom.Coordinates).([][][][]float64)
+	mpolyg := mpolygon.Coords
 
 	mpolygCoords := make([][][]float64, 0) // Creates slice for coords of the MultiPolygon
 	mlineCoords := make([][]float64, 0)    // Creates slice for coords of one line
@@ -96,7 +96,7 @@ func MultipolygonLength(feature *Feature) float64 {
 		for p := range mpolyg[m] {
 			for i := range mpolyg[m][p] {
 
-				y, x := GetFourDimArrayCoordinates(feature, m, p, i)
+				y, x := mpolygon.Coords[m][p][i][0], mpolygon.Coords[m][p][i][1]
 				mlineCoords = append(mlineCoords, []float64{y, x})
 
 			}

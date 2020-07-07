@@ -1,7 +1,7 @@
 package geogoth_test
 
 import (
-	"geogoth"
+	geogoth "geogoth/geojson"
 	"testing"
 
 	assert "github.com/blendlabs/go-assert"
