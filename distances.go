@@ -571,12 +571,12 @@ func DistanceLineStringMultiPolygon(lineString *LineString, mPolygon *MultiPolyg
 }
 
 // DistanceMultiLineStringMultiLineString counts distance between MultiLineString and MultiLineString
-func DistanceMultiLineStringMultiLineString(feature1, feature2 *Feature) float64 {
+func DistanceMultiLineStringMultiLineString(multiLineString *MultiLineString, multiLineStr *MultiLineString) float64 {
 
 	var distance float64
 
-	multlinestr := (feature1.Geom.Coordinates).([][][]float64)
-	mlinestr := (feature2.Geom.Coordinates).([][][]float64)
+	multlinestr := (multiLineString.Coordinates()).([][][]float64)
+	mlinestr := (multiLineStr.Coordinates()).([][][]float64)
 
 	distarr := make([]float64, 0) // Creates slice for distances
 
