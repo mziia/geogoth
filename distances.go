@@ -897,11 +897,11 @@ func DistancePolygonMultiPolygon(polygon *Polygon, multiPolygon *MultiPolygon) f
 }
 
 // DistanceMultiPolygonMultiPolygon counts distance between MultiPolygon and MultiPolygon
-func DistanceMultiPolygonMultiPolygon(feature1, feature2 *Feature) float64 {
+func DistanceMultiPolygonMultiPolygon(multiPolygon *MultiPolygon, multiPol *MultiPolygon) float64 {
 	var distance float64
 
-	mpolyg1 := (feature1.Geom.Coordinates).([][][][]float64)
-	mpolyg2 := (feature2.Geom.Coordinates).([][][][]float64)
+	mpolyg1 := (multiPolygon.Coordinates()).([][][][]float64)
+	mpolyg2 := (multiPol.Coordinates()).([][][][]float64)
 
 	distarr := make([]float64, 0)
 
@@ -913,19 +913,18 @@ func DistanceMultiPolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 	for m := range mpolyg1 {
 		for p := range mpolyg1[m] {
 			for i := range mpolyg1[m][p] {
-				lineY, lineX := GetFourDimArrayCoordinates(feature1, m, p, i)
+				lineY, lineX := multiPolygon.GetCoordinates(m, p, i)
 				mline1Coords = append(mline1Coords, []float64{lineY, lineX})
 			}
 			mpolyg1Coords = append(mpolyg1Coords, mline1Coords)
 			mline1Coords = nil // empty slice
-
 		}
 	}
 
 	for m := range mpolyg2 {
 		for p := range mpolyg2[m] {
 			for i := range mpolyg2[m][p] {
-				lineY, lineX := GetFourDimArrayCoordinates(feature2, m, p, i)
+				lineY, lineX := multiPol.GetCoordinates(m, p, i)
 				mline2Coords = append(mline2Coords, []float64{lineY, lineX})
 			}
 			mpolyg2Coords = append(mpolyg2Coords, mline2Coords)
@@ -964,12 +963,9 @@ func DistanceMultiPolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 				}
 			}
 		}
-
 		if pip == true {
 			distance = 0
-
 		} else {
-
 			for m1 := range mpolyg1 {
 				for p1 := range mpolyg1[m1] {
 					for i := 0; i < len(mpolyg1[m1][p1])-1; i++ {
@@ -988,14 +984,11 @@ func DistanceMultiPolygonMultiPolygon(feature1, feature2 *Feature) float64 {
 								}
 							}
 						}
-
 					}
-
 				}
 			}
 			distance = MinDistance(distarr)
 		}
-
 	}
 	return distance
 }
