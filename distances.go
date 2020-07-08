@@ -349,7 +349,12 @@ func DistanceMultiPointMultiLinestring(multiPoint *MultiPoint, multiLineStr *Mul
 		for m := range mlineCoords {
 			for j := 0; j < len(mlineCoords[m])-1; j++ {
 
-				distarr = append(distarr, DistancePointLine(y, x, mlineCoords[m][j][0], mlineCoords[m][j][1], mlineCoords[m][j+1][0], mlineCoords[m][j+1][1]))
+				lineY1 := mlineCoords[m][j][0]
+				lineX1 := mlineCoords[m][j][1]
+				lineY2 := mlineCoords[m][j+1][0]
+				lineX2 := mlineCoords[m][j+1][1]
+
+				distarr = append(distarr, DistancePointLine(y, x, lineY1, lineX1, lineY2, lineX2))
 
 			}
 
@@ -383,7 +388,12 @@ func DistanceMultiPointPolygon(multiPoint *MultiPoint, polygon *Polygon) float64
 
 				for p := 0; p < len(polygonCoords[j])-1; p++ {
 
-					distarr = append(distarr, DistancePointLine(yPoint, xPoint, polygonCoords[j][p][0], polygonCoords[j][p][1], polygonCoords[j][p+1][0], polygonCoords[j][p+1][1]))
+					yPol1 := polygonCoords[j][p][0]
+					xPol1 := polygonCoords[j][p][1]
+					yPol2 := polygonCoords[j][p+1][0]
+					xPol2 := polygonCoords[j][p+1][1]
+
+					distarr = append(distarr, DistancePointLine(yPoint, xPoint, yPol1, xPol1, yPol2, xPol2))
 				}
 			}
 			distance = MinDistance(distarr)
@@ -418,11 +428,15 @@ func DistanceMultiPointMultiPolygon(multiPoint *MultiPoint, multiPolygon *MultiP
 				for j := range multiPolygonCoords[m] {
 					for p := 0; p < len(multiPolygonCoords[m][j])-1; p++ {
 
-						distarr = append(distarr, DistancePointLine(yPoint, xPoint, multiPolygonCoords[m][j][p][0], multiPolygonCoords[m][j][p][1], multiPolygonCoords[m][j][p+1][0], multiPolygonCoords[m][j][p+1][1]))
+						yPol1 := multiPolygonCoords[m][j][p][0]
+						xPol1 := multiPolygonCoords[m][j][p][1]
+						yPol2 := multiPolygonCoords[m][j][p+1][0]
+						xPol2 := multiPolygonCoords[m][j][p+1][1]
+
+						distarr = append(distarr, DistancePointLine(yPoint, xPoint, yPol1, xPol1, yPol2, xPol2))
 					}
 				}
 				distance = MinDistance(distarr)
-
 			}
 		}
 	}
