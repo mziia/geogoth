@@ -2,8 +2,7 @@ package examples
 
 import (
 	"fmt"
-
-	"github.com/mziia/geogoth"
+	geogoth "geogoth/geojson"
 )
 
 // FindDistance creating two Points and finds distance between them

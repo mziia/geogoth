@@ -3,8 +3,7 @@ package examples
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/mziia/geogoth"
+	geogoth "geogoth/geojson"
 )
 
 // CreateCollection creates collection and features, adds features to the collection
