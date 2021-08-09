@@ -1,6 +1,6 @@
 package geogoth
 
-// Ftrs Структура для хранения фич
+// Ftrs Структура для хранения фич для тестирования
 var Ftrs struct {
 	Feature1  *Feature
 	Feature2  *Feature
